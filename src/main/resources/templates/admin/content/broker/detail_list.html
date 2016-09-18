@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Broker detail</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="broker-detail-list page-container">
+        <div class="page-head">
+            <div class="container">
+                <div class="page-title">
+                </div>
+                <!-- .page-title-->
+                <div class="page-toolbar"><a href="javascript:history.back();" class="btn btn-default"><i class="fa fa-angle-left"></i> 목록</a></div>
+                <!-- .page-toolbar-->
+            </div>
+        </div>
+        <!-- .page-head-->
+
+        <div class="page-content sb-pt-50 sb-pb-50">
+            <div class="container">
+                <div class="broker-detail-list-main sb-bg-white sb-p-20">
+                    <div class="main-inner sb-pt-0 sb-pb-0">
+                        <div class="portlet light bordered">
+                            <div class="portlet-body form">
+                                <form class="form-horizontal">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                        <label class="col-md-3 control-label"><strong>업체명</strong></label>
+                                                    <div class="col-md-9">
+                                                        <input type="text" th:value="${user.companyName}" value="청룡 공인중개사" class="form-control input-medium">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><strong> </strong></label>
+                                                    <div class="col-md-9">
+                                                        <div data-toggle="buttons" class="sb-btn-checkbox-group btn-group">
+                                                            <label class="btn btn-default btn_change_type" th:attr="data-user-id=${user.id}" name='TRUSTED_BROKER' th:classappend="${user.type.name() eq 'TRUSTED_BROKER' ? 'active' : ''}">
+                                                                <input type="radio"  name="user_type" class="toggle"> 안심회원
+                                                            </label>
+                                                            <label class="btn btn-default btn_change_type" th:attr="data-user-id=${user.id}" name='BROKER' th:classappend="${user.type.name() eq 'BROKER' ? 'active' : ''}">
+                                                                <input type="radio"  name="user_type" class="toggle"> 무료로 변경
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-7">
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <img th:src="${user.avatar == null ?: user.avatar.thumbnail}" src="/admin/assets/images/no_image.jpg" />
+                                                    </div>
+
+                                                    <div class="col-xs-9">
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><strong>대표자</strong></label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" th:value="${user.corporationRegistration}" value="김철수" class="form-control input-medium">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><strong>대표전화</strong></label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" th:value="${user.phoneNumber}" value="02-○○○○-○○○○" class="form-control input-medium">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><strong>가입일시</strong></label>
+                                                            <div class="col-md-9">
+                                                                <div class="form-control-static" th:text="${user.createdDate}">YYYY.MM.DD hh:mm</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label"><strong>안심종료일시</strong></label>
+                                                            <div class="col-md-9">
+                                                                <div class="form-control-static" th:text="${user.createdDate}">YYYY.MM.DD hh:mm</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .form-body-->
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="tab-wrapper tabbable-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab-estates-registered" data-toggle="tab">올린 매물</a></li>
+                                <li><a href="#tab-advertised-estate" data-toggle="tab">광고 매물</a></li>
+                                <li><a href="#tab-reports" data-toggle="tab">접수된 신고</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div id="tab-estates-registered" class="tab-estates-registered tab-pane sb-pt-15 active">
+
+                                </div>
+
+                                <div id="tab-advertised-estate" class="tab-advertised-estate tab-pane sb-pt-15">
+
+                                </div>
+
+                                <div id="tab-reports" class="tab-reports tab-pane sb-pt-15">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .broker-detail-list-->
+
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+
+        $(function() {
+
+            var SELECTED_TAB = 'tab-estates-registered';
+            var URL = location.href;
+
+            // init
+            request(URL, SELECTED_TAB);
+
+            $('.tab-wrapper').on('click', '.nav.nav-tabs a', function(evt) {
+                SELECTED_TAB = $(this).attr('href').replace('#','');
+                request(URL, SELECTED_TAB);
+            });
+
+            $('.tab-wrapper').on('click', '.pagination-wrapper a', function(evt) {
+                evt.preventDefault();
+                var _url = $(this).attr('href');
+                request(_url, SELECTED_TAB);
+            });
+
+            function render(selector, html) {
+                $(selector).html(html);
+            };
+
+            function request(url, selected_tab) {
+                $.ajax({
+                            url: url,
+                            method: 'put',
+                            data: {
+                                'dataType': selected_tab
+                            }
+                        })
+                        .then(
+                                function(response) {
+                                    var html = $('#' + selected_tab, response).html();
+                                    render('#' + selected_tab, html);
+                                },
+                                function(jqXHR) {
+                                    location.reload();
+                                });
+            };
+
+
+        });
+
+        $(function () {
+            $('#tab-estates-registered').on('click', '.tab-detail-registered', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-estates-registered';
+
+                console.log('===================================');
+                console.log(evt);
+                console.log(url);
+                console.log('===================================');
+
+                requestDetail(url,SELECTED_TAB);
+            });
+
+            $('#tab-advertised-estate').on('click', '.tab-detail-advertised', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-advertised-estate';
+                requestDetail(url,SELECTED_TAB);
+            });
+
+            $('#tab-estates-registered').on('click', '.tab-repair', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-estates-registered';
+                requestDetail(url,SELECTED_TAB);
+            });
+
+            $('#tab-advertised-estate').on('click', '.tab-repair', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-advertised-estate';
+                requestDetail(url,SELECTED_TAB);
+            });
+
+
+            $('#tab-estates-registered').on('click', '.change-type', function (evt) {
+                evt.preventDefault();
+                console.log('change type estate');
+                console.log("================================");
+                console.log(evt);
+                console.log("=================================")
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-estates-registered';
+                requestDetail(url,SELECTED_TAB);
+            });
+
+            $('#tab-advertised-estate').on('click', '.change-type', function (evt) {
+                evt.preventDefault();
+                console.log('change type advertised');
+                console.log("================================");
+                console.log(evt);
+                console.log("=================================")
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-advertised-estate';
+                requestDetail(url,SELECTED_TAB);
+            });
+
+            function requestDetail(url, selected_tab) {
+                $.ajax({
+                            url: url,
+                            method: 'put',
+                            data: {
+                                'dataType': selected_tab
+                            }
+                        })
+                        .then(
+                                function(response) {
+                                    // get html by id
+                                    var html = $('#' + 'tab-broker-detail', response).html();
+
+                                    // replace html
+                                    render('#' + selected_tab, html);
+                                },
+                                function(jqXHR) {
+                                    location.reload();
+                                });
+            };
+
+            function render(selector, html) {
+                $(selector).html(html);
+            };
+        });
+
+        $('.btn_change_type').on('click', function(evt) {
+            var userId      = $(this).attr('data-user-id');
+            var userType    = $(this).attr('name');
+
+            $.ajax({
+                url: '/admin/broker/update/type',
+                method: 'post',
+                data: {
+                    userId: userId,
+                    userType: userType
+                }
+            }).then(
+                    function(result) {
+                        window.location = '/admin/broker/'
+                    },
+                    function(error) {
+                        console.error(error);
+                    });
+           console.log($(this));
+        });
+
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

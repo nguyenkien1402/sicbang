@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin</title>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+  <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+
+  <style>
+    bootstrap-tagsinput {
+      width: 100% !important;
+    }
+
+  </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+      <div class="page-content sb-pt-50 sb-pb-50">
+        <div class="container">
+          <div class="content-repair-list-main sb-bg-white sb-p-20">
+            <div class="main-inner sb-pt-0 sb-pb-0">
+
+              <div class="tab-wrapper tabbable-custom">
+                <ul class="nav nav-tabs">
+                  <li><a th:href="@{/admin/main}">메인 이미지 관리</a></li>
+                  <li><a th:href="@{/admin/main/popup}">팝업 창 관리</a></li>
+                  <li class="active"><a th:href="@{/admin/main/email/0}">이메일 발송</a></li>
+                  <li><a th:href="@{/admin/main/history}">발송 내역</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <form class="form" action="/admin/main/mail/create" method="post" enctype="multipart/form-data">
+                      <div class="form-horizontal">
+                        <div class="form-body">         
+                          <div class="form-group"> 
+                            <div style="text-align: right;" class="col-md-12">
+                              <!--@{'/admin/main/email/1'}-->
+                              <a  class="btn default btn-send-mail" data-page="1">오늘 가입</a>
+                              <a  class="btn default btn-send-mail" data-page="2">최근 한 달 가입</a>
+                              <a  class="btn default btn-send-mail" data-page="3">일반 회원</a>
+                              <a  class="btn default btn-send-mail" data-page="4">중개사</a>
+                              <a  class="btn default btn-send-mail" data-page="5">안심중개사</a>
+                              <a  class="btn default btn-send-mail" data-page="6">모든 회원</a>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label"><strong>제목</strong></label>
+                            <div class="col-md-9">
+                              <input type="text" name="mailSubject" value="" class="form-control"/>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label"><strong>받는 사람</strong></label>
+                            <div class="col-md-9">
+                              <th:block th:switch="${type}">
+                                <div th:case="'0'" style="width: 100%">
+                                  <input id="multiEmailTo" type="text" name="emailsTo" value=""
+                                         class="form-control" data-role="tagsinput" onChange="inputChange(event)"/>
+                                </div>
+                                <div id="input_email1" th:case="'1'">
+                                  <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput" readonly="readonly" />
+                                </div>
+                                <div th:case="'2'">
+                                  <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput" readonly="readonly"/>
+                                </div>
+                                <div th:case="'3'">
+                                  <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput" readonly="readonly"/>
+                                </div>
+                                <div th:case="'4'">
+                                  <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput"readonly="readonly"/>
+                                </div>
+                                <div th:case="'5'">
+                                  <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput" readonly="readonly"/>
+                                </div>
+                                <div th:case="'6'">
+                                  <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput" readonly="readonly"/>
+                                </div>
+                              </th:block>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label"><strong>내용</strong></label>
+                            <div class="col-md-9">
+                              <textarea name="mailContent" rows="6" class="ckeditor form-control">  </textarea>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9">
+                              <button type="submit" class="btn green btn-search">이메일 전송</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+
+                  <script type="text/javascript">
+                    function inputChange(e) {
+                      console.log(document.getElementById("multiEmailTo").value);
+                    }
+                    $(function () {
+
+                    });
+
+                  </script>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- .content-repair-list-->
+<script>
+  $("#owl-demo").owlCarousel({
+    items : 8,
+    lazyLoad : true,
+    navigation : true
+  });
+  $("#owl-demo2").owlCarousel({
+    items : 8,
+    lazyLoad : true,
+    navigation : true
+  });
+</script>
+  </body>
+</html>

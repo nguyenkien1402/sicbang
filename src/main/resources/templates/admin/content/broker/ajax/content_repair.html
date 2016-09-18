@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Broker detail</title>
+
+
+
+
+</head>
+<body>
+<div class="tab-content">
+
+    <div id="tab-broker-detail" class="tab-advertised-estate tab-pane sb-pt-15 active">
+        <!--<script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=	be8e3356c4e2c2fd885f16dd14db4b5e"></script>-->
+        <!-- Render css and js -->
+        <!--<link rel="stylesheet" th:href="@{/static/admin/include/css/modal.css}"/>-->
+        <!--<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=be8e3356c4e2c2fd885f16dd14db4b5e"></script>-->
+
+        <!-- Favicon-->
+        <link rel="shortcut icon" th:href="@{/static/admin/assets/images/icon/favicon.ico}" type="image/x-icon">
+
+        <!-- Web Fonts-->
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css">
+
+        <!-- Vendor CSS (GLOBAL MANDATORY STYLES)-->
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/font-awesome/css/font-awesome.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/simple-line-icons/simple-line-icons.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap/css/bootstrap.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/uniform/css/uniform.default.css}">
+
+        <!-- Vendor CSS (GLOBAL PAGE LEVEL STYLES)-->
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/select2/select2.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/owlcarousel/owl-carousel/owl.carousel.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/owlcarousel/owl-carousel/owl.theme.css}">
+        <script type="text/javascript"         th:src="@{/static/admin/libs/metronic-admin/fine-uploader/client/fine-uploader.min.js}">   </script>
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/fine-uploader/client/fine-uploader-gallery.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/fine-uploader/client/fineuploader-new.css}">
+
+        <!-- Vendor CSS (THEME STYLES)-->
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/css/components.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/css/plugins.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/layout3/css/layout.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/layout3/css/themes/default.css}">
+
+        <!-- Theme CSS-->
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/assets/css/admin.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/static/admin/assets/css/custom.css}">
+
+        <link th:href="@{/static/admin/libs/metronic-admin/fine-uploader-new/fine-uploader-new.css}" rel="stylesheet">
+        <!-- .block-button-top-->
+
+        <form th:action="@{/admin/broker/update/{id}(id=${estate.id})}" method="post" id="formDetail" enctype="multipart/form-data">
+            <div class="block-button-top text-right sb-mb-20">
+                <button type="button" class="btn green" id="btnSubmit">저장</button>
+                <a href="" class="btn btn-default">목록</a>
+            </div>
+            <!-- .block-button-top-->
+
+            <div class="block-form-content-repair">
+                <div class="block-body">
+                    <div class="form-horizontal">
+
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <div style="vertical-align: middle;" class="help-inline"> <strong class="sb-f-20">매물 유형을 선택해주세요.</strong></div>
+                                        <div data-toggle="buttons" class="sb-btn-checkbox-group btn-group btn-group-lg btn-group-solid">
+                                            <div th:switch="${estate.estateType}">
+                                                <div th:case="'STARTUP'">
+                                                    <a class="btn default change-type" th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='VACANT')}">
+                                                        <input type="radio" name="test1256" class="toggle"/>안심회원
+                                                    </a>
+                                                    <a class="btn default active change-type" th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='STARTUP')}">
+                                                        <input type="radio" name="test1256" class="toggle"/>무료로 변경
+                                                    </a>
+                                                </div>
+
+                                                <div th:case="'VACANT'">
+                                                    <a class="btn default active change-type" th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='VACANT')}">
+                                                        <input type="radio" name="test1256" class="toggle"/>안심회원
+                                                    </a>
+                                                    <a class="btn default change-type" th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='STARTUP')}">
+                                                        <input type="radio" name="test1256" class="toggle"/>무료로 변경
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">매물 이름</label>
+                                    <div class="col-md-7">
+                                        <input th:value="${estate.name}" value="" name="name" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">주소 입력</label>
+                                    <div class="col-md-7">
+                                        <input th:value="${estate.businessZone}" value="" name="businessZone" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">인근 전철역</label>
+                                    <div class="col-md-7">
+                                        <input th:value="${estate.subwayStation}" value="" name="subwayStation" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">한줄평</label>
+                                    <div class="col-md-7">
+                                        <input th:value="${estate.onelineComment}" value="" name="onelineComment" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">사진업로드</label>
+                                    <div class="col-md-7">
+                                        <div class="form-control-static"></div>
+                                        <div class="help-inline"><strong class="sb-f-20">매물 유형을 선택해주세요.</strong></div>
+                                        <!--<script id="qq-template-gallery" type="text/template">-->
+                                            <!--<div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">-->
+                                                <!--<div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">-->
+                                                    <!--<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>-->
+                                                <!--</div>-->
+                                                <!--<div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>-->
+                                                    <!--<span class="qq-upload-drop-area-text-selector"></span>-->
+                                                <!--</div>-->
+                                                <!--<div class="qq-upload-button-selector qq-upload-button">-->
+                                                    <!--<div>Upload file</div>-->
+                                                <!--</div>-->
+                                                <!--<span class="qq-drop-processing-selector qq-drop-processing">-->
+                                                  <!--<span>Processing dropped files...</span>-->
+                                                  <!--<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>-->
+                                                <!--</span>-->
+                                                <!--<ul class="qq-upload-list-selector qq-upload-list" role="region" aria-live="polite" aria-relevant="additions removals">-->
+                                                    <!--<li>-->
+                                                        <!--<span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>-->
+                                                        <!--<div class="qq-progress-bar-container-selector qq-progress-bar-container">-->
+                                                            <!--<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>-->
+                                                        <!--</div>-->
+                                                        <!--<span class="qq-upload-spinner-selector qq-upload-spinner"></span>-->
+                                                        <!--<div class="qq-thumbnail-wrapper">-->
+                                                            <!--<img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale>-->
+                                                        <!--</div>-->
+                                                        <!--<button type="button" class="qq-upload-cancel-selector qq-upload-cancel">X</button>-->
+                                                        <!--<button type="button" class="qq-upload-retry-selector qq-upload-retry">-->
+                                                            <!--<span class="qq-btn qq-retry-icon" aria-label="Retry"></span>-->
+                                                            <!--Retry-->
+                                                        <!--</button>-->
+                                                        <!--<div class="qq-file-info">-->
+                                                            <!--<div class="qq-file-name">-->
+                                                                <!--<span class="qq-upload-file-selector qq-upload-file"></span>-->
+                                                                <!--<span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>-->
+                                                            <!--</div>-->
+                                                            <!--<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" name="attachmentFiles[]" type="file" multiple="multiple">-->
+                                                            <!--<span class="qq-upload-size-selector qq-upload-size"></span>-->
+                                                            <!--<button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">-->
+                                                                <!--<span class="qq-btn qq-delete-icon" aria-label="Delete"></span>-->
+                                                            <!--</button>-->
+                                                            <!--<button type="button" class="qq-btn qq-upload-pause-selector qq-upload-pause">-->
+                                                                <!--<span class="qq-btn qq-pause-icon" aria-label="Pause"></span>-->
+                                                            <!--</button>-->
+                                                            <!--<button type="button" class="qq-btn qq-upload-continue-selector qq-upload-continue">-->
+                                                                <!--<span class="qq-btn qq-continue-icon" aria-label="Continue"></span>-->
+                                                            <!--</button>-->
+                                                        <!--</div>-->
+                                                    <!--</li>-->
+                                                <!--</ul>-->
+                                                <!--<dialog class="qq-alert-dialog-selector">-->
+                                                    <!--<div class="qq-dialog-message-selector"></div>-->
+                                                    <!--<div class="qq-dialog-buttons">-->
+                                                        <!--<button type="button" class="qq-cancel-button-selector">Close</button>-->
+                                                    <!--</div>-->
+                                                <!--</dialog>-->
+                                                <!--<dialog class="qq-confirm-dialog-selector">-->
+                                                    <!--<div class="qq-dialog-message-selector"></div>-->
+                                                    <!--<div class="qq-dialog-buttons">-->
+                                                        <!--<button type="button" class="qq-cancel-button-selector">No</button>-->
+                                                        <!--<button type="button" class="qq-ok-button-selector">Yes</button>-->
+                                                    <!--</div>-->
+                                                <!--</dialog>-->
+                                                <!--<dialog class="qq-prompt-dialog-selector">-->
+                                                    <!--<div class="qq-dialog-message-selector"></div>-->
+                                                    <!--<input type="text">-->
+                                                    <!--<div class="qq-dialog-buttons">-->
+                                                        <!--<button type="button" class="qq-cancel-button-selector">Cancel</button>-->
+                                                        <!--<button type="button" class="qq-ok-button-selector">Ok</button>-->
+                                                    <!--</div>-->
+                                                <!--</dialog>-->
+                                            <!--</div>-->
+                                        <!--</script>-->
+
+                                        <!-- Fine Uploader Thumbnails template w/ customization
+    ====================================================================== -->
+                                        <script type="text/template" id="qq-template-manual-trigger">
+                                            <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
+                                                <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+                                                    <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+                                                </div>
+                                                <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                                                    <span class="qq-upload-drop-area-text-selector"></span>
+                                                </div>
+                                                <div class="buttons">
+                                                    <div class="qq-upload-button-selector qq-upload-button">
+                                                        <div>Select files</div>
+                                                    </div>
+                                                    <button type="button" id="trigger-upload" class="btn btn-primary">
+                                                        <i class="icon-upload icon-white"></i> Upload
+                                                    </button>
+                                                </div>
+                                                <span class="qq-drop-processing-selector qq-drop-processing">
+                                                    <span>Processing dropped files...</span>
+                                                    <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+                                                </span>
+                                                <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
+                                                    <li>
+                                                        <div class="qq-progress-bar-container-selector">
+                                                            <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                                                        </div>
+                                                        <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                                                        <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+                                                        <span class="qq-upload-file-selector qq-upload-file"></span>
+                                                        <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
+                                                        <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                                                        <span class="qq-upload-size-selector qq-upload-size"></span>
+                                                        <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
+                                                        <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+                                                        <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                                                        <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                                                    </li>
+                                                </ul>
+
+                                                <dialog class="qq-alert-dialog-selector">
+                                                    <div class="qq-dialog-message-selector"></div>
+                                                    <div class="qq-dialog-buttons">
+                                                        <button type="button" class="qq-cancel-button-selector">Close</button>
+                                                    </div>
+                                                </dialog>
+
+                                                <dialog class="qq-confirm-dialog-selector">
+                                                    <div class="qq-dialog-message-selector"></div>
+                                                    <div class="qq-dialog-buttons">
+                                                        <button type="button" class="qq-cancel-button-selector">No</button>
+                                                        <button type="button" class="qq-ok-button-selector">Yes</button>
+                                                    </div>
+                                                </dialog>
+
+                                                <dialog class="qq-prompt-dialog-selector">
+                                                    <div class="qq-dialog-message-selector"></div>
+                                                    <input type="text">
+                                                    <div class="qq-dialog-buttons">
+                                                        <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                                                        <button type="button" class="qq-ok-button-selector">Ok</button>
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                        </script>
+
+                                        <div id="fine-uploader-manual-trigger"></div>
+                                        <!-- Fine Uploader DOM Element======================================================================
+                                        -->
+
+
+                                        <!-- Fine Uploader JS file
+                                        ====================================================================== -->
+                                        <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/fine-uploader-new/fine-uploader.js}"></script>
+
+                                        <!--<div id="fine-uploader-gallery"></div>-->
+                                        <!-- Your code to create an instance of Fine Uploader and bind to the DOM/template======================================================================
+                                        -->
+                                        <!--<script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/fine-uploader/client/gallery-view.js}"></script>-->
+                                    </div>
+                                </div>
+                                <div th:switch="${estate.estateType}">
+                                    <div th:case="'STARTUP'">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">보증금 </label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.depositeCost}" type="text" name="depositeCost" placeholder="10,000 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">월세</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.rentCost}" type="text" name="rentCost" placeholder="800 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">관리비</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.serviceCost}" type="text" name="serviceCost" placeholder="0 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">권리금</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.premiumCost}" type="text" name="premiumCost" placeholder="20.000(만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">기타경비</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.otherCost}" type="text" name="otherCost" placeholder="2,322 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">월매출</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.monthlyIncome}" type="text" name="monthlyIncome" placeholder="4,000 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <!--<div class="form-group">-->
+                                        <!--<label class="control-label col-md-3">월매출</label>-->
+                                        <!--<div class="col-md-7">-->
+                                        <!--<div data-date-format="yyyy/mm" data-date-viewmode="years" data-date-minviewmode="months" class="input-group input-xlarge date date-picker">-->
+                                        <!--<input type="text" readonly="" value="2016/04" class="form-control"/><span class="input-group-btn">-->
+                                        <!--<button type="button" class="btn default"><i class="fa fa-calendar"> </i></button></span>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">세전월수입</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.monthlyTax}" type="text" name="monthlyTax" placeholder="878 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">실수익률</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.gainRatio}" type="text" name="gainRatio" placeholder="22 (%)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group"> <!-- if customer is anonymous-->
+                                            <label class="control-label col-md-3">매물유형</label>
+                                            <div class="col-md-7">
+                                                <!--<input type="text" name="" placeholder="Startup" class="form-control input-inline input-xlarge"/>-->
+                                                <p class="form-control input-inline">창업인수(인수창업)</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">카테고리</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.category.name}" type="text" name="category" placeholder="일반 음식점" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">업종</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.businessType.name}" type="text" name="businessType" placeholder="분식점" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">층</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.floor}" type="text" name="floor" placeholder="1층" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">면적</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.area}" type="text" name="area" placeholder="125m2 (38평)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">상세설명</label>
+                                            <div class="col-md-7">
+                                                         <textarea th:inline="text" rows="4" name="detail" placeholder="상세설명입니다. 입력된 정보 입니다" class="form-control textarea-autosize">
+                                                                [[${estate.detail}]]
+                                                         </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div th:case="'VACANT'">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">보증금 </label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.depositeCost}" type="text" name="depositeCost" placeholder="10,000 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">월세</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.rentCost}" type="text" name="rentCost" placeholder="800 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">권리금</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.premiumCost}" type="text" name="premiumCost" placeholder="0 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">현재업종</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.currentBusiness}" type="text" name="currentBusiness" placeholder="법무사 사무소" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">층</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.floor}" type="text" name="floor" placeholder="2" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">준공년월</label>
+                                            <div class="col-md-7">
+                                                <p th:inline="text" type="text" name="" placeholder="2011.03" class="form-control input-inline input-xlarge">[[${estate.constructDate}]]</p>
+                                            </div>
+                                        </div>
+                                        <!--<div class="form-group">-->
+                                        <!--<label class="control-label col-md-3">월매출</label>-->
+                                        <!--<div class="col-md-7">-->
+                                        <!--<div data-date-format="yyyy/mm" data-date-viewmode="years" data-date-minviewmode="months" class="input-group input-xlarge date date-picker">-->
+                                        <!--<input type="text" readonly="" value="2016/04" class="form-control"/><span class="input-group-btn">-->
+                                        <!--<button type="button" class="btn default"><i class="fa fa-calendar"> </i></button></span>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">입주가능일</label>
+                                            <div class="col-md-7">
+                                                <p th:inline="text" type="text" name="" placeholder="2016.01.16" class="form-control input-inline input-xlarge">[[${estate.availableDate}]]</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">융자금</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.loan}" type="text" name="loan" placeholder="0 (만원)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group"> <!-- if customer is anonymous-->
+                                            <label class="control-label col-md-3">계약면적</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.contractArea}" type="text" name="contractArea" placeholder="101.73" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">전용면적</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.exclusiveArea}" type="text" name="exclusiveArea" placeholder="101.73" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">전용률</label>
+                                            <div class="col-md-7">
+                                                <input th:value="${estate.exclusiveRate}" type="text" name="exclusiveRate" placeholder="61.7 (%)" class="form-control input-inline input-xlarge"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">주차여부</label>
+                                            <div class="col-md-7">
+                                                <div th:if="${estate.parking == false}">
+                                                    <p class="form-control input-inline input-xlarg">불가능</p>
+                                                    <!--<input type="text" name="" placeholder="불가능 (no)" class="form-control input-inline input-xlarg"/>-->
+                                                </div>
+                                                <div th:if="${estate.parking == true}">
+                                                    <p class="form-control input-inline input-xlarg">가능</p>
+                                                    <!--<input type="text" name="" placeholder="가능 (yes)" class="form-control input-inline input-xlarg"/>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">상세설명</label>
+                                            <div class="col-md-7">
+                                                        <textarea th:inline="text" rows="4" name="detail" placeholder="상세설명입니다. 입력된 정보 입니다" class="form-control textarea-autosize">
+                                                            [[${estate.detail}]]
+                                                        </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <script type="text/javascript" th:inline="javascript">
+            /*<![CDATA[*/
+            var manualUploader = new qq.FineUploader({
+                element: document.getElementById('fine-uploader-manual-trigger'),
+                template: 'qq-template-manual-trigger',
+                request: {
+                    endpoint: '/server/uploads'
+                },
+                thumbnails: {
+                    placeholders: {
+                        waitingPath: '/static/admin/libs/metronic-admin/fine-uploader-new/placeholders/waiting-generic.png',
+                        notAvailablePath: '/static/admin/libs/metronic-admin/fine-uploader-new/placeholders/not_available-generic.png'
+                    }
+                },
+                autoUpload: false,
+                debug: true
+            });
+
+            qq(document.getElementById("trigger-upload")).attach("click", function() {
+                manualUploader.uploadStoredFiles();
+            });
+
+        $('#btnSubmit').on('click', function() {
+                console.log("submit javascript");
+                $('#formDetail').submit();
+            })
+            /*]]>*/
+        </script>
+    </div>
+
+</div>
+<!-- Vendor jQuery (CORE PLUGINS - METRONIC)-->
+</body>
+</html>

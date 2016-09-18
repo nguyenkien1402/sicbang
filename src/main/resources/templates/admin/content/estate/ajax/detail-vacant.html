@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Broker detail</title>
+
+
+</head>
+<body>
+<div class="tab-content">
+
+    <div id="tab-estate-detail" class="tab-advertised-estate tab-pane sb-pt-15 active">
+
+        <!-- Render css and js -->
+        <link rel="stylesheet" th:href="@{/static/admin/include/css/font-awesome.min.css}"/>
+        <link rel="stylesheet" th:href="@{/static/admin/include/css/style.css}"/>
+        <link rel="stylesheet" th:href="@{/static/admin/include/css/content.css}"/>
+        <!--<link rel="stylesheet" th:href="@{/static/admin/include/css/modal.css}"/>-->
+        <!--<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=be8e3356c4e2c2fd885f16dd14db4b5e"></script>-->
+
+
+        <div class="form">
+            <div class="form-horizontal">
+                <div class="form-body">
+                    <div data-sb-href="content.html" class="item sb-mb-30 sb-bg-gray">
+                        <div class="" style="margin-bottom:40px;">
+                            <a class="tab-estate-repair" th:href="@{/admin/estate/repair/{id}(id=${estate.id})}">
+                                <button class="btn warning littleWide">수정</button>
+                            </a>
+                            <a href="javascript:;" th:attr="data-url=@{'/admin/estate/' + ${estate.id}}" class="btn warning littleWide btn-action-estate-delete">
+                                삭제
+                            </a>
+                            <a href=""><button class="btn warning littleWide">목록</button></a>
+                        </div>
+                        <div class="slideBox">
+                            <div class="slideArea">
+                                <div class="sideBox">
+                                    <div class="arrow leftArrow"></div>
+                                </div>
+                                <div class="centerBox">
+                                    <div class="viewImage">
+                                        <div th:if="${sizeattach > 0}">
+                                            <img th:src="${attachments[0].origin}"/>
+                                        </div>
+                                        <div th:if="${sizeattach == 0}"> <!-- if customer is not anonymous(logged in)-->
+                                            <img class="active" th:src="@{/static/admin/include/images/content/1.png}"/>
+                                        </div>
+                                    </div>
+                                    <div class="thumbImage">
+                                        <div th:if="${sizeattach > 0}">
+                                            <img class="active" th:each="item : ${attachments}" th:src="${item.origin}"/>
+                                        </div>
+                                        <div th:if="${sizeattach == 0}"> <!-- if customer is not anonymous(logged in)-->
+                                            <img class="active" th:src="@{/static/admin/include/images/content/1.png}"/>
+                                            <img th:src="@{/static/admin/include/images/content/2.png}"/>
+                                        </div>
+                                        <!--<img class="active" th:src="@{/static/admin/include/images/content/1.png}"/>-->
+                                        <!--<img th:src="@{/static/admin/include/images/content/2.png}"/>-->
+                                        <!--<img th:src="@{/static/admin/include/images/content/3.png}"/>-->
+                                        <!--<img th:src="@{/static/admin/include/images/content/4.png}"/>-->
+                                        <!--<img th:src="@{/static/admin/include/images/content/5.png}"/>-->
+                                        <span class="thumbNum">1/
+                                            <p th:text="${sizeattach}"></p>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="sideBox">
+                                    <div class="arrow rightArrow"></div>
+                                </div>
+                            </div>
+                            <div class="infoArea">
+                                <h3>담당자 정보</h3>
+                                <img class="basicImg" th:src="@{/admin/assets/images/no_image.jpg}"/>
+
+                                <div class="infoText">
+                                    <p><strong>담당자:</strong> 김중개</p>
+                                    <p><strong>연락처:</strong> 010-1234-5678</p>
+                                    <p>
+                                        <strong>담당자 정보:</strong><br/>
+                                <span>
+                                    이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.
+    </span>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="tableArea">
+                            <span class="date right" >등록일:
+                                <span th:text="${estate.availableDate}">YYYY.MM.DD hh:mm</span>
+                            </span>
+                            <h2 class="title" th:text="${estate.name}">흥부 부대찌개 뱅뱅사거리점</h2>
+                            <table class="table full">
+                                <thead>
+                                <tr>
+                                    <th colspan="2" style="width:50%;">기본정보</th>
+                                    <th colspan="2" style="width:50%;">수익비용구조</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="paddingLeft strong" style="width:25%;">매물번호</td>
+                                    <td class="center" style="width:25%;" th:text="${estate.estateCode}">201601011121212102</td>
+                                    <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
+                                    <td style="width:25%;" class="center" th:text="${estate.depositeCost}">10,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">매물유형</td>
+                                    <td class="center" th:text="${estate.estateType}">창업인수</td>
+                                    <td class="paddingLeft strong">월세(만원)</td>
+                                    <td class="center" th:text="${estate.rentCost}">800</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">현재업종</td>
+                                    <td class="center" th:text="${estate.currentBusiness}">일반음식점</td>
+                                    <td class="paddingLeft strong">권리금(만원)</td>
+                                    <td class="center" th:text="${estate.premiumCost}">20,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">상권</td>
+                                    <td class="center" th:text="${estate.businessZone}">한식점</td>
+                                    <td class="paddingLeft strong">융자금(만원)</td>
+                                    <td class="center" th:text="${estate.loan}">2,322</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">인근지하철역</td>
+                                    <td class="center" th:text="${estate.subwayStation}">서울시 관악구 신림동</td>
+                                    <td class="paddingLeft strong">계약면적</td>
+                                    <td class="center" th:text="${estate.contractArea}">4,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">층</td>
+                                    <td class="center" th:text="${estate.floor}">신림역</td>
+                                    <td class="paddingLeft strong">전용면적</td>
+                                    <td class="center" th:text="${estate.exclusiveArea}">878</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">준공년월</td>
+                                    <td class="center" th:text="${estate.constructDate}">2</td>
+                                    <td class="paddingLeft strong">전용률(%)</td>
+                                    <td class="center" th:text="${estate.exclusiveRate}">22</td>
+                                </tr>
+                                <tr>
+                                    <td class="paddingLeft strong">입주가능일</td>
+                                    <td class="center" th:text="${estate.availableDate}">99(30)</td>
+                                    <td class="paddingLeft strong">주차여부</td>
+                                    <td class="center" th:text="${estate.parking}">2355</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="4">상세설명</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" th:text="${estate.detail}" style="color:#666;">
+
+
+                                        <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
+                                        <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row report">
+                            <span class="right reportButton">잘못된 정보 신고</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                var overlay = $(".overlay");
+                var loginModal = $(".loginModal");
+                var joinModal = $(".joinModal");
+                var reportModal = $(".reportModal");
+
+//                var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+//                        mapOption = {
+//                            center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+//                            level: 3 // 지도의 확대 레벨
+//                        };
+//
+//                var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+//
+//                // 마커가 표시될 위치입니다
+//                var markerPosition  = new daum.maps.LatLng(33.450701, 126.570667);
+//
+//                // 마커를 생성합니다
+//                var marker = new daum.maps.Marker({
+//                    position: markerPosition
+//                });
+//
+//                // 마커가 지도 위에 표시되도록 설정합니다
+//                marker.setMap(map);
+//
+//                //로드뷰
+//                var roadviewContainer = document.getElementById('roadView'); //로드뷰를 표시할 div
+//                var roadview = new daum.maps.Roadview(roadviewContainer); //로드뷰 객체
+//                var roadviewClient = new daum.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+//
+//                var position = new daum.maps.LatLng(33.450701, 126.570667);
+//
+//                // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+//                roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+//                    roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+//                });
+//
+//                $("#deleteMarket").click(function(e){
+//                    if(confirm("해당 매물을 삭제하시겠습니까?")){
+//
+//                    }
+//                });
+
+                //썸네일을 클릭하면 viewImage에 보여준다.
+                $(".thumbImage img").click(function(e){
+                    var imgs = $(".thumbImage img");
+                    imgs.removeClass("active");
+
+                    $(this).addClass("active");
+
+                    $(".viewImage img").attr("src",$(this).attr("src"));
+
+                    $(".thumbNum").text($(this).index() + 1 + "/" + imgs.length);
+                });
+
+                //화살표를 클릭하면 보여준다.
+                $(".sideBox").click(function(e){
+                    var arrow = $(this).find(".arrow");
+                    var imgs = $(".thumbImage img");
+                    var currentImg = $(".thumbImage img.active");
+
+                    imgs.removeClass("active");
+
+                    if(arrow.hasClass("leftArrow")){
+                        var prevImg;
+
+                        if(currentImg.index() != 0)
+                            prevImg = currentImg.prev();
+                        else
+                            prevImg = imgs.eq(imgs.length - 1);
+
+                        prevImg.addClass("active");
+
+                        $(".viewImage img").attr("src",prevImg.attr("src"));
+                        $(".thumbNum").text(prevImg.index() + 1 + "/" + imgs.length);
+                    }else{
+                        var nextImg;
+
+                        if(currentImg.index() != imgs.length - 1)
+                            nextImg = currentImg.next();
+                        else
+                            nextImg = imgs.eq(0);
+
+                        nextImg.addClass("active");
+
+                        $(".viewImage img").attr("src",nextImg.attr("src"));
+                        $(".thumbNum").text(nextImg.index() + 1 + "/" + imgs.length);
+                    }
+
+                });
+
+                //잘못된 정보 신고 버튼
+                $(".reportButton").click(function(e){
+                    overlay.addClass("active");
+                    reportModal.addClass("active");
+                    $(window).scrollTop(0);
+                });
+
+                $("#reportConfirmButton").click(function(e){
+                    var name = $("input[name=reportName]").val();
+                    var phone = $("input[name=reportPhone]").val();
+                    var contents = $("input[name=reportContents]").val();
+
+                    if(name == "" || phone == "" || contents == ""){
+                        alert("모든 정보를 입력해주세요.");
+                        return false;
+                    }
+
+                    alert("신고가 접수되었습니다.");
+                    overlay.removeClass("active");
+                    reportModal.removeClass("active");
+                });
+
+                //로그인 창 띄우는 버튼
+                $(".loginButton").click(function(e){
+                    overlay.addClass("active");
+                    joinModal.removeClass("active");
+                    $(window).scrollTop(0);
+                    loginModal.addClass("active");
+                });
+
+                //회원가입 창 띄우는 버튼
+                $("#joinButton").click(function(e){
+                    overlay.addClass("active");
+                    joinModal.addClass("active");
+                });
+
+                //로그인 버튼
+                $("#loginConfirmButton").click(function(e){
+                });
+
+
+                //회원가입 버튼
+                $("#joinConfirmButton").click(function(e){
+                    var email = $("input[name=joinEmail]").val();
+                    var password = $("input[name=joinPassword]").val();
+                    var passConf = $("input[name=joinPassConf]").val();
+                    var policy = $("#c1").prop("checked");
+                    var privacy = $("#c2").prop("checked");
+
+                    if(email == ""){
+                        alert("이메일을 입력해주세요.");
+                        return false;
+                    }
+
+                    if(password == ""){
+                        alert("비빌번호를 입력해주세요.");
+                        return false;
+                    }
+
+                    if(passConf == ""){
+                        alert("비밀번호확인을 입력해주세요.");
+                        return false;
+                    }
+
+                    if(policy == false){
+                        alert("이용약관에 동의해주세요.");
+                        return false;
+                    }
+                    if(privacy == false){
+                        alert("개인정보 취급방침에 동의해주세요.");
+                        return false;
+                    }
+
+                    //TODO : Ajax 통신
+
+                });
+
+                //모달 창 닫기
+                $(".modal .exitIcon").click(function(e){
+                    $(this).parents(".modal").removeClass("active");
+                    overlay.removeClass("active");
+                });
+            });
+        </script>
+    </div>
+
+</div>
+
+</body>
+</html>

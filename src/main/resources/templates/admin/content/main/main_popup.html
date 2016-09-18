@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+      <div class="page-content sb-pt-50 sb-pb-50">
+        <div class="container">
+          <div class="content-repair-list-main sb-bg-white sb-p-20">
+            <div class="main-inner sb-pt-0 sb-pb-0">
+
+              <div class="tab-wrapper tabbable-custom">
+                <ul class="nav nav-tabs">
+                  <li><a th:href="@{/admin/main}">메인 이미지 관리</a></li>
+                  <li class="active"><a th:href="@{/admin/main/popup}">팝업 창 관리</a></li>
+                  <li><a th:href="@{/admin/main/email/0}">이메일 발송</a></li>
+                  <li><a th:href="@{/admin/main/history}">발송 내역</a></li>
+                </ul>
+
+                <div class="tab-content">
+                  <div>
+                    <form class="form" th:action="@{/admin/main/create/popup/{type}(type='POPUP')}" method="post" enctype="multipart/form-data">
+                      <div class="form-horizontal">
+                        <div class="form-body">
+                          <div class="form-group">
+                            <div class="col-md-12">
+                              <div class="sb-block-style-3">
+                                <div class="sb-file-upload image-upload">
+                                  <label class="sb-btn sb-btn-style-3 btn-select-file btn-default">이미지 올리기
+                                    <input type="file" class="hidden input-file" name="attachments"/>
+                                  </label>
+                                  <div style="width: 600px; height: 310px;" class="preview-image border-box no-image"><span class="image-bg"></span></div>
+                                  <div class="input-icon input-large input-inline right">
+                                    <i class="fa fa-close btn-delete"></i>
+                                    <span class="form-control show-file-info border-box"></span>
+                                  </div>
+                                  <!--<div class="row image-name">-->
+                                    <!--<label class="control-label col-md-3">첨부파일  </label>-->
+                                    <!--<div class="col-md-6 control-show">-->
+                                      <!--<input type="text" name="" class="form-control"/>-->
+                                    <!--</div>-->
+                                  <!--</div>-->
+                                  <div class="control-btn"><input type="submit" value="변경된 내용 저장" class="btn default"/></div>
+                                </div>
+
+                              </div>
+                              <!-- .sb-block-style-3-->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- .content-repair-list-->
+<script>
+  $("#owl-demo").owlCarousel({
+    items : 8,
+    lazyLoad : true,
+    navigation : true
+  });
+  $("#owl-demo2").owlCarousel({
+    items : 8,
+    lazyLoad : true,
+    navigation : true
+  });
+</script>
+  </body>
+</html>

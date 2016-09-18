@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Sigbang Admin</title>
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/static/admin/assets/images/icon/favicon.ico}" type="image/x-icon" />
+
+    <!-- Web Fonts-->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" />
+
+    <!-- Vendor CSS (GLOBAL MANDATORY STYLES)-->
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/font-awesome/css/font-awesome.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/simple-line-icons/simple-line-icons.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/uniform/css/uniform.default.css}" />
+
+    <!-- Vendor CSS (GLOBAL PAGE LEVEL STYLES)-->
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/select2/select2.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/libs/owlcarousel/owl-carousel/owl.carousel.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/libs/owlcarousel/owl-carousel/owl.theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/libs/fine-uploader/client/fine-uploader-gallery.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/libs/fine-uploader/client/fineuploader-new.css}">
+
+    <!-- Vendor CSS (THEME STYLES)-->
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/css/components.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/css/plugins.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/layout3/css/layout.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/admin/layout3/css/themes/default.css}" />
+
+    <!-- Theme CSS-->
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/assets/css/admin.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/admin/assets/css/custom.css}" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries-->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file://-->
+    <!--if lt IE 9
+    script(src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js')
+    script(src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js')
+
+    -->
+
+
+
+
+    <!--For inline scripting-->
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery-ui/jquery-ui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery-migrate.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/assets/js/init.js}"></script>
+    <script type="text/javascript" th:src="@{http://momentjs.com/downloads/moment.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/admin/libs/owlcarousel/owl-carousel/owl.carousel.min.js}"></script>
+
+
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content">
+
+    <div th:replace="admin/fragment/common :: header"></div>
+    <div layout:fragment="content" class="th-content"></div>
+    <div th:replace="admin/fragment/common :: footer"></div>
+
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/admin/libs/fine-uploader/client/fine-uploader.min.js}"></script>
+
+    <!-- Vendor jQuery (CORE PLUGINS - METRONIC)-->
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery-migrate.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery.blockui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery.cokie.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/uniform/jquery.uniform.min.js}"></script>
+
+    <!-- Vendor jQuery (PAGE LEVEL PLUGINS - METRONIC)-->
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery-validation/js/jquery.validate.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/jquery-validation/js/additional-methods.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/select2/select2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-daterangepicker/daterangepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/ckeditor/ckeditor.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/ckeditor/adapters/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/ckeditor/lang/ko.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/fuelux/js/spinner.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/autosize/autosize.min.js}"></script>
+
+    <!-- Vendor jQuery (PAGE LEVEL STYLES - METRONIC)-->
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/scripts/metronic.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/admin/layout3/scripts/layout.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/admin/layout3/scripts/demo.js}"></script>
+
+    <!-- Theme Script-->
+    <script type="text/javascript" th:src="@{/static/admin/assets/js/custom.js}"></script>
+    <script type="text/javascript" th:src="@{/static/admin/assets/js/admin.js}"></script>
+</body>
+</html>

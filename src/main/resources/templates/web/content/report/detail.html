@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User detail</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="member-detail page-container">
+        <div class="page-head">
+            <div class="container">
+                <div class="page-title">
+                </div>
+                <!-- .page-title-->
+                <div class="page-toolbar">
+                    <a href="javascript:history.back();" class="btn btn-default"><i class="fa fa-angle-left"></i> 목록</a>
+                </div>
+                <!-- .page-toolbar-->
+            </div>
+        </div>
+        <!-- .page-head-->
+
+        <div class="page-content sb-pt-50 sb-pb-50">
+            <div class="container">
+                <div class="member-detail-main sb-bg-white sb-p-20">
+                    <div class="main-inner sb-pt-0 sb-pb-0">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption"><strong>회원정보</strong></div>
+                            </div>
+                            <div class="portlet-body form">
+                                <form class="form-horizontal form-ajax" method="post" novalidate="novalidate">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>이메일</strong></label>
+                                            <div class="col-md-9">
+                                                <div class="form-control-static"><strong th:text="${item.name}">polarity12@hanmail.net</strong></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>휴대폰 번호</strong></label>
+                                            <div class="col-md-9">
+                                                <div class="form-control-static" th:text="${item.cellphone}">01012345678</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>비밀번호확인</strong></label>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" th:text="${item.content}"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- .form-body-->
+
+                                    <div class="form-actions text-right">
+                                        <input type="submit" class="btn green" value="수정반영" />
+                                    </div>
+                                    <!-- .form-actions-->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .member-detail-->
+
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Broker detail</title>
+    </head>
+    <body>
+    <div class="tab-content">
+
+        <div id="tab-reports" class="tab-reports tab-pane sb-pt-15">
+            <div class="form">
+                <div class="form-horizontal">
+                    <div class="form-body">
+                        <div class="table-wrapper">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover text-center">
+                                    <thead>
+                                    <tr>
+                                        <th>제목</th>
+                                        <th>작성일시</th>
+                                        <th>도구</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item : ${reports}">
+                                        <td>
+                                            <a th:text="${item.name}" th:href="@{/admin/report/{id}(id=${item.id})}">Name</a>
+                                        </td>
+                                        <td th:text="${#strings.length(item.content) ge 100 ? #strings.substring(item.content,0,100) : item.content}">Content</td>
+                                        <td>
+                                            <a href="javascript:;" class="text-danger btn-action-delete" th:attr="data-url=@{__${#httpServletRequest.getRequestURI()}__/__${item.id}__}" th:text="탈퇴">Delete</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination-wrapper sb-pb-30">
+                <div th:replace="admin/fragment/common :: pagination(items=${reports})"></div>
+                <!-- .sb-pagination-->
+            </div>
+            <!--<div class="pagination-wrapper sb-pb-30">-->
+                <!--<div th:replace="admin/fragment/common :: pagination(reports=${reports})"></div>-->
+                <!--&lt;!&ndash; .sb-pagination&ndash;&gt;-->
+            <!--</div>-->
+        </div>
+
+    </div>
+</body>
+</html>

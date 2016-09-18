@@ -1,0 +1,9 @@
+.policyBox{
+    padding:40px 40px;
+    font-size:14px;
+    color:#333;
+    word-break: keep-all;
+    line-height: 22px;
+    border:1px solid #ccc;
+
+}

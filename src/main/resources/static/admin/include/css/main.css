@@ -1,0 +1,139 @@
+/* mainVisual */
+.mainVisual{
+    position: relative;
+    width:100%;
+    height:420px;
+    text-align: center;
+}
+.mainVisual .searchArea{
+    box-sizing: border-box;
+    position: absolute;
+    bottom:0;
+    left:0;
+    margin-bottom: auto;
+    width:100%;
+    height:100px;
+    background-color: rgba(0,0,0,0.5);
+    padding-top:30px;
+    padding-bottom:30px;
+}
+.mainVisual .searchArea .searchMethodArea{
+    display: none;
+}
+.mainVisual .searchArea .searchMethodArea.active{
+    display: inline-block;
+}
+
+/* mainBoard */
+.mainBoard{
+    display: inline-block;
+    box-sizing: border-box;
+    width:485px;
+    height:170px;
+    padding:25px;
+    border:1px solid #ccc;
+    color:#333;
+}
+
+.mainBoard .title{
+    margin-bottom:15px;
+}
+.mainBoard .title .name{
+    float:left;
+}
+.mainBoard .title .viewMore{
+    float:right;
+    font-size:12px;
+}
+.mainBoard .boardContents{
+    width:100%;
+    font-size:12px;
+    line-height: 20px;
+}
+.mainBoard .boardContents td:first-child{
+    float:left;
+}
+.mainBoard .boardContents td:last-child{
+    float:right;
+}
+
+
+/* adArea */
+.adArea{
+    height:60px;
+    background-color: #ffbb4f;
+    text-align: center;
+}
+.adArea:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.adArea img{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* appArea */
+.appArea{
+    height:320px;
+    background-color:#f3f3f3;
+    overflow: hidden;
+}
+
+.appArea .container{
+    width:980px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.appArea .container .block{
+    display: inline-block;
+    float:left;
+    width:485px;
+}
+.appArea .container .phone{
+    margin-top:60px;
+}
+.appArea .container .text{
+    margin-top:60px;
+    margin-bottom:25px;
+    font-size:28px;
+    color:#555;
+}
+.appArea .container .text p{
+    line-height: 40px;
+}
+.appArea .container .appMove{
+    background-color: white;
+    border:1px solid #ccc;
+    padding-left:60px;
+    padding-right:60px;
+    height:40px;
+    border-radius: 5px;
+    margin-bottom:10px;
+}
+
+/* DetailArea */
+.detailArea{
+    width:100%;
+    display: table;
+    height:80px;
+    background-color:white;
+    border-top:1px solid #ccc;
+    text-align: center;
+}
+.detailArea .wrap{
+    display: table-cell;
+    vertical-align: middle;
+}
+.detailArea span{
+    display: inline;
+    font-size:18px;
+    margin-right:15px;
+
+}
+.detailArea button{
+    font-size:16px;
+    
+}

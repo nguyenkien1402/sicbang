@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+      <div class="page-content sb-pt-50 sb-pb-50">
+        <div class="container">
+          <div class="content-repair-list-main sb-bg-white sb-p-20">
+            <div class="main-inner sb-pt-0 sb-pb-0">
+
+              <div class="tab-wrapper tabbable-custom">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a th:href="@{/admin/main}">메인 이미지 관리</a></li>
+                  <li><a th:href="@{/admin/main/popup}">팝업 창 관리</a></li>
+                  <li><a th:href="@{/admin/main/email/0}">이메일 발송</a></li>
+                  <li><a th:href="@{/admin/main/history}">발송 내역</a></li>
+                </ul>
+
+                <div class="tab-content">
+                  <div id="tab-1" class="tab-estates-registered tab-pane sb-pt-15 active">
+                    <div class="block-body">
+                      <form class="form form-ajax" method="post" th:action="@{/admin/main/create/mainImg}">
+                        <div class="form-horizontal">
+                          <div class="form-body">
+                            <div class="form-group"> 
+                              <label class="control-label col-md-3">첨부파일</label>
+                              <div class="col-md-7">
+                                <div class="sb-file-upload image-upload">
+                                  <div class="input-icon input-large input-inline right"><i class="fa fa-close btn-delete"></i><span class="form-control show-file-info border-box"></span></div>
+                                  <label class="btn default btn-select-file">이미지 올리기
+                                    <input type="file" name="file" class="hidden input-file"/>
+                                  </label><span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
+                                  <div class="preview-image"><img src="" alt="thumbnail"/></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group"> 
+                              <div style="text-align: right;" class="col-md-3"><a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                              <div class="col-md-7">
+                                <input type="text" name="" class="form-control"/>
+                              </div>
+                              <div class="col-md-2"><input type="submit" value="변경된 내용 저장" class="btn default"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <form class="form" th:action="@{/admin/main/create/slide/{type}(type='WEB')}" method="post" enctype="multipart/form-data">
+                        <div class="form-horizontal">
+                          <div class="form-body">         
+                            <div class="form-group"> 
+                              <div class="col-md-3 control-label sb-overflow-ellipsis">웹 슬라이딩 배너 이미지 관리 </div>
+                              <div class="col-md-7"> <a href="#" class="btn default">배너 추가</a></div>
+                            </div>
+                            <div class="form-group"> 
+                              <label class="control-label col-md-3">첨부파일</label>
+                              <div class="col-md-7"> 
+                                <div class="sb-file-upload image-upload">
+                                  <div class="input-icon input-large input-inline right">
+                                    <i class="fa fa-close btn-delete"></i>
+                                    <span class="form-control show-file-info border-box"></span>
+                                  </div>
+                                  <label class="btn default btn-select-file">이미지 올리기
+                                    <input type="file" class="hidden input-file" name="attachments"/>
+                                  </label><span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                <a th:href="@{/admin/main/delete/web}" class="btn default">삭제</a>
+                              </div>
+                            </div>
+                            <div class="form-group"> 
+                              <div class="col-md-12">
+                                <div id="owl-demo" class="owl-carousel" >
+                                  <div class="item" th:each="slide : ${slides}" th:if="${slide.type == 'WEB'}">
+                                    <img th:src="${slide.webUrl}" alt="Lazy Owl Image" class="lazyOwl"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group"> 
+                              <div style="text-align: right;" class="col-md-3"><a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                              <div class="col-md-7">
+                                <input type="text" name="link" class="form-control"/>
+                              </div>
+                              <div class="col-md-2">
+                                <input type="submit" class="btn default" value="변경된 내용 저장  "></input></div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <form class="form" th:action="@{/admin/main/create/slide/{type}(type='APP')}" method="post" enctype="multipart/form-data">
+                        <div class="form-horizontal">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <div class="col-md-3 control-label sb-overflow-ellipsis">앱 슬라이딩 배너 이미지 관리 </div>
+                              <div class="col-md-7"> <a href="#" class="btn default">배너 추가</a></div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">첨부파일</label>
+                              <div class="col-md-7">
+                                <div class=" sb-file-upload image-upload">
+                                  <div class="input-icon input-large input-inline right"><i class="fa fa-close btn-delete"></i><span class="form-control show-file-info border-box"></span></div>
+                                  <label class="btn default btn-select-file">이미지 올리기
+                                    <input type="file" class="hidden input-file" name="attachments"/>
+                                  </label><span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
+                                </div>
+                              </div>
+                              <div class="col-md-2">
+                                <input type="submit" value="삭제" class="btn default"/></div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-md-12">
+                                <div id="owl-demo2" class="owl-carousel" >
+                                  <div class="item" th:each="slide : ${slides}" th:if="${slide.type == 'APP'}">
+                                    <img th:src="${slide.appUrl}" alt="Lazy Owl Image" class="lazyOwl"/>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div style="text-align: right;" class="col-md-3"><a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                              <div class="col-md-7">
+                                <input type="text" name="link" class="form-control"/>
+                              </div>
+                              <div class="col-md-2">
+                                <a th:href="@{/admin/main/delete/app}" class="btn default">삭제</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- .content-repair-list-->
+<script>
+  $("#owl-demo").owlCarousel({
+    items : 8,
+    lazyLoad : true,
+    navigation : true
+  });
+  $("#owl-demo2").owlCarousel({
+    items : 8,
+    lazyLoad : true,
+    navigation : true
+  });
+</script>
+  </body>
+</html>
