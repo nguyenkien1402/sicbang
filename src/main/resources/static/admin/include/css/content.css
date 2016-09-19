@@ -1,0 +1,177 @@
+/* ExtendDate */
+.extendDate{
+    margin-top:18px;
+    float:right;
+}
+.extendDate img{
+    vertical-align: middle;
+    margin-right:2px;
+}
+.extendDate span{
+    font-size:14px;
+    color:#666;
+}
+
+/* SlideBox */
+.slideBox{
+    width:100%;
+    height:520px;
+    margin-bottom:40px;
+}
+
+.slideBox .slideArea{
+    float:left;
+    width:730px;
+    height:100%;
+    box-sizing: border-box;
+    padding:20px;
+    border:1px solid #3b3b3b;
+    background-color: #3b3b3b;
+}
+
+.slideBox .slideArea .centerBox{
+    float:left;
+    width:610px;
+}
+.slideBox .slideArea .centerBox .viewImage{
+    width:100%;
+    height:410px;
+    margin-bottom:10px;
+}
+.slideBox .slideArea .centerBox .viewImage img{
+    width:100%;
+    height:100%;
+    box-sizing: border-box;
+    border:0;
+}
+.slideBox .slideArea .centerBox .thumbImage{
+
+}
+.slideBox .slideArea .centerBox .thumbImage img{
+    vertical-align: middle;
+    width:84px;
+    height:60px;
+    box-sizing: border-box;
+    border:0px solid #ccc;
+    margin-right:10px;
+    cursor: pointer;
+}
+.slideBox .slideArea .centerBox .thumbImage img.active{
+    border:3px solid #f56b53;
+}
+.slideBox .slideArea .centerBox .thumbImage .thumbNum{
+    display: inline-block;
+    width:24px;
+    text-align: center;
+    float:right;
+    background-color: #626262;
+    color:#f9ac4d;
+    font-size:14px;
+    border-radius: 10px;
+    border:1px solid #626262;
+    padding-left:15px;
+    padding-right:15px;
+}
+.slideBox .slideArea .sideBox{
+    float:left;
+    width:39px;
+    height:100%;
+    cursor: pointer;
+}
+.slideBox .slideArea .sideBox::selection{
+    background: none;
+}
+.slideBox .slideArea .sideBox:before{
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height:100%;
+}
+.slideBox .slideArea .sideBox .leftArrow{
+    display: inline-block;
+    width:25px;
+    height:25px;
+    border-left: 5px solid #ddd;
+    border-bottom: 5px solid #ddd;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -sand-transform: rotate(45deg);
+}
+
+.slideBox .slideArea .sideBox .rightArrow{
+    display: inline-block;
+    width:25px;
+    height:25px;
+    border-right: 5px solid #ddd;
+    border-bottom: 5px solid #ddd;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -sand-transform: rotate(-45deg);
+}
+
+.slideBox .infoArea{
+    position: relative;
+    color:#333;
+    float:left;
+    box-sizing: border-box;
+    padding:25px;
+    width:250px; 
+    border:1px solid #ccc;
+    background-color: #f3f3f3;
+    height:100%;
+    text-align: center;
+}
+
+.slideBox .infoArea h3{
+    margin-bottom:20px;
+}
+.slideBox .infoArea img{
+    width:110px;
+    height:130px;
+    margin-bottom:25px;
+}
+.slideBox .infoArea .infoText{
+    word-break: keep-all;
+    font-size:14px;
+    text-align: left;
+    padding:15px;
+    box-sizing: border-box;
+    line-height: 18px;
+}
+.slideBox .infoArea .infoText p{
+    margin-bottom:15px;
+}
+
+.slideBox .infoArea button{
+    position: absolute;
+    left:25px;
+    bottom:25px;
+    width:200px;
+}
+
+/* TableArea */
+
+.tableArea{
+    margin-bottom: 20px;
+    color:#333;
+}
+.tableArea .title{
+    margin-bottom:20px;
+}
+.tableArea .date{
+    position: relative;
+    top:10px;
+    font-size:12px;
+}
+
+/* Report */
+.report{
+    margin-right:5px;
+    font-size:14px;
+    color:#555;
+}
+.report span{
+    cursor: pointer;
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User detail</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="member-detail page-container">
+        <div class="page-head">
+            <div class="container">
+                <div class="page-title">
+                    신고관리
+                </div>
+                <!-- .page-title-->
+                <div class="page-toolbar">
+                    <a href="javascript:history.back();" class="btn btn-default"><i class="fa fa-angle-left"></i> 목록</a>
+                </div>
+                <!-- .page-toolbar-->
+            </div>
+        </div>
+        <!-- .page-head-->
+
+        <div class="page-content sb-pt-50 sb-pb-50">
+            <div class="container">
+                <div class="approve-detail-main sb-bg-white sb-p-20">
+                    <div class="main-inner sb-pt-0 sb-pb-0">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    신고관리
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <form class="form-horizontal" onsubmit="javascript:;">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>제목</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.name}" value="xigbang@trams.co.kr" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>시간</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.createdDate}" value="01/01/2001" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>사업자 등록번호</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.cellphone}" value="155223513" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>신고매물</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.estate.name}" value="신태열" class="form-control"/>
+                                                <input type="text" readonly="readonly" th:value="${item.estate.detail}" value="신태열" class="form-control"/>
+                                                <input type="text" readonly="readonly" th:value="${item.estate.createdDate}" value="신태열" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>내용</strong></label>
+                                            <div class="col-md-9">
+                                                <textarea rows="15" readonly="readonly" th:value="${item.content}" class="form-control">Lorem ipsum</textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!-- .form-body-->
+
+                                <div class="form-actions text-center">
+                                    <a th:href="@{/admin/answer/create?reportId=__${item.id}__}" class="btn green">삭제하기</a>
+                                    <a href="javascript:;" class="btn red" id="btn-delete">답변하기</a>
+                                </div>
+                                <!-- .form-actions-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- .member-detail-->
+
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+        $('#btn-delete').click(function() {
+            admin.showPopupConfirm(null, function() {
+                admin.deleteItem(location.href, function() {
+                    window.location.href = '/admin/report';
+                });
+            });
+        });
+    /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

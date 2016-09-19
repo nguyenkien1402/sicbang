@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Broker detail</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-content sb-pt-50 sb-pb-50">
+        <div class="container">
+            <div class="approve-detail-main sb-bg-white sb-p-20">
+                <div class="main-inner sb-pt-0 sb-pb-0">
+                    <div class="portlet box green">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                중개사 승인 관리
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <form class="form-horizontal form-ajax" method="post">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>E-mail</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.email}" value="xigbang@trams.co.kr" class="form-control input-large">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>사업자 등록번호</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.corporationRegistration}" value="155223513" class="form-control input-large">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>사용자명</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.username}" value="신태열" class="form-control input-large">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>회사명</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.companyName}" value="버티칼 공인중개사" class="form-control input-large">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>주소 읍/면/동</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.townAddress}" value="서울시 관악구 신대방동" class="form-control input-xlarge">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>상세주소</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.addressDetail}" value="대학 5길 14-1" class="form-control input-xlarge">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>전화번호</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.phoneNumber}" value="전화번호" class="form-control input-large">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><strong>핸드폰</strong></label>
+                                        <div class="col-md-9">
+                                            <input type="text" readonly="readonly" th:value="${user.cellphoneNumber}" value="핸드폰" class="form-control input-large">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- .form-body-->
+
+                                <div class="form-actions text-center">
+                                    <button type="submit" class="btn green">승인</button>
+                                </div>
+                                <!-- .form-actions-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

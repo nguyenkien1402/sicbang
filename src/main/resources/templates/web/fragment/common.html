@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Insert title here</title>
+</head>
+<body>
+	<!-- START HEADER FRAGMENT -->
+	<div th:fragment="header">
+		<div class="row">
+			<div class="col-md-12">
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+						</button> <a class="navbar-brand" th:href="@{/}">SIGBANG</a>
+					</div>
+					
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="active">
+								<a th:href="@{/admin}">Admin</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<!-- END HEADER FRAGMENT -->
+	
+	<!-- START FOOTER FRAGMENT -->
+	<div th:fragment="footer">
+	
+	</div>
+	<!-- END FOOTER FRAGMENT -->
+	
+</body>
+</html>

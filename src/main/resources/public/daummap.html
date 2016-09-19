@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Daum - Test</title>
+    <style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		html, body {
+    		height: 100%;
+    		margin: 0;
+    	}
+
+    	#map {
+    	    width: 100%;
+    		min-height: 100%;
+    	}
+	</style>
+</head>
+<body>
+<button id="btn_move">Move</button>
+<div id="map">
+
+
+
+</div>
+
+<select name="city"></select>
+<select name="district"></select>
+<select name="town"></select>
+
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=c9c7856aa9e7dc5360302561c643e940"></script>
+<script type="text/javascript" src="/static/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/web/assets/js/map.js"></script>
+<script type="text/javascript" src="/static/admin/assets/js/init.js"></script>
+
+<script type="text/javascript">
+
+    _daum.init('map', '33.450701', '126.570667', '3');
+
+    $.get('/api/public/estate').then(function(data) {
+        _daum.update(data.data.content);
+        <!--_daum.drawCircle(data.data.content[0].latitude, data.data.content[0].longitude);-->
+    }, function(jqXHR) {
+        console.error(jqXHR);
+    });
+
+    $('#btn_move').click(function() {
+        _daum.move(3);
+    });
+
+	</script>
+</body>
+</html>

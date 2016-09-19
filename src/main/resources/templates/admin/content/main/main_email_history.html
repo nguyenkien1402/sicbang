@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin</title>
+</head>
+<body>
+  <div layout:fragment="content">
+        <div class="page-content sb-pt-50 sb-pb-50">
+          <div class="container">
+            <div class="content-repair-list-main sb-bg-white sb-p-20">
+              <div class="main-inner sb-pt-0 sb-pb-0">
+
+                <div class="tab-wrapper tabbable-custom">
+                  <ul class="nav nav-tabs">
+                    <li><a th:href="@{/admin/main}">메인 이미지 관리</a></li>
+                    <li><a th:href="@{/admin/main/popup}">팝업 창 관리</a></li>
+                    <li><a th:href="@{/admin/main/email/0}">이메일 발송</a></li>
+                    <li class="active"><a th:href="@{/admin/main/history}">발송 내역</a></li>
+                  </ul>
+
+                  <div class="tab-content">
+                    <div>
+
+                        <div class="form-horizontal">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <div class="col-md-4">
+                                <div data-date-format="yyyy/mm/dd" class="input-group input-large date-picker input-daterange">
+                                  <input type="text" name="from" value="2014/04/14" class="form-control"/>
+                                    <span class="input-group-addon">~</span>
+                                  <input type="text" name="to" value="2015/05/12" class="form-control"/>
+                                </div>
+                              </div>
+                              <div style="text-align: right;" class="col-md-8">
+                                <a href="#" class="btn default">오늘</a>
+                                <a href="#" class="btn default">최근 일주일</a>
+                                <a href="#" class="btn default">최근 15일</a>
+                                <a href="#" class="btn default">최근 한 달</a>
+                                <a href="#" class="btn default">최근 두 달</a>
+                                <a href="#" class="btn default">최근 세 달</a></div>
+                            </div>
+                            <form class="form-search">
+                              <div class="form-group">
+                                <div class="col-md-4">
+                                  <select id="selectMail" style="width: 320px;" class="form-control sel-nav">
+                                    <option value="mailSubject">이메일 제목</option>
+                                    <option value="mailContent">이메일 내용</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-5">
+                                  <input type="text" class="form-control inp-search" name="mailSubject"/>
+                                </div>
+                                <div class="col-md-3">
+                                  <button type="submit" class="btn btn-block green btn-search">검색</button>
+                                  <!--<button class="btn btn-block green" onclick="searchEmail()">검색</button>-->
+                                </div>
+                              </div>
+                            </form>
+                            <form class="form" th:action="@{/admin/main/mail/deletearr}" method="post">
+                              <div class="form-group">
+                                <div class="col-md-12">
+                                  <div class="table-wrapper table-responsive">
+                                    <table class="table table-striped table-bordered table-hover align-middle text-center">
+                                      <thead>
+                                        <tr>
+                                          <th>
+                                            <!--<div class="checkbox-list">-->
+                                              <!--<label class="checkbox-inline">-->
+                                                <input id="select_all" type="checkbox" name="option_select"/>
+                                              <!--</label>-->
+                                            <!--</div>-->
+                                          </th>
+                                          <th>제목</th>
+                                          <th>발송일시</th>
+                                          <th>삭제</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr th:each="email : ${emails}">
+                                          <td>
+                                            <div class="checkbox-list">
+                                              <label class="checkbox-inline">
+                                                <input name="arrDelete" type="checkbox" th:value="${email.id}"/>
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td style="width: 450px;">
+                                            <div style="width: 450px; text-align: left;" class="content"><a href="#" class="sb-overflow-ellipsis" th:inline="text">[[${email.mailSubject}]]</a></div>
+                                          </td>
+                                          <td th:text="${email.createdDate}"></td>
+                                          <td>
+                                            <a href="javascript:;" class="text-danger btn-action-delete btn red" th:attr="data-url=@{'/admin/main/mail/' + ${email.id}}" th:text="삭제"></a>
+                                            <!--<a href="#" data-toggle="modal" data-target="#popupConfirmDelete" class="btn red">삭제    </a>-->
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <script type="text/javascript">
+                                      $(function () {
+                                        $('#select_all').click(function(e) {
+                                          console.log("call selected all");
+                                          if(this.checked == true) {
+                                            $('.checker').find('span').addClass('checked');
+                                          }else{
+                                            $('.checker').find('span').removeClass('checked');
+                                          }
+                                          $('[name="arrDelete"]').prop('checked', this.checked);
+                                        });
+
+                                        /*
+                                         * Click on another checkbox can affect the select all checkbox
+                                         */
+                                        $('[name="arrDelete"]').click(function(e) {
+                                          console.log("call selected all check");
+  //                                        $('.checker').find('span').removeClass('checked');
+                                          if ($('[name="arrDelete"]:checked').length == $('[name="arrDelete"]').length || !this.checked) {
+                                            if(this.checked == true){
+                                              console.log("check 1: "+this.checked);
+                                              $('#uniform-select_all').find('span').addClass('checked');
+                                            }else{
+                                              console.log("check 2: "+this.checked);
+                                              $('#uniform-select_all').find('span').removeClass('checked');
+                                            }
+                                          }
+                                        });
+                                      });
+                                    </script>
+                                    <div class="col-md-2">
+                                      <button class="btn btn-block green btn-search" type="submit">Delete</button>
+                                    </div>
+                                  </div>
+                                  <div th:replace="admin/fragment/common :: pagination(items=${emails})"></div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+
+                      <!--<div class="pagination-wrapper sb-pb-30">-->
+                        <!--<div th:replace="admin/fragment/common :: pagination(items=${emails})"></div>-->
+                        <!--&lt;!&ndash; .sb-pagination&ndash;&gt;-->
+                      <!--</div>-->
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <script type="text/javascript" th:inline="javascript">
+            $(function () {
+              $("#owl-demo").owlCarousel({
+                items: 8,
+                lazyLoad: true,
+                navigation: true
+              });
+              $("#owl-demo2").owlCarousel({
+                items: 8,
+                lazyLoad: true,
+                navigation: true
+              });
+              function searchEmail() {
+                console.log("search funtion");
+                var select = $("#selectMail option:selected").val();
+                console.log("select: "+select);
+                var key    = $("#keymail").val();
+                console.log("key: "+key);
+              }
+            });
+          </script>
+
+        </div>
+
+</div>
+
+</body>
+</html>

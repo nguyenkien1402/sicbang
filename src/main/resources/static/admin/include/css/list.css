@@ -1,0 +1,72 @@
+.marketButtonArea{
+    margin-bottom:10px;
+}
+.marketButtonArea span{
+    margin-right:15px;
+    font-size:16px;
+    color:#666;
+    cursor: pointer;
+}
+.marketButtonArea span.active{
+    color:#333;
+    font-weight: bold;
+}
+
+.marketList{
+    
+}
+
+.marketList .market{
+    padding-top:20px;
+    padding-bottom:20px;
+    border-bottom:1px solid #ddd;   
+    cursor: pointer;
+}
+.marketList .market:first-child{
+    border-top:1px solid #ddd;
+}
+
+.marketList .market:hover{
+    background-color: #f3f3f3;
+}
+
+.marketList .market .imageArea{
+    display: inline-block;
+    float:left;
+}
+
+.marketList .market .imageArea img{
+    width:180px;
+    height:110px;
+    border:1px solid #ccc;
+    box-sizing: border-box;
+}
+.marketList .market .textArea{
+    display: inline-block;
+    float:left;
+    padding:12px;
+    box-sizing: border-box;
+}
+
+.marketList .market .textArea > *{
+    margin-bottom:15px;
+}
+
+.marketList .market .textArea .priceArea span{
+    font-size:16px;
+    font-weight: bold;
+    color:#333;
+    border-right:1px solid #ccc;
+    padding-left:10px;
+    padding-right:10px;
+}
+.marketList .market .textArea .priceArea span:first-child{
+    padding-left:0;
+}
+.marketList .market .textArea .priceArea span:last-child{
+    border-right:0;
+}
+.marketList .market .textArea .location{
+    font-size:14px;
+    color:#666;
+}

@@ -1,0 +1,248 @@
+/* 지하철 역 커스텀 오버레이 */
+.customOverlay{
+    padding:8px 15px;
+    background-color: #be845a;
+    font-size:12px;
+    color:white;
+    border-radius: 3px;
+}
+
+.detailOverlay{
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding:15px 10px;
+    color:black;
+    font-size:12px;
+    width:130px;
+    height:49px;
+    background: url(../images/map/name.png) no-repeat;
+}
+
+.mapArea{
+    position: relative;
+    width:100%;
+    height:1050px;
+}
+
+.mapArea .mapBox{
+    height:100%;
+    margin-right:400px;
+    position: relative;
+}
+
+.mapArea .mapBox .searchBox{
+    top:60px;
+    left:60px;
+    position: absolute;
+    z-index: 1;
+    display: inline-block;
+    width:440px;
+    height:130px;
+    background:#f3f3f3;
+}
+
+.mapArea .mapBox .searchBox .buttonArea{
+    
+}
+
+.mapArea .mapBox .searchBox .buttonArea button{
+    float:left;
+    width:220px;
+    height:35px;
+    background-color: #fff;
+    border:0;
+    border-radius: 0;
+    font-size:14px;
+    font-weight: bold;
+    outline: none;
+    border-bottom:1px solid #ccc;
+}
+
+.mapArea .mapBox .searchBox .buttonArea button:first-child{
+    border-right:1px solid #ccc;
+}
+
+.mapArea .mapBox .searchBox .buttonArea button.active{
+    background-color: #f3f3f3;
+    border-bottom:1px solid #f3f3f3;
+}
+
+.mapArea .mapBox .searchBox .formControl{
+    width:100px;
+    height:35px;
+    margin-right:6px;
+}
+.mapArea .mapBox .searchBox .formControl:last-child{
+    margin-right:0;
+}
+.mapArea .mapBox .searchBox .searchMethodArea{
+    display: none;
+    padding:30px 20px;
+}
+
+.mapArea .mapBox .searchBox .searchMethodArea.active{
+    display: block;
+}
+
+.mapArea .mapBox #map{
+    position: relative;
+    z-index: 0;
+    width:100%;
+    height:100%;
+}
+
+.mapArea .infoBox{
+    float:right;
+    width:400px;
+    
+    height:100%;
+    background-color: white;
+    overflow-y: auto;
+}
+
+.mapArea .infoBox .detailBox{
+    background-color: #f3f3f3;
+}
+
+.mapArea .infoBox .detailBox .priceBox{
+    padding:20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.mapArea .infoBox .detailBox .priceBox .formControlGroup{
+    display: inline-block;
+    margin-bottom:5px;
+}
+
+.mapArea .infoBox .detailBox .priceBox .formControlGroup .formControl{
+    width:100px;
+    margin-right:9px;
+}
+
+.mapArea .infoBox .detailBox .storeBox{
+    padding:20px;
+    border-bottom: 1px solid #ccc;
+}
+.mapArea .infoBox .detailBox .storeBox .storeArea{
+    margin-bottom:30px;
+}
+
+.mapArea .infoBox .detailBox .storeBox .storeArea:last-child{
+    margin-bottom: 0;
+}
+.mapArea .infoBox .detailBox .storeBox .store{
+    display: inline-block;
+    margin-right:15px;
+    margin-bottom:8px;
+}
+
+.mapArea .infoBox .detailBox .storeBox h5{
+    margin-bottom: 15px;
+}
+.mapArea .infoBox .detailBox .storeBox label{
+    margin-right:3px;
+}
+.mapArea .infoBox .detailBox .storeBox span{
+    color:#333;
+    font-size:12px;
+}
+
+.mapArea .infoBox .listBox{
+    background-color: white;
+
+}
+
+.mapArea .infoBox .listBox .storeList{
+    
+}
+
+.mapArea .infoBox .listBox .storeList > .title{
+    height:35px;
+    background-color: #f56b53;
+    padding-left:20px;
+}
+
+.mapArea .infoBox .listBox .storeList .title h5{
+    color:white;
+    line-height: 35px;
+}
+
+.mapArea .infoBox .listBox .storeList ul li{
+    padding:20px;   
+    border-bottom:1px solid #ccc;
+    cursor: pointer;
+}
+.mapArea .infoBox .listBox .storeList ul li:hover{
+    background-color: #f3f3f3;
+}
+.mapArea .infoBox .listBox .storeList ul li .imgArea{
+    width:100px;
+    height:100px;
+    margin-right:15px;
+    display: inline-block;
+}
+
+.mapArea .infoBox .listBox .storeList ul li .imgArea img{
+    width:100%;
+    height:100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.mapArea .infoBox .listBox .storeList ul li .textArea{
+    display: inline-block;
+    max-width:230px;
+    position:relative;
+    bottom:10px;
+}
+
+.mapArea .infoBox .listBox .storeList ul li .textArea button{
+    float:right;
+    border:1px solid #ccc;
+    background-color: white;
+    font-size:12px;
+    padding:2px 5px;
+    color:#666;
+}
+.mapArea .infoBox .listBox .storeList ul li .textArea h5{
+    margin-bottom:6px;
+}
+.mapArea .infoBox .listBox .storeList ul li .textArea .price{
+    width:220px;
+    display: inline-block;
+    font-size:12px;
+    font-weight: bold;
+}
+.mapArea .infoBox .listBox .storeList ul li .textArea .price span{
+    display: inline-block;
+    margin-right:6px;
+    margin-bottom:6px;
+}
+
+.mapArea .infoBox .listBox .storeList ul li .textArea .location{
+    font-size:12px;
+    margin-bottom:3px;
+    color:#666;
+}
+.mapArea .infoBox .listBox .storeList ul li .textArea .location span{
+    display: inline-block;
+    padding-left:7px;
+    padding-right:7px;
+    border-right:1px solid #ccc;
+}
+.mapArea .infoBox .listBox .storeList ul li .textArea .location span:first-child{
+    padding-left:0;
+}
+.mapArea .infoBox .listBox .storeList ul li .textArea .location span:last-child{
+    padding-right:0;
+    border-right:0;
+}
+
+.mapArea .infoBox .listBox .storeList ul li .textArea .explain{
+    font-size:12px;
+    line-height: 14px;
+}
