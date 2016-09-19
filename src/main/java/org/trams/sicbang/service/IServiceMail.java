@@ -40,4 +40,17 @@ public interface IServiceMail {
 
     void sendMulti(FormMail form);
 
+    List<Mail> filterBy(String type, int pageIndex, String mailSubject, String mailContent);
+
+    Long countAllElement(String mailSubject, String mailContent);
+
+    Long countOneWeek(String mailSubject, String mailContent);
+
+    Long countOneFifteenDay(String mailSubject, String mailContent);
+
+    Long countMonth(int sub,String mailSubject, String mailContent);
+
+
+    Long countToDay(String mailSubject, String mailContent);
+
 }

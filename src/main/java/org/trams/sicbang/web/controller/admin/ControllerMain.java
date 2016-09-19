@@ -3,6 +3,8 @@ package org.trams.sicbang.web.controller.admin;
 import com.google.common.base.Strings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -78,25 +80,79 @@ public class ControllerMain extends AbstractController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/history", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value="/history/{type}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String history(
             @ModelAttribute FormMail formMail,
+            @PathVariable("type") String type,
+            @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
+            @RequestParam(value = "mailSubject", defaultValue = "") String mailSubject,
+            @RequestParam(value = "mailContent", defaultValue = "") String mailContent,
             ModelMap map) {
         System.out.println("==========================");
         System.out.println("call history");
-        Page<Mail> emails = serviceMail.filter(formMail);
-        for (int i = 0; i < emails.getNumberOfElements(); i++) {
-            try {
-                System.out.println("Decode 2" + emails.getContent().get(i).getMailContent());
-                emails.getContent().get(i).decodeContent();
-            } catch (Exception e) {
-                e.printStackTrace();
+        Page<Mail> emails = null;
+        List<Mail> mailList = null;
+        System.out.println("Page index: "+pageIndex);
+        System.out.println("mailSubject: "+mailSubject);
+        System.out.println("mailContent: "+mailContent);
+        mailSubject = "%"+mailSubject+"%";
+        mailContent = "%"+mailContent+"%";
+        Long count = null;
+        if(type != null){
+            switch (type){
+                case "0":
+                    map.put("type","0");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countAllElement(mailSubject,mailContent);
+                    break;
+                case "1": // mean to day
+                    map.put("type","1");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countToDay(mailSubject,mailContent);
+                    break;
+                case "2": // mean one week
+                    map.put("type","2");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countOneWeek(mailSubject,mailContent);
+                    break;
+                case "3": // mean 15 day
+                    map.put("type","3");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countOneFifteenDay(mailSubject,mailContent);
+                    break;
+                case "4": // mean one month
+                    map.put("type","4");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countMonth(0,mailSubject,mailContent);
+                    break;
+                case "5": // mean two month
+                    map.put("type","5");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countMonth(1,mailSubject,mailContent);
+                    break;
+                case "6": //mean three month
+                    map.put("type","6");
+                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
+                    count = serviceMail.countMonth(2,mailSubject,mailContent);
+                    break;
             }
+        }else{
 
         }
-        if(emails.getNumberOfElements() != 0)
-            System.out.println("Decode :"+emails.getContent().get(0).getMailContent());
-        map.put("emails",emails);
+            System.out.println("type other");
+            for (int i = 0; i < mailList.size(); i++) {
+                try {
+                    System.out.println("Decode 2" + mailList.get(i).getMailContent());
+                    mailList.get(i).decodeContent();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
+            Page<Mail> pageConvert = new PageImpl<Mail>(mailList,pageable,count);
+            map.put("emails",pageConvert);
+
         System.out.println("==========================");
         return BASE_TEMPLATE + "main_email_history";
     }
@@ -187,8 +243,9 @@ public class ControllerMain extends AbstractController {
      *
      * @return
      */
-    @RequestMapping(value = "/create/slide/{type}", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
-    public String createWebSlideImg(
+    @RequestMapping(value = "/create/slide/{type}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity createWebSlideImg(
             @ModelAttribute FormSlide formSlide,
             @PathVariable(value="type") String type,
             ModelMap map
@@ -201,7 +258,8 @@ public class ControllerMain extends AbstractController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Slide slide = serviceSlide.uploadSlide(formSlide, username);
         System.out.println("====================================");
-        return "redirect:/admin/main";
+//        return "redirect:/admin/main";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 //    /**
@@ -270,8 +328,9 @@ public class ControllerMain extends AbstractController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/mail/create", method = {RequestMethod.POST, RequestMethod.GET})
-    public Object mailCreatePost(
+    @RequestMapping(value = "/mail/create", method = {RequestMethod.POST, RequestMethod.GET}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity mailCreatePost(
             @ModelAttribute FormMail form,
             ModelMap map) {
         logger.info("mailCreatePost form  : "+form.toString());
@@ -284,10 +343,10 @@ public class ControllerMain extends AbstractController {
                         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
                     }
                     serviceMail.send(form);
-                    return "redirect:/admin/main/email/0";
+                    return new ResponseEntity(HttpStatus.OK);
                 case GET:
                 default:
-                    return "redirect:/admin/main/email/0";
+                    return new ResponseEntity(HttpStatus.OK);
             }
         }else{
             switch (getRequestMethod()) {
@@ -297,10 +356,10 @@ public class ControllerMain extends AbstractController {
                         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
                     }
                     serviceMail.sendMulti(form);
-                    return "redirect:/admin/mail/create";
+                    return new ResponseEntity(HttpStatus.OK);
                 case GET:
                 default:
-                    return "redirect:/admin/mail/create";
+                    return new ResponseEntity(HttpStatus.OK);
             }
         }
 
@@ -328,7 +387,7 @@ public class ControllerMain extends AbstractController {
             serviceMail.delete(formMail);
         }
         System.out.println("=================================");
-        return "redirect:/admin/main/history";
+        return "redirect:/admin/main/history/0";
     }
     // --------------------------------------------------------
     // --------------------- End Mail -------------------------

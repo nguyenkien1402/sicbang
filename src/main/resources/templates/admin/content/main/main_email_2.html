@@ -7,7 +7,7 @@
   <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 
   <style>
-    bootstrap-tagsinput {
+    .bootstrap-tagsinput {
       width: 100% !important;
     }
 
@@ -27,12 +27,12 @@
                   <li><a th:href="@{/admin/main}">메인 이미지 관리</a></li>
                   <li><a th:href="@{/admin/main/popup}">팝업 창 관리</a></li>
                   <li class="active"><a th:href="@{/admin/main/email/0}">이메일 발송</a></li>
-                  <li><a th:href="@{/admin/main/history}">발송 내역</a></li>
+                  <li><a th:href="@{/admin/main/history/0}">발송 내역</a></li>
                 </ul>
 
                 <div class="tab-content">
 
-                    <form class="form" action="/admin/main/mail/create" method="post" enctype="multipart/form-data">
+                    <form id="form-ajax-email" class="form" action="/admin/main/mail/create" method="post" enctype="multipart/form-data">
                       <div class="form-horizontal">
                         <div class="form-body">         
                           <div class="form-group"> 
@@ -96,15 +96,20 @@
                         </div>
                       </div>
                     </form>
-
-                  <script type="text/javascript">
+                  <script type="text/javascript" th:inline="javascript">
                     function inputChange(e) {
                       console.log(document.getElementById("multiEmailTo").value);
                     }
-                    $(function () {
-
+                    $(document).ready(function() {
+                      console.log("function email");
+                      var _this = this;
+                      var admin = new Admin();
+                      $('#form-ajax-email').on('submit', function (evt) {
+                        console.log("form ajax send email");
+                        evt.preventDefault();
+                        admin.submitFormEmailSend($(this));
+                      });
                     });
-
                   </script>
                 </div>
               </div>
@@ -115,17 +120,5 @@
     </div>
   </div>
     <!-- .content-repair-list-->
-<script>
-  $("#owl-demo").owlCarousel({
-    items : 8,
-    lazyLoad : true,
-    navigation : true
-  });
-  $("#owl-demo2").owlCarousel({
-    items : 8,
-    lazyLoad : true,
-    navigation : true
-  });
-</script>
   </body>
 </html>

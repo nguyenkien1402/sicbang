@@ -544,6 +544,42 @@ $(document).ready(function() {
       }
     });
 
+    $(".btn-history-mail").on("click", function(e) {
+      console.log("function search email");
+      var page = $(this).attr('data-page');
+      console.log("clicks: "+clicks);
+      console.log("page:" + page);
+      if(clicks != page) {
+        var curent_url = window.location.pathname;
+        console.log("current url"+curent_url);
+        var current_page = curent_url.split('/');
+        var page_num = current_page[current_page.length -1];
+        if(page_num != page) {
+          window.location = '/admin/main/history/'+page;
+        }
+        clicks = page;
+      }else {
+        if(page == 1) {
+          // $("input[name='type']").val('SignUpToday');
+        }
+        if(page ==2) {
+          // $("input[name='type']").val('SignUpLastMonth');
+        }
+        if(page ==3) {
+          // $("input[name='type']").val('RegularMember');
+        }
+        if(page ==4) {
+          // $("input[name='type']").val('Broker');
+        }
+        if(page ==5) {
+          // $("input[name='type']").val('TrustMember');
+        }
+        if(page ==6) {
+          // $("input[name='type']").val('AllMember');
+        }
+      }
+    });
+
     $(".btn-send-mail").dblclick(function(){
       window.location = '/admin/main/email/0';
       var page = $(this).attr('data-page');

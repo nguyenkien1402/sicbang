@@ -3,6 +3,8 @@ package org.trams.sicbang.service.implement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,10 +22,8 @@ import org.trams.sicbang.service.IServiceMail;
 import org.trams.sicbang.web.controller.AbstractController;
 
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by voncount on 21/04/2016.
@@ -47,6 +47,94 @@ public class ServiceMail extends BaseService implements IServiceMail{
     private RepositoryMail repositoryMail;
     @Autowired
     private JavaMailSenderImpl mailSender;
+
+
+    @Override
+    public List<Mail> filterBy(String type, int pageIndex,String mailSubject, String mailContent) {
+        List<Mail> list = null;
+        pageIndex = pageIndex * 10;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String[] dateFm = format.format(date).split("-");
+        int year = Integer.parseInt(dateFm[0]);
+        int month = Integer.parseInt(dateFm[1]);
+        int day = Integer.parseInt(dateFm[2]);
+        switch (type){
+            case "0":
+                System.out.println("find all");
+                list = repositoryMail.findAllMail(pageIndex, mailSubject,  mailContent);
+            case "1": { // email today
+                System.out.println("Email today");
+                list = repositoryMail.findByToDay(day,month,year,pageIndex, mailSubject,  mailContent);
+                System.out.println("total element: "+list.size());
+                break;
+            }
+            case "2": // email one week
+            {
+                System.out.println("Email one week");
+                list = repositoryMail.findByOneWeek(pageIndex, mailSubject,  mailContent);
+                break;
+            }
+            case "3": // email 15 day
+            {
+                System.out.println("Email 15 day nearest");
+                list = repositoryMail.findByFifteenDay(pageIndex, mailSubject,  mailContent);
+                break;
+            }
+            case "4": // email one month
+            {
+                System.out.println("Email 1 month nearest");
+                list = repositoryMail.findByMonth(0,pageIndex, mailSubject,  mailContent);
+                break;
+            }
+            case "5": // email two month
+            {
+                System.out.println("Email 2 month nearest");
+                list = repositoryMail.findByMonth(1,pageIndex, mailSubject,  mailContent);
+                break;
+            }
+            case "6": // email three month
+            {
+                System.out.println("Email 3 month nearest");
+                list = repositoryMail.findByMonth(2,pageIndex, mailSubject,  mailContent);
+                break;
+            }
+        }
+
+        return list;
+    }
+
+    @Override
+    public Long countAllElement(String mailSubject, String mailContent) {
+        return repositoryMail.totalOfEmail( mailSubject,  mailContent);
+    }
+
+    @Override
+    public Long countOneWeek(String mailSubject, String mailContent) {
+        return repositoryMail.totalMailOneWeek( mailSubject,  mailContent);
+    }
+
+    @Override
+    public Long countOneFifteenDay(String mailSubject, String mailContent) {
+        return repositoryMail.totalMailFifteen( mailSubject,  mailContent);
+    }
+
+    @Override
+    public Long countMonth(int sub,String mailSubject, String mailContent) {
+        return repositoryMail.totalMailMonth(sub,mailSubject, mailContent);
+    }
+
+
+    @Override
+    public Long countToDay(String mailSubject, String mailContent) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String[] dateFm = format.format(date).split("-");
+        int year = Integer.parseInt(dateFm[0]);
+        int month = Integer.parseInt(dateFm[1]);
+        int day = Integer.parseInt(dateFm[2]);
+        return repositoryMail.totalMailToday(day,month,year, mailSubject,  mailContent);
+    }
 
     @Override
     public void send(FormMail form) {
@@ -182,6 +270,7 @@ public class ServiceMail extends BaseService implements IServiceMail{
 //            }
 //        }
     }
+
 
 
 }

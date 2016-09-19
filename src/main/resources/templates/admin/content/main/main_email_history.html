@@ -16,7 +16,7 @@
                     <li><a th:href="@{/admin/main}">메인 이미지 관리</a></li>
                     <li><a th:href="@{/admin/main/popup}">팝업 창 관리</a></li>
                     <li><a th:href="@{/admin/main/email/0}">이메일 발송</a></li>
-                    <li class="active"><a th:href="@{/admin/main/history}">발송 내역</a></li>
+                    <li class="active"><a th:href="@{/admin/main/history/0}">발송 내역</a></li>
                   </ul>
 
                   <div class="tab-content">
@@ -32,13 +32,24 @@
                                   <input type="text" name="to" value="2015/05/12" class="form-control"/>
                                 </div>
                               </div>
-                              <div style="text-align: right;" class="col-md-8">
-                                <a href="#" class="btn default">오늘</a>
-                                <a href="#" class="btn default">최근 일주일</a>
-                                <a href="#" class="btn default">최근 15일</a>
-                                <a href="#" class="btn default">최근 한 달</a>
-                                <a href="#" class="btn default">최근 두 달</a>
-                                <a href="#" class="btn default">최근 세 달</a></div>
+                              <form class="form" method="post">
+                                <div style="text-align: right;" class="col-md-8">
+                                  <a th:href="@{/admin/main/history/1}" class="btn default btn-history-mail" data-page="1">오늘</a>
+                                  <a th:href="@{/admin/main/history/2}" class="btn default btn-history-mail" data-page="2">최근 일주일</a>
+                                  <a th:href="@{/admin/main/history/3}" class="btn default btn-history-mail" data-page="3">최근 15일</a>
+                                  <a th:href="@{/admin/main/history/4}" class="btn default btn-history-mail" data-page="4">최근 한 달</a>
+                                  <a th:href="@{/admin/main/history/5}" class="btn default btn-history-mail" data-page="5">최근 두 달</a>
+                                  <a th:href="@{/admin/main/history/6}" class="btn default btn-history-mail" data-page="6">최근 세 달</a>
+
+                                  <!--<a class="btn default btn-history-mail" data-page="1">오늘</a>-->
+                                  <!--<a class="btn default btn-history-mail" data-page="2">최근 일주일</a>-->
+                                  <!--<a class="btn default btn-history-mail" data-page="3">최근 15일</a>-->
+                                  <!--<a class="btn default btn-history-mail" data-page="4">최근 한 달</a>-->
+                                  <!--<a class="btn default btn-history-mail" data-page="5">최근 두 달</a>-->
+                                  <!--<a class="btn default btn-history-mail" data-page="6">최근 세 달</a>-->
+
+                                </div>
+                              </form>
                             </div>
                             <form class="form-search">
                               <div class="form-group">
@@ -96,6 +107,7 @@
                                         </tr>
                                       </tbody>
                                     </table>
+                                    <div th:replace="admin/fragment/common :: pagination(items=${emails})"></div>
                                     <script type="text/javascript">
                                       $(function () {
                                         $('#select_all').click(function(e) {
@@ -130,7 +142,7 @@
                                       <button class="btn btn-block green btn-search" type="submit">Delete</button>
                                     </div>
                                   </div>
-                                  <div th:replace="admin/fragment/common :: pagination(items=${emails})"></div>
+
                                 </div>
                               </div>
                             </form>

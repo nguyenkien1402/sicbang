@@ -38,6 +38,82 @@ function Admin() {
         });
     };
 
+    this.submitFormImage = function($form, callback) {
+        _this.resetForm($form);
+
+        if (!_this.validateForm($form)) {
+            return false;
+        }
+
+        _this.convertForm($form);
+        var formData = new FormData($form[0]);
+        console.log("data:"+formData);
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).then(function(data) {
+            _this.showPopupNotice('file uploaded successfully.', function() {
+                if (callback) callback();
+                else location.reload();
+            });
+        }, function(jqXHR) {
+            _this.resetForm($form);
+            // show message error
+            if (jqXHR.status == 400) {
+                var response = JSON.parse(jqXHR.responseText);
+                $.each(response.errors, function(key, value) {
+                    _this.showErrorForm($form, key, value);
+                });
+            }
+            // undefined error, show popup
+            else {
+                _this.showPopupNotice('변경하지 못 했습니다.');
+            }
+        });
+    };
+
+    this.submitFormEmailSend = function($form, callback) {
+        _this.resetForm($form);
+
+        if (!_this.validateForm($form)) {
+            return false;
+        }
+
+        _this.convertForm($form);
+        var formData = new FormData($form[0]);
+        console.log("data:"+formData);
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).then(function(data) {
+            _this.showPopupNotice('email sent.', function() {
+                if (callback) callback();
+                else location.reload();
+            });
+        }, function(jqXHR) {
+            _this.resetForm($form);
+            // show message error
+            if (jqXHR.status == 400) {
+                var response = JSON.parse(jqXHR.responseText);
+                $.each(response.errors, function(key, value) {
+                    _this.showErrorForm($form, key, value);
+                });
+            }
+            // undefined error, show popup
+            else {
+                _this.showPopupNotice('변경하지 못 했습니다.');
+            }
+        });
+    };
+
     this.submitFormEstate = function($form, callback) {
         _this.resetForm($form);
 
@@ -135,6 +211,7 @@ function Admin() {
         var $input = $select.parent().next().find('.inp-search');
 
         $input.attr('name', selectValue);
+        console.log("select value: "+selectValue);
 
         switch(selectValue) {
             case 'date':
@@ -169,6 +246,8 @@ function Admin() {
            urlParams[decode(match[1])] = decode(match[2]);
         }
         $.each(urlParams, function(key, value) {
+            console.log("key: "+key);
+            console.log("value: "+value);
             $form.find('.sel-nav').each(function() {
                 var $select = $(this);
                 $(this).find('option').each(function() {
