@@ -130,8 +130,24 @@ public class ControllerEstate extends AbstractController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detail(
             @PathVariable(value = "id") String id,
+            @ModelAttribute FormEstate formEstate,
             ModelMap map) {
-        return BASE_TEMPLATE + "detail";
+        System.out.println("estate id: "+id);
+        FormEstate estateForm = new FormEstate();
+        estateForm.setEstateId(id);
+        Estate estate = serviceEstate.findOne(estateForm);
+        Collection<Attachment> listAttach = estate.getAttachments();
+        System.out.println("list attach: " +listAttach.size());
+        map.put("attachments", listAttach);
+        map.put("estate",estate);
+        map.put("sizeattach", listAttach.size());
+        if(estate.getEstateType().equals("STARTUP")){
+            System.out.println("go for startup");
+            return BASE_TEMPLATE +"ajax/detail-startup";
+        }else{
+            System.out.println("go for vacant");
+            return BASE_TEMPLATE +"ajax/detail-vacant";
+        }
     }
 
     /**

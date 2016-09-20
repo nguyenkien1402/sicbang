@@ -70,7 +70,6 @@
                                                 <textarea rows="15" readonly="readonly" th:value="${item.content}" class="form-control">Lorem ipsum</textarea>
                                             </div>
                                         </div>
-
                                     </div>
                                 </form>
                                 <!-- .form-body-->
@@ -78,6 +77,7 @@
                                 <div class="form-actions text-center">
                                     <a th:href="@{/admin/answer/create?reportId=__${item.id}__}" class="btn green">삭제하기</a>
                                     <a href="javascript:;" class="btn red" id="btn-delete">답변하기</a>
+                                    <a th:href="@{/admin/estate/__${item.estate.id}__}" class="btn green">매물 보기</a>
                                 </div>
                                 <!-- .form-actions-->
                             </div>
