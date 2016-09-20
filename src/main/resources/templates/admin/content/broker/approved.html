@@ -172,7 +172,7 @@
                                         <td th:text="${user.corporationRegistration}">Representator</td>
                                         <td th:text="${user.phoneNumber}">Phone</td>
                                         <td th:text="${user.createdDate}">Joined date</td>
-                                        <td th:text="${user.type.name() eq 'TRUSTED_BROKER' ? '무료' : '안심'}">Paid/Free</td>
+                                        <td th:text="${user.type.name() eq 'TRUSTED_BROKER' ? '안심' : '무료'}">Paid/Free</td>
                                     </tr>
                                     </tbody>
                                 </table>

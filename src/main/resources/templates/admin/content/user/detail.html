@@ -85,7 +85,8 @@
                                     <ul class="sb-ul">
                                         <li class="portlet light bordered" th:each="report : ${items}">
                                             <div class="row">
-                                                <div class="col-xs-10"><a th:href="@{/admin/report/{id}(id=${report.id})}">
+                                                <div class="col-xs-10">
+                                                    <a th:href="@{/admin/report/{id}(id=${report.id})}">
                                                     <div class="row">
                                                         <div class="col-xs-3">
                                                             <div class="form-control-static" th:text="${report.createdDate}">2015.04.22</div>
@@ -95,10 +96,23 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-xs-12">
-                                                            <div class="form-control-static" th:text="${report.content}">막상 찾아갔더니 올라와 있는 매물만큼 좋은 매물이 있다면서 다른 매물들을 추천해주면서 돌아다니다가 실제</div>
+                                                        <div class="col-xs-3">
+                                                            <div class="form-control-static" th:text="${report.estate.createdDate}">막상 찾아갔더니 올라와 있는 매물만큼 좋은 매물이 있다면서 다른 매물들을 추천해주면서 돌아다니다가 실제</div>
                                                         </div>
-                                                    </div></a></div>
+                                                        <div class="col-xs-8">
+                                                            <div class="form-control-static" th:text="${report.estate.name}">막상 찾아갔더니 올라와 있는 매물만큼 좋은 매물이 있다면서 다른 매물들을 추천해주면서 돌아다니다가 실제</div>
+                                                        </div>
+                                                    </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <!--<div class="form-control-static" th:text="${report.content}">막상 찾아갔더니 올라와 있는 매물만큼 좋은 매물이 있다면서 다른 매물들을 추천해주면서 돌아다니다가 실제</div>-->
+                                                            </div>
+                                                            <div class="col-xs-12">
+                                                                <div class="form-control-static" th:text="${report.content}">막상 찾아갔더니 올라와 있는 매물만큼 좋은 매물이 있다면서 다른 매물들을 추천해주면서 돌아다니다가 실제</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
                                                 <div class="col-xs-2 text-right"><a href="javascript:;" class="btn red btn-action-delete" th:attr="data-url=@{/admin/report/__${report.id}__}">x</a></div>
                                             </div>
                                         </li>
