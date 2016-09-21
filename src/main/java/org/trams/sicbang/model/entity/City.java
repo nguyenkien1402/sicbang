@@ -19,6 +19,7 @@ public class City extends BaseEntity {
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private Set<District> districts;
 
+
     public String getName() {
         return name;
     }
@@ -34,4 +35,6 @@ public class City extends BaseEntity {
     public void setDistricts(Set<District> districts) {
         this.districts = districts;
     }
+
+
 }

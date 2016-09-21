@@ -33,7 +33,7 @@
                             </a>
                             <a href="" ><button class="btn warning littleWide">목록</button></a>
                         </div>
-                        <div class="slideBox">
+                       <div class="slideBox">
                             <div class="slideArea">
                                 <div class="sideBox">
                                     <div class="arrow leftArrow"></div>
@@ -86,6 +86,61 @@
 
                             </div>
                         </div>
+
+
+                        <!--<div class="block-slider sb-mb-40">-->
+                            <!--<div class="sb-block-style-2">-->
+                                <!--<div class="sb-col-wrapper">-->
+                                    <!--<div class="sb-col block-2-col-slider">-->
+                                        <!--<div id="broker-detail-slider" class="sb-slider-style-1">-->
+                                            <!--<div class="gallery-top-wrapper">-->
+                                                <!--<div class="gallery-top owl-carousel" th:each="attach : ${attachments}">-->
+                                                    <!--&lt;!&ndash;<img th:src="${attach.origin}" class="owl-item-img-bg"/>&ndash;&gt;-->
+                                                    <!--<div th:style="'background-image:url('+${attach.origin}+');'" class="owl-item-img-bg"></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="gallery-thumbs-wrapper">-->
+                                                <!--<div class="owl-carousel-box">-->
+                                                    <!--<div class="owl-carousel-wrapper">-->
+                                                        <!--<div class="gallery-thumbs owl-carousel" >-->
+                                                            <!--<div class="owl-item-inner" th:each="attach : ${attachments}">-->
+                                                                <!--&lt;!&ndash;<div style="background-image: url(${attach.origin}" class="owl-item-img-bg"></div>&ndash;&gt;-->
+                                                                <!--&lt;!&ndash;<img th:each="attach : ${attachments}" th:src="${attach.origin}" class="owl-item-img-bg"/>&ndash;&gt;-->
+                                                                <!--<div th:style="'background-image:url('+${attach.origin}+')';" class="owl-item-img-bg"></div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="current-per-total-wrapper text-right">-->
+                                                    <!--<div class="current-per-total"></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="sb-col block-2-col-main">-->
+                                        <!--<div class="sb-f-26 sb-mb-20 text-center">담당자 정보</div>-->
+                                        <!--<div class="sb-mb-20 text-center"><img src="../../assets/images/demo_2.jpg" alt="demo" style="max-height: 200px; margin: auto;"/></div>-->
+                                        <!--<div class="form-horizontal">-->
+                                            <!--<div class="form-body">-->
+                                                <!--<div class="form-group sb-mb-0">-->
+                                                    <!--<label class="col-md-5 control-label"><strong>담당자 : </strong></label>-->
+                                                    <!--<div class="col-md-7">-->
+                                                        <!--<div class="form-control-static"> 김중개</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="form-group sb-mb-0">-->
+                                                    <!--<label class="col-md-5 control-label"><strong>연락처 : </strong></label>-->
+                                                    <!--<div class="col-md-7">-->
+                                                        <!--<div class="form-control-static"> 010-0000-0000</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
 
                         <div class="tableArea">
                             <span class="date right" >등록일:
@@ -233,7 +288,7 @@
                     $(".thumbNum").text($(this).index() + 1 + "/" + imgs.length);
                 });
 
-                //화살표를 클릭하면 보여준다.
+//                //화살표를 클릭하면 보여준다.
                 $(".sideBox").click(function(e){
                     var arrow = $(this).find(".arrow");
                     var imgs = $(".thumbImage img");

@@ -96,6 +96,9 @@ public class FormEstate extends BaseFormSearch<Estate> {
         return (Root<Estate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
 
             root.join(Estate_.user, JoinType.INNER);
+//            root.join(Estate_.city, JoinType.INNER);
+//            root.join(Estate_.district, JoinType.INNER);
+//            root.join(Estate_.town, JoinType.INNER);
 
             List<Predicate> predicates = new ArrayList<>();
             Optional<Long> _estateId = ConvertUtils.toLongNumber(estateId);
@@ -175,23 +178,56 @@ public class FormEstate extends BaseFormSearch<Estate> {
                 }
                 predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
             }
-//            if (_city.isPresent()) {
-//                root.join(Estate_.city, JoinType.LEFT);
-//                predicates.add(
-//                        criteriaBuilder.equal(root.get(Estate_.city).get(City_.id), _city.get())
-//                );
+//            if (!Strings.isNullOrEmpty(city)) {
+//                String[] types = city.split(",");
+//                List<Predicate> subPredicates = new ArrayList<>();
+//                for (String t : types) {
+//                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+//                    if (_id.isPresent()) {
+//                        System.out.println("ID city: "+_id.get());
+//                        Predicate p = criteriaBuilder.equal(root.get(Estate_.city).get(City_.id), _id.get());
+//                        subPredicates.add(p);
+//                    }
+//                }
+//                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+////                root.join(Estate_.city, JoinType.LEFT);
+////                predicates.add(
+////                        criteriaBuilder.equal(root.get(Estate_.city).get(City_.id), city)
+////                );
 //            }
-//            if (_district.isPresent()) {
-//                root.join(Estate_.district, JoinType.LEFT);
-//                predicates.add(
-//                        criteriaBuilder.equal(root.get(Estate_.district).get(District_.id), _district.get())
-//                );
+
+//
+//            if (!Strings.isNullOrEmpty(district)) {
+//                String[] types = district.split(",");
+//                List<Predicate> subPredicates = new ArrayList<>();
+//                for (String t : types) {
+//                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+//                    if (_id.isPresent()) {
+//                        Predicate p = criteriaBuilder.equal(root.get(Estate_.district).get(District_.id), _id.get());
+//                        subPredicates.add(p);
+//                    }
+//                }
+//                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+////                root.join(Estate_.district, JoinType.LEFT);
+////                predicates.add(
+////                        criteriaBuilder.equal(root.get(Estate_.district).get(District_.id), district)
+////                );
 //            }
-//            if (_town.isPresent()) {
-//                root.join(Estate_.town, JoinType.LEFT);
-//                predicates.add(
-//                        criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), _town.get())
-//                );
+//            if (!Strings.isNullOrEmpty(town)) {
+//                String[] types = town.split(",");
+//                List<Predicate> subPredicates = new ArrayList<>();
+//                for (String t : types) {
+//                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+//                    if (_id.isPresent()) {
+//                        Predicate p = criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), _id.get());
+//                        subPredicates.add(p);
+//                    }
+//                }
+//                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+////                root.join(Estate_.town, JoinType.LEFT);
+////                predicates.add(
+////                        criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), town)
+////                );
 //            }
             if (_depositeCost.isPresent()) {
                 predicates.add(
@@ -227,6 +263,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
             }
         };
     }
+
 
     public Logger getLogger() {
         return logger;

@@ -1,9 +1,13 @@
 package org.trams.sicbang.web.controller.admin;
 
+import com.google.common.base.Strings;
 import org.apache.commons.validator.Form;
 import org.apache.log4j.Logger;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.entity.Attachment;
 import org.trams.sicbang.model.entity.Estate;
+import org.trams.sicbang.model.entity.Mail;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.web.controller.AbstractController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.SynchronousQueue;
 
@@ -36,14 +42,37 @@ public class ControllerEstate extends AbstractController {
     public String index(
             @ModelAttribute FormEstate form,
             @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
+            @RequestParam(value = "city", defaultValue = "") String city,
+            @RequestParam(value = "district", defaultValue = "") String district,
+            @RequestParam(value = "town", defaultValue = "") String town,
             ModelMap map) {
-        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
-
-        FormEstate formEstate = new FormEstate();
-        formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-        Page<Estate> estates = serviceEstate.filter(formEstate);
+//        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
+//        FormEstate formEstate = new FormEstate();
+        System.out.println("===================================");
+        System.out.println("Load estate");
+        List<Estate> estates = null;
+        Long count = null;
+        if(!Strings.isNullOrEmpty(city)){
+            city = "%"+city+"%";
+            System.out.println("city: "+city);
+        }
+        if(!Strings.isNullOrEmpty(district)){
+            district = "%"+district+"%";
+            System.out.println("district: "+district);
+        }
+        if(!Strings.isNullOrEmpty(town)){
+            town = "%"+town+"%";
+            System.out.println("town: "+town);
+        }
+        estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town);
+        count = serviceEstate.totalEstateFilter(city,district,town);
+        Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
+        Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
+//        formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
+//        Page<Estate> estates = serviceEstate.filter(formEstate);
         System.out.println("estate form");
         map.put("items", estates);
+        System.out.println("===================================");
         return BASE_TEMPLATE + "list";
     }
 

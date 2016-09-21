@@ -7,64 +7,58 @@
 <body>
 <div layout:fragment="content">
   <div class="container">
-    <div class="search-box">
-      <div class="first">
-        <input class="btn btn-default sanggun" type="button" value="상권으로찾기">
-        <input class="btn btn-default subway" type="button" value="지하철역으로 찾기">
-      </div>
-      <div class="second">
-        <div class="city">
-          <form class="form-search form-horizontal sb-mb-30">
-            <div class="form-body">
-              <div class="form-group">
-                <div class="col-md-4">
-                  <select class="form-control sel-nav">
-                    <option value="query">서울시</option>
-                    <option value="phoneNumber">부산시</option>
-                    <option value="date">대전시</option>
-                  </select>
-                </div>
-                <div class="col-md-4">
-                  <select class="form-control sel-nav">
-                    <option value="query">서울시</option>
-                    <option value="phoneNumber">부산시</option>
-                    <option value="date">대전시</option>
-                  </select>
-                </div>
-                <div class="col-md-4">
-                  <select class="form-control sel-nav">
-                    <option value="query">서울시</option>
-                    <option value="phoneNumber">부산시</option>
-                    <option value="date">대전시</option>
-                  </select>
-                </div>
 
+      <div class="search-box">
+        <div class="first">
+          <input class="btn btn-default sanggun" type="button" value="상권으로찾기">
+          <input class="btn btn-default subway" type="button" value="지하철역으로 찾기">
+        </div>
+        <div class="second">
+          <div class="city">
+            <form class="form-search form-horizontal sb-mb-30">
+              <div class="form-body">
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <select class="form-control sel-nav">
+                      <option value="city">서울시</option>
+                      <option value="district">전 체  </option>
+                      <option value="town">전 체  </option>
+                    </select>
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control inp-search" name="city"/>
+                  </div>
+                  <div class="col-md-3">
+                    <button type="submit" class="btn btn-block green btn-search">검색</button>
+                    <!--<button class="btn btn-block green" onclick="searchEmail()">검색</button>-->
+                  </div>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="tab-wrapper tabbable-custom">
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab-all-estates" data-toggle="tab">전체보기</a></li>
-        <li><a href="#tab-start-list" data-toggle="tab">인수창업</a></li>
-        <li><a href="#tab-vacant-list" data-toggle="tab">공실매물</a></li>
-      </ul>
-      <div class="tab-content">
-        <div id="tab-all-estates" class="tab-all-estates tab-pane sb-pt-15 active">
 
-        </div>
+      <div class="tab-wrapper tabbable-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab-all-estates" data-toggle="tab">전체보기</a></li>
+          <li><a href="#tab-start-list" data-toggle="tab">인수창업</a></li>
+          <li><a href="#tab-vacant-list" data-toggle="tab">공실매물</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="tab-all-estates" class="tab-all-estates tab-pane sb-pt-15 active">
 
-        <div id="tab-start-list" class="tab-start-list tab-pane sb-pt-15">
+          </div>
 
-        </div>
+          <div id="tab-start-list" class="tab-start-list tab-pane sb-pt-15">
 
-        <div id="tab-vacant-list" class="tab-vacant-list tab-pane sb-pt-15">
+          </div>
 
+          <div id="tab-vacant-list" class="tab-vacant-list tab-pane sb-pt-15">
+
+          </div>
         </div>
       </div>
-    </div>
   </div>
   <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
@@ -104,114 +98,110 @@
                         function (jqXHR) {
                           location.reload();
                         });
-      };
-    });
+        $('#tab-all-estates').on('click', '.tab-detail-all', function (evt) {
+          evt.preventDefault();
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-all-estates';
 
+          console.log('===================================');
+          console.log(evt);
+          console.log(url);
+          console.log('===================================');
 
-    $(function () {
-      $('#tab-all-estates').on('click', '.tab-detail-all', function (evt) {
-        evt.preventDefault();
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-all-estates';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-        console.log('===================================');
-        console.log(evt);
-        console.log(url);
-        console.log('===================================');
+        $('#tab-start-list').on('click', '.tab-detail-startup', function (evt) {
+          evt.preventDefault();
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-start-list';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-vacant-list').on('click', '.tab-detail-vacant', function (evt) {
+          evt.preventDefault();
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-vacant-list';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-      $('#tab-start-list').on('click', '.tab-detail-startup', function (evt) {
-        evt.preventDefault();
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-start-list';
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-start-list').on('click', '.tab-estate-repair', function (evt) {
+          evt.preventDefault();
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-start-list';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-      $('#tab-vacant-list').on('click', '.tab-detail-vacant', function (evt) {
-        evt.preventDefault();
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-vacant-list';
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-vacant-list').on('click', '.tab-estate-repair', function (evt) {
+          evt.preventDefault();
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-vacant-list';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-      $('#tab-start-list').on('click', '.tab-estate-repair', function (evt) {
-        evt.preventDefault();
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-start-list';
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-all-estates').on('click', '.tab-estate-repair', function (evt) {
+          evt.preventDefault();
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-all-estates';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-      $('#tab-vacant-list').on('click', '.tab-estate-repair', function (evt) {
-        evt.preventDefault();
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-vacant-list';
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-start-list').on('click', '.change-type', function (evt) {
+          evt.preventDefault();
+          console.log('change type estate');
+          console.log("================================");
+          console.log(evt);
+          console.log("=================================")
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-start-list';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-      $('#tab-all-estates').on('click', '.tab-estate-repair', function (evt) {
-        evt.preventDefault();
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-all-estates';
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-vacant-list').on('click', '.change-type', function (evt) {
+          evt.preventDefault();
+          console.log('change type advertised');
+          console.log("================================");
+          console.log(evt);
+          console.log("=================================")
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-vacant-list';
+          requestDetail(url,SELECTED_TAB);
+        });
 
-      $('#tab-start-list').on('click', '.change-type', function (evt) {
-        evt.preventDefault();
-        console.log('change type estate');
-        console.log("================================");
-        console.log(evt);
-        console.log("=================================")
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-start-list';
-        requestDetail(url,SELECTED_TAB);
-      });
+        $('#tab-all-estates').on('click', '.change-type', function (evt) {
+          evt.preventDefault();
+          console.log('change type advertised');
+          console.log("================================");
+          console.log(evt);
+          console.log("=================================")
+          var url = evt.currentTarget.href;
+          var SELECTED_TAB = 'tab-all-estates';
+          requestDetail(url,SELECTED_TAB);
+        });
+        function requestDetail(url, selected_tab) {
+          $.ajax({
+            url: url,
+            method: 'put',
+            data: {
+              'dataType': selected_tab
+            }
+          })
+                  .then(
+                          function(response) {
+                            // get html by id
+                            var html = $('#' + 'tab-estate-detail', response).html();
 
-      $('#tab-vacant-list').on('click', '.change-type', function (evt) {
-        evt.preventDefault();
-        console.log('change type advertised');
-        console.log("================================");
-        console.log(evt);
-        console.log("=================================")
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-vacant-list';
-        requestDetail(url,SELECTED_TAB);
-      });
+                            // replace html
+                            render('#' + selected_tab, html);
+                          },
+                          function(jqXHR) {
+                            location.reload();
+                          });
+        };
 
-      $('#tab-all-estates').on('click', '.change-type', function (evt) {
-        evt.preventDefault();
-        console.log('change type advertised');
-        console.log("================================");
-        console.log(evt);
-        console.log("=================================")
-        var url = evt.currentTarget.href;
-        var SELECTED_TAB = 'tab-all-estates';
-        requestDetail(url,SELECTED_TAB);
-      });
-      function requestDetail(url, selected_tab) {
-        $.ajax({
-                  url: url,
-                  method: 'put',
-                  data: {
-                    'dataType': selected_tab
-                  }
-                })
-                .then(
-                        function(response) {
-                          // get html by id
-                          var html = $('#' + 'tab-estate-detail', response).html();
-
-                          // replace html
-                          render('#' + selected_tab, html);
-                        },
-                        function(jqXHR) {
-                          location.reload();
-                        });
-      };
-
-      function render(selector, html) {
-        $(selector).html(html);
+        function render(selector, html) {
+          $(selector).html(html);
+        };
       };
     });
 

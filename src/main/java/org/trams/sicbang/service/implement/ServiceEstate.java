@@ -1,5 +1,6 @@
 package org.trams.sicbang.service.implement;
 
+import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -258,6 +259,59 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
 
         }
         return repositoryEstate.save(estate);
+    }
+
+    @Override
+    public List<Estate> filterBy(int pageIndex, String city, String district, String town) {
+        List<Estate> estates = null;
+        pageIndex = pageIndex * 10;
+        // if 3 field is null, then search all
+        if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town)){
+            System.out.println("three field null");
+            estates = repositoryEstate.findAllEstate(pageIndex);
+            System.out.println("total size: "+estates.size());
+            return estates;
+        }
+        if(!Strings.isNullOrEmpty(city)){
+            System.out.println("city field not null");
+            estates = repositoryEstate.findEstateByCity(pageIndex,city);
+            System.out.println("city size: "+estates.size());
+            return estates;
+        }
+        if(!Strings.isNullOrEmpty(district)){
+            System.out.println("district field not null");
+            estates = repositoryEstate.findEstateByDistrict(pageIndex,district);
+            return estates;
+        }
+        if(!Strings.isNullOrEmpty(town)){
+            System.out.println("town field not null");
+            estates = repositoryEstate.findEstateByTown(pageIndex,town);
+            return estates;
+        }
+        return estates;
+    }
+
+    @Override
+    public Long totalEstateFilter(String city, String district, String town) {
+        // if 3 field is null, then search all
+        Long count = null;
+        if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town)){
+            count = repositoryEstate.totalAllEstate();
+            return count;
+        }
+        if(!Strings.isNullOrEmpty(city)){
+            count = repositoryEstate.totalEstateByCity(city);
+            return count;
+        }
+        if(!Strings.isNullOrEmpty(district)){
+            count = repositoryEstate.totalEstateByDistrict(district);
+            return count;
+        }
+        if(!Strings.isNullOrEmpty(town)){
+            count = repositoryEstate.totalEstateByTown(town);
+            return count;
+        }
+        return count;
     }
 }
 

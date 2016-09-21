@@ -5,6 +5,8 @@ import org.trams.sicbang.model.dto.CustomUserDetail;
 import org.trams.sicbang.model.entity.Estate;
 import org.trams.sicbang.model.form.FormEstate;
 
+import java.util.List;
+
 /**
  * Created by voncount on 4/13/2016.
  */
@@ -67,4 +69,18 @@ public interface IServiceEstate {
     * Update Estate
      */
     Estate updateEstate(FormEstate form, Estate estate);
+
+//    List<Estate> filterByCity(int pageIndex, String name);
+//    List<Estate> filterByDistrict(int pageIndex, String name);
+//    List<Estate> filterByTown(int pageIndex, String name);
+//    List<Estate> filterBySubway(int pageIndex, String name);
+
+    List<Estate> filterBy(int pageIndex, String city, String district, String town);
+
+    Long totalEstateFilter(String city, String district, String town);
+
+//    Long totalEstateFilterByCity(String name);
+//    Long totalEstateFilterByDistrict(String name);
+//    Long totalEstateFilterByTown(String name);
+//    Long totalEstateFilterBySubway(String name);
 }
