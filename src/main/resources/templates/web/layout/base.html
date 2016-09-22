@@ -40,19 +40,18 @@
         </div>
         <div class="contents">
             <div class="modalAlignArea">
-                <form method="post" class="form-login" th:action="@{/login}">
                 <div class="formControlGroup horizontal">
                     <label class="narrow">아이디</label>
-                    <input type="text" name= "username" class="formControl wide warning" />
+                    <input type="text" id = "username" name= "username" class="formControl wide warning" />
                 </div>
 
                 <div class="formControlGroup horizontal">
                     <label class="narrow">비밀번호</label>
-                    <input type="password" name="password" class="formControl wide warning" />
+                    <input type="password" id="password" name="password" class="formControl wide warning" />
                 </div>
                 <div class="formControlGroup">
                     <label class="narrow"></label>
-                    <input id="autoLogin" name="rememberme" type="checkbox" class="formControl warning" />
+                    <input id="autoLogin" id="rememberme" name="rememberme" type="checkbox" class="formControl warning" />
                     <label for="autoLogin"></label>
                     <span style="font-size:12px;">자동로그인</span>
                 </div>
@@ -60,8 +59,7 @@
                     <button id="loginConfirmButton" class="btn warning littleWide">로그인</button>
                 </div>
                     <br/>
-                    <div class="form-group clearfix"><span class="error-message" th:text="${param.login_error[0]}" th:if="${param.login_error != null}">아이디와 비밀번호를 다시 확인해주십시오. </span></div>
-                </form>
+                    <div class="form-group clearfix"><span class="error-message"></span></div>
             </div>
         </div>
     </div>
@@ -140,7 +138,7 @@ TOP
             </div>
         </div>
     </div>
-    <div class="popup active">
+    <div class="popup active ">
         <div class="exit exitButton">
             <img th:src="@{/static/admin/include/images/popup/close.png}"/>
 
@@ -253,8 +251,7 @@ TOP
             });
 
             //로그인 버튼
-            $("#loginConfirmButton").click(function(e){
-            });
+
 
 
             //회원가입 버튼
@@ -322,8 +319,31 @@ TOP
             //모달 창 닫기
             $(".modal .exitIcon").click(function(e){
                 $(this).parents(".modal").removeClass("active");
+                $("#username").val("");
+                $("#password").val("");
+                $(".error-message").html("");
                 overlay.removeClass("active");
             });
+
+            $("#loginConfirmButton").click(function(e){
+                $.ajax({
+                    url:"/login",
+                    type:"POST",
+                    data: {
+                        "username": $("#username").val(),
+                        "password": $("#password").val(),
+                    },
+                    success: function(data){
+                        if(data == 'login_success'){
+                            top.location.href="/";
+                        }else{
+                            $("#username").val("");
+                            $("#password").val("");
+                            $(".error-message").html("Invalid user name or password");
+                        }
+                    }
+                });
+            })
         });
     </script>
     <script th:src="@{/static/web/assets/js/scripts.js}"></script>
