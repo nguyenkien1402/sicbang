@@ -63,7 +63,6 @@ public class ControllerUser extends AbstractController {
         FormReport formReport = new FormReport();
         formReport.setUserId(form.getUserId());
         Page<ReportInformation> reports = serviceReport.filter(formReport);
-
         map.put("user", user);
         map.put("items", reports);
         return BASE_TEMPLATE + "detail";
@@ -82,6 +81,7 @@ public class ControllerUser extends AbstractController {
         if (error != null) {
             return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
         }
+
         serviceUser.update(form);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -95,6 +95,7 @@ public class ControllerUser extends AbstractController {
     @ResponseBody
     public ResponseEntity resetPassword(
             @ModelAttribute FormPassword form) {
+        System.err.println("User Id: "+form.getUserId());
         FormError error = validationUser.validateResetPassword(form);
         if (error != null) {
             System.out.println(error.getErrors().get("passwordInvalid"));

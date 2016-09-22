@@ -28,7 +28,7 @@
 			</div>
 			<div th:if="${@serviceAuthorized.isAuthenticated()}">
 			<li><a th:href="@{/logout}"> 로그아웃</a></li>
-            <li>설정</li>
+            <li><a th:href="@{/setting}">설정</a></li>
             <li>최근 살펴본 매물</li>
             <li>찜목록</li>
             <li>매물 올리기</li>
@@ -64,6 +64,18 @@
 			<a href="#"><img th:src="@{/static/admin/include/images/footer/pinterest.png}"/></a>
 		</div>
 		<p class="copyright">COPYRIGHT ALL RIGHT RESERVED. SIGBANG</p>
+
+		<div id="popup-notice" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div role="alert" class="alert alert-danger alert-dismissible">
+						<button type="button" data-dismiss="modal" aria-label="Close" class="close" id="btn-notice-action">x</button>
+						<span class="popup-msg">비밀번호와 비밀번호확인이 일치하지 않습니다</span>
+						<!-- Password and Password Confirmation do not match.-->
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </body>

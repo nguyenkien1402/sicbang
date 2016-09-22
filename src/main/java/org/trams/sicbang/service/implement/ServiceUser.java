@@ -135,7 +135,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
         String username = form.getUsername();
         String cellphoneNumber = form.getCellphoneNumber();
         String type = form.getType();
-
+        String companyName = form.getCompanyName();
         // Validate userId
         User existedUser = repositoryUser.findOne(Long.parseLong(userId));
         if (existedUser == null) {
@@ -144,6 +144,10 @@ public class ServiceUser extends BaseService implements IServiceUser {
         // Update username
         if (!Strings.isNullOrEmpty(username)) {
             existedUser.setUsername(username);
+        }
+        // Update username
+        if (!Strings.isNullOrEmpty(companyName)) {
+            existedUser.setCompanyName(companyName);
         }
         // Update cellphone
         if (!Strings.isNullOrEmpty(cellphoneNumber)) {
@@ -284,5 +288,11 @@ public class ServiceUser extends BaseService implements IServiceUser {
         }
 
         return users;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = repositoryUser.findByEmail(email);
+        return user;
     }
 }

@@ -81,6 +81,7 @@ public class ControllerUser extends AbstractController {
         if (error != null) {
             return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
         }
+
         serviceUser.update(form);
         return new ResponseEntity(HttpStatus.OK);
     }

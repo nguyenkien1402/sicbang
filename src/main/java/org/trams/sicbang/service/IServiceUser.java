@@ -80,7 +80,14 @@ public interface IServiceUser {
      */
     List<User> filterBy(String type);
 
+    /*
+    *
+    * Find User
+    * Param Username
+    * @return
+    *
+    * */
 
-
+    User findUserByEmail(String email);
 
 }

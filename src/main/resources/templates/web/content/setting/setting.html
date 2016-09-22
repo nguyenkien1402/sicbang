@@ -1,0 +1,221 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
+ <head>
+        <meta charset="utf-8"/>
+        <title>식방</title>
+ </head>
+<body>
+<div layout:fragment="content" id="contents">
+<div id="container">
+    <div class="containerTitle">
+                    <h2>설정</h2>
+                </div>
+                <table class="table full">
+                    <tr>
+                        <th class="paddingLeft" style="width:200px; text-align:left;">이름</th>
+                        <td>
+                            <input type="hidden" th:value="${user.id}" id = "userId" class="formControl wide" style="height:30px;" />
+                            <input type="hidden" th:value="${user.email}" id = "email" class="formControl wide" style="height:30px;" />
+                            <input type="text" th:value="${user.companyName}" id = "companyName" class="formControl wide" style="height:30px;" />
+                            <button class="btn" id="nameChange" style="height:30px;" >수정반영</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">이메일</th>
+                        <td th:text="${user.email}">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">비밀번호</th>
+                        <td>
+                            <button id="changePassButton" class="btn" style="height:30px;" >비밀번호 변경</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="width:200px; text-align:left;">핸드폰</th>
+                        <td>
+                            <input type="text" class="formControl wide" id="cellphoneNumber" th:value="${user.cellphoneNumber}" style="height:30px;" />
+                            <button class="btn" id="cellphoneChange" style="height:30px;" >수정반영</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">회원탈퇴</th>
+                        <td style="text-decoration:underline;">
+                            <span id="withdrawButton" style="cursor:pointer;">탈퇴</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+    <div class="overlay"></div>
+    <div class="modal changePassModal">
+        <div class="title clearFix">
+            <p>비밀번호 변경</p>
+            <span class="exitIcon"><i class="fa fa-times"></i></span>
+        </div>
+        <div class="contents">
+            <div class="modalAlignArea">
+                <div class="form-group clearfix"><span class="error-message"></span></div>
+                <br/>
+                <div class="formControlGroup horizontal">
+                    <label class="">기존 비밀번호</label>
+                    <input name="changePassPass" id="changePassPass" type="password" class="formControl wide warning" />
+                </div>
+
+                <div class="formControlGroup horizontal">
+                    <label class="">새 비밀번호</label>
+                    <input name="changePassNewPass" id="changePassNewPass"  type="password" class="formControl wide warning" />
+                </div>
+                <div class="formControlGroup horizontal">
+                    <label class="">새 비밀번호 확인</label>
+                    <input name="changePassNewPassConf" id="changePassNewPassConf" type="password" class="formControl wide warning" />
+                </div>
+
+                <div class="btnGroup">
+                    <button id="changePassConfirmButton" class="btn warning littleWide">변경하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal withdrawModal">
+        <div class="title clearFix">
+            <p>비밀번호 확인</p>
+            <span class="exitIcon"><i class="fa fa-times"></i></span>
+        </div>
+        <div class="contents">
+            <div class="modalAlignArea">
+                <div class="formControlGroup horizontal">
+                    <label class="narrow">비밀번호</label>
+                    <input name="withdrawPass" type="password" class="formControl wide warning" />
+                </div>
+
+                <div class="formControlGroup horizontal">
+                    <label class="narrow">탈퇴사유</label>
+                    <textarea name="withdrawContents" class="formControl wide warning"></textarea>
+
+                </div>
+
+                <div class="btnGroup">
+                    <button id="withdrawConfirmButton" class="btn warning littleWide">탈퇴하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function(){
+
+            var currentName = $("#companyName").val();
+            var currentCellphone = $("#cellphoneNumber").val();
+            var email = $("#email").val();
+            var changePassModal = $(".changePassModal");
+            var withdrawModal = $(".withdrawModal");
+            var overlay = $(".overlay");
+            var userId = $("#userId").val();
+
+            //비밀번호 변경 창 띄우는 버튼
+            $("#changePassButton").click(function(e){
+                overlay.addClass("active");
+                $(window).scrollTop(0);
+                changePassModal.addClass("active");
+            });
+            //비밀번호 변경 버튼
+            $("#changePassConfirmButton").click(function(e){
+                var pass = $("input[name=changePassPass]").val();
+                var newPass = $("input[name=changePassNewPass]").val();
+                var newPassConf = $("input[name=changePassNewPassConf]").val();
+
+                if(newPass != newPassConf){
+                    $(".error-message").html("새 비밀번호를 다시 입력해주세요.");
+                    return false;
+                }
+                $.ajax({
+                    url: "setting/update/password",
+                    type: "POST",
+                    data:{
+                        "userId": userId,
+                        "password": pass,
+                        "passwordNew": newPass,
+                        "passwordConfirm": newPassConf
+                    },
+                    success: function(data){
+                        $("#changePassPass").val("");
+                        $("#changePassNewPass").val("");
+                        $("#changePassNewPassConf").val("");
+                        if(data == "SUCCESS"){
+                            overlay.removeClass("active");
+                            changePassModal.removeClass("active");
+                        }else if(data == "PASSWORD_INCORRECT"){
+                            $(".error-message").html("잘못된 비밀번호");
+                        }else{
+                            $(".error-message").html("Error");
+                        }
+                    }
+                })
+
+            });
+
+            //탈퇴하기 창 띄우는 버튼
+            $("#withdrawButton").click(function(e){
+                overlay.addClass("active");
+                $(window).scrollTop(0);
+                withdrawModal.addClass("active");
+            });
+            //비밀번호 변경 버튼
+            $("#withdrawConfirmButton").click(function(e){
+                var pass = $("input[name=withdrawPass]").val();
+                var contents = $("input[name=withdrawContents]").val();
+
+
+                if(pass == "" || contents == ""){
+                    alert("모든 정보를 입력하여 주세요.");
+                    return false;
+                }
+
+                alert("탈퇴 완료");
+                location.href = "main.html";
+
+            });
+            $("#nameChange").click(function(){
+                currentName = $("#companyName").val();
+                $.ajax({
+                    url: "setting/update",
+                    type:"POST",
+                    data:{
+                        "companyName" : currentName,
+                        "email" : $("#email").val(),
+                        "userId": userId,
+                        "cellphoneNumber": currentCellphone
+                    },
+                    success:function(data){
+                        alert("변경 되었습니다.");
+
+
+                    }
+
+                });
+            });
+            $("#cellphoneChange").click(function(){
+                currentCellphone = $("#cellphoneNumber").val();
+                $.ajax({
+                    url: "setting/update",
+                    type:"POST",
+                    data:{
+                        "companyName" : currentName,
+                        "email" : $("#email").val(),
+                        "userId": userId,
+                        "cellphoneNumber": currentCellphone
+                    },
+                    success:function(data){
+                        alert("변경 되었습니다.");
+                    }
+
+                });
+            });
+        });
+        /*]]>*/
+    </script>
+        </div>
+    </body>
+
+
+</html>

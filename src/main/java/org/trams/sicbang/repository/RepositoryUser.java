@@ -27,5 +27,4 @@ public interface RepositoryUser extends JpaRepository<User, Long>, JpaSpecificat
             "WHERE MONTH(u.created_date) = :month AND YEAR(u.created_date) = :year AND DAY(u.created_date) = :day", nativeQuery = true)
     List<User> findBySignUpToDay(@Param("day") Integer day, @Param("month") Integer month, @Param("year") Integer year);
 
-
 }
