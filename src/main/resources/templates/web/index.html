@@ -4,45 +4,119 @@
     <meta charset="UTF-8"/>
     <title>Index</title>
 	<!-- Render css and js -->
+    <link rel="shortcut icon" th:href="@{/static/admin/assets/images/icon/favicon.ico}" type="image/x-icon" />
 
 </head>
 <body>
-	<div layout:fragment="content">
-	    <div class="row">
-			<div class="col-md-4">
-				<h2>
-					Heading
-				</h2>
-				<p>
-					Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-				</p>
-				<p>
-					<a class="btn" href="#">View details »</a>
-				</p>
-			</div>
-			<div class="col-md-4">
-				<h2>
-					Heading
-				</h2>
-				<p>
-					Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-				</p>
-				<p>
-					<a class="btn" href="#">View details »</a>
-				</p>
-			</div>
-			<div class="col-md-4">
-				<h2>
-					Heading
-				</h2>
-				<p>
-					Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-				</p>
-				<p>
-					<a class="btn" href="#">View details »</a>
-				</p>
-			</div>
-		</div>
-	</div>
+    <div layout:fragment="content"  id="contents">
+        <div class="mainVisual" style="background: transparent url(/static/admin/include/images/main/back.png) no-repeat center;">
+            <div class="searchArea">
+                <select id="findMethod" class="formControl primary">
+                    <option value="1">상권으로 찾기</option>
+                    <option value="2">지하철 역으로 찾기</option>
+                    <option value="3">등록번호로 찾기</option>
+                </select>
+                <div class="storeSearch searchMethodArea active">
+                    <select class="formControl citySelect">
+                        <option selected disabled>선택</option>
+                    </select>
+                    <select class="formControl districtSelect">
+                        <option selected disabled>선택</option>
+                    </select>
+                    <select class="formControl">
+                        <option selected disabled>선택</option>
+                    </select>
+                </div>
+                <div class="subwaySearch searchMethodArea" style="margin-right:20px;">
+                    <input type="text" class="subwayInput formControl" style="width:498px;" placeholder="지하철역"/>
+                </div>
+                <div class="numberSearch searchMethodArea">
+                    <input type="text" class="formControl" style="width:498px;" placeholder="등록번호"/>
+                </div>
+                <button class="btn primary">매물 검색 <i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <div id="container">
+            <div class="row">
+                <div class="mainBoard">
+                    <div class="title clearFix">
+                        <h3 class="name">외식 창업 소식</h3>
+                        <a href="#" class="viewMore">+ 더보기</a>
+                    </div>
+                    <table class="boardContents">
+                        <tr>
+                            <td><a href="#">식방 긴급 공지사항</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">식방 홈페이지 보수</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">식방 서비스 확대 시행 안내</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">식방 긴급 공지사항</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mainBoard">
+                    <div class="title clearFix">
+                        <h3 class="name">공지사항</h3>
+                        <a href="#" class="viewMore">+ 더보기</a>
+                    </div>
+                    <table class="boardContents">
+                        <tr>
+                            <td><a href="#">식방 긴급 공지사항</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">식방 홈페이지 보수</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">식방 서비스 확대 시행 안내</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">식방 긴급 공지사항</a></td>
+                            <td>2016.06.24</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="adArea">
+            <a href="#">
+                <img th:src="@{/static/admin/include/images/main/ad.png}"/>
+            </a>
+        </div>
+        <div class="appArea">
+            <div class="container">
+                <div class="block">
+                    <img class="phone" th:src="@{/static/admin/include/images/main/phone.png}"/>
+                </div>
+                <div class="block">
+                    <div class="text">
+                        <p><strong>식방앱다운</strong>받으시고</p>
+                        <p>쉽고 빠르게 검색하세요!</p>
+                    </div>
+                    <a href="#"><button class="appMove" style="width:220px;"><img th:src="@{/static/admin/include/images/main/google.png}"/></button></a>
+                    <br/>
+                    <a href="#"><button class="appMove" style="width:220px;"><img th:src="@{/static/admin/include/images/main/appstore.png}"/></button></a>
+                </div>
+
+            </div>
+        </div>
+        <div class="detailArea">
+            <div class="wrap">
+                <span class="info"><strong>중개사무소 가입 및 광고 방법</strong>이 궁금하신가요?</span>
+                <a href="#"><button class="btn info round littleWide">자세히 보기</button></a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

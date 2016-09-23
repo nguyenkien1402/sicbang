@@ -22,7 +22,7 @@ public class RestAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
             response.sendRedirect("/admin?login_error=" + "Invalid user name or password");
         }
         else {
-            response.sendRedirect("?login_error=" + "Invalid user name or password");
+            response.getWriter().write("login_error");
         }
     }
 }

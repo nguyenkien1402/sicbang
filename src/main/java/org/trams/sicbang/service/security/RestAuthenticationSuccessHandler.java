@@ -25,7 +25,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         if (serviceAuthorized.isAdmin()) {
             response.sendRedirect("/admin");
         } else {
-            response.sendRedirect("/");
+            response.getWriter().write("login_success");
         }
     }
 

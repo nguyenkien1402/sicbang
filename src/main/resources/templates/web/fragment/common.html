@@ -6,34 +6,77 @@
 </head>
 <body>
 	<!-- START HEADER FRAGMENT -->
-	<div th:fragment="header">
-		<div class="row">
-			<div class="col-md-12">
-				<nav class="navbar navbar-default" role="navigation">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-							 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-						</button> <a class="navbar-brand" th:href="@{/}">SIGBANG</a>
-					</div>
-					
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<li class="active">
-								<a th:href="@{/admin}">Admin</a>
-							</li>
-						</ul>
-					</div>
-				</nav>
+	<div th:fragment="header" id="header">
+		<a href="/">
+			<div class="logoImage">
+				<img th:src="@{/static/admin/include/images/header/logo.png}"/>
 			</div>
-		</div>
+		</a>
+		<ul class="headerList clearFix">
+			<a th:href="@{/estate}"><li>전체 매물 보기</li></a>
+			<a href="content.html"><li>창업인수</li></a>
+			<a href=""><li>공실매물</li></a>
+			<a href=""><li>외식 창업 소식</li></a>
+			<a href=""><li>공지사항</li></a>
+
+		</ul>
+		<ul class="headerRightList">
+			<div th:unless="${@serviceAuthorized.isAuthenticated()}">
+			<li class="loginButton">로그인</li>
+			<li id="joinButton">회원가입</li>
+			<a href=""><li class="primary">중개사무소 가입 및 광고문의</li></a>
+			</div>
+			<div th:if="${@serviceAuthorized.isAuthenticated()}">
+			<li><a th:href="@{/logout}"> 로그아웃</a></li>
+            <li><a th:href="@{/setting}">설정</a></li>
+            <li>최근 살펴본 매물</li>
+            <li>찜목록</li>
+            <li>매물 올리기</li>
+			</div>
+
+		</ul>
 	</div>
 	<!-- END HEADER FRAGMENT -->
 	
 	<!-- START FOOTER FRAGMENT -->
-	<div th:fragment="footer">
-	
+	<div th:fragment="footer" id="footer">
+		<ul class="big clearFix">
+			<li>상호:(주)르망제</li>
+			<li>대표: 정종열</li>
+			<li>상표: 食방</li>
+		</ul>
+		<ul class="clearFix">
+			<a th:href="@{/use-policy}"><li>이용약관</li></a>
+			<a th:href="@{/privacy-policy}"><li>개인정보취급방침</li></a>
+			<a><li>위치기반서비스 이용약관</li></a>
+			<a><li>회사소개서</li></a>
+		</ul>
+		<ul class="clearFix">
+			<li>서비스이용문의: 1234-5678</li>
+			<li>주소: 서울시 양천구 은행정로 3길 8-2 A호</li>
+			<li>이메일: abced1234@naver.com</li>
+			<li>서비스제휴문의: 1234-5678</li>
+		</ul>
+		<div class="snsArea">
+			<a href="#"><img th:src="@{/static/admin/include/images/footer/facebook.png}"/></a>
+			<a href="#"><img th:src="@{/static/admin/include/images/footer/band.png}"/></a>
+			<a href="#"><img th:src="@{/static/admin/include/images/footer/instagram.png}"/></a>
+			<a href="#"><img th:src="@{/static/admin/include/images/footer/pinterest.png}"/></a>
+		</div>
+		<p class="copyright">COPYRIGHT ALL RIGHT RESERVED. SIGBANG</p>
+
+		<div id="popup-notice" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div role="alert" class="alert alert-danger alert-dismissible">
+						<button type="button" data-dismiss="modal" aria-label="Close" class="close" id="btn-notice-action">x</button>
+						<span class="popup-msg">비밀번호와 비밀번호확인이 일치하지 않습니다</span>
+						<!-- Password and Password Confirmation do not match.-->
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<!-- END FOOTER FRAGMENT -->
-	
+
 </body>
 </html>
