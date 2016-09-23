@@ -81,7 +81,7 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.5.0</version>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -129,6 +129,19 @@
             <artifactId>lombok</artifactId>
             <version>1.16.8</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

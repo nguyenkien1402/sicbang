@@ -15,7 +15,7 @@
         </div>
         <div class="second">
           <div class="city">
-            <form class="form-search form-horizontal sb-mb-30">
+            <form id="form-search-estate" class="form-search form-horizontal sb-mb-30">
               <div class="form-body">
                 <div class="form-group">
                   <div class="col-md-4">
@@ -62,88 +62,131 @@
   </div>
   <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-    $(function () {
+      $(function () {
+          var SELECTED_TAB = 'tab-all-estates';
+          var URL = location.href;
+          // init
 
-      var SELECTED_TAB = 'tab-all-estates';
-      var URL = location.href;
-      console.log("href: "+URL);
-      // init
+          request(URL, SELECTED_TAB);
 
-      request(URL, SELECTED_TAB);
+          $('.tab-wrapper').on('click', '.nav.nav-tabs a', function (evt) {
+            SELECTED_TAB = $(this).attr('href').replace('#', '');
+            console.log('Tab 1:' + SELECTED_TAB);
+            console.log('URL: ' + URL);
+            request(URL, SELECTED_TAB);
+          });
 
-      $('.tab-wrapper').on('click', '.nav.nav-tabs a', function(evt) {
-        SELECTED_TAB = $(this).attr('href').replace('#','');
-        console.log('Tab 1:' + SELECTED_TAB);
-        console.log('URL: '+URL);
-        request(URL, SELECTED_TAB);
+          $('.tab-wrapper').on('click', '.pagination-wrapper a', function (evt) {
+            evt.preventDefault();
+            console.log("pagination");
+            var _url = $(this).attr('href');
+            request(_url, SELECTED_TAB);
+          });
+
+          function render(selector, html) {
+            $(selector).html(html);
+          };
+
+          function request(url, selected_tab) {
+            $.ajax({
+              url: url,
+              method: 'put',
+              data: {
+                'dataType': selected_tab
+              }
+            })
+                    .then(
+                            function (response) {
+                              var html = $('#' + selected_tab, response).html();
+                              render('#' + selected_tab, html);
+                            },
+                            function (jqXHR) {
+                              console.log("reload : "+jqXHR);
+                              location.reload();
+                            });
+          };
+
+          function requestSearch(url, selected_tab) {
+            $.ajax({
+              url: url,
+              method: 'put',
+              data: {
+                'dataType': selected_tab,
+              }
+            })
+                    .then(
+                            function (response) {
+                              var html = $('#' + selected_tab, response).html();
+                              render('#' + selected_tab, html);
+                            },
+                            function (jqXHR) {
+                              console.log("reload : "+jqXHR);
+                              location.reload();
+                            });
+          };
+
+          $('#form-search-estate').on('submit', function (evt) {
+            console.log("form search estate");
+            console.log("select tab:" + SELECTED_TAB);
+            var value = $('.inp-search').val();
+            var key = $('.sel-nav').val();
+            URL = location.href;
+            console.log("value html: "+value);
+            console.log("key html:" +key);
+            URL = URL + "?"+key+"="+value;
+            console.log("url html:"+URL);
+            requestSearch(URL,SELECTED_TAB);
+            evt.preventDefault();
+          });
       });
 
-      function render(selector, html) {
-        $(selector).html(html);
-      };
 
-      function request(url, selected_tab) {
-        $.ajax({
-                  url: url,
-                  method: 'put',
-                  data: {
-                    'dataType': selected_tab
-                  }
-                })
-                .then(
-                        function (response) {
-                          var html = $('#' + selected_tab, response).html();
-                          render('#' + selected_tab, html);
-                        },
-                        function (jqXHR) {
-                          location.reload();
-                        });
+      $(function () {
         $('#tab-all-estates').on('click', '.tab-detail-all', function (evt) {
           evt.preventDefault();
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-all-estates';
-
           console.log('===================================');
           console.log(evt);
           console.log(url);
           console.log('===================================');
 
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-start-list').on('click', '.tab-detail-startup', function (evt) {
           evt.preventDefault();
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-start-list';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-vacant-list').on('click', '.tab-detail-vacant', function (evt) {
           evt.preventDefault();
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-vacant-list';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-start-list').on('click', '.tab-estate-repair', function (evt) {
           evt.preventDefault();
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-start-list';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-vacant-list').on('click', '.tab-estate-repair', function (evt) {
           evt.preventDefault();
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-vacant-list';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-all-estates').on('click', '.tab-estate-repair', function (evt) {
           evt.preventDefault();
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-all-estates';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-start-list').on('click', '.change-type', function (evt) {
@@ -154,7 +197,7 @@
           console.log("=================================")
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-start-list';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-vacant-list').on('click', '.change-type', function (evt) {
@@ -165,7 +208,7 @@
           console.log("=================================")
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-vacant-list';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
 
         $('#tab-all-estates').on('click', '.change-type', function (evt) {
@@ -176,7 +219,7 @@
           console.log("=================================")
           var url = evt.currentTarget.href;
           var SELECTED_TAB = 'tab-all-estates';
-          requestDetail(url,SELECTED_TAB);
+          requestDetail(url, SELECTED_TAB);
         });
         function requestDetail(url, selected_tab) {
           $.ajax({
@@ -187,14 +230,14 @@
             }
           })
                   .then(
-                          function(response) {
+                          function (response) {
                             // get html by id
                             var html = $('#' + 'tab-estate-detail', response).html();
 
                             // replace html
                             render('#' + selected_tab, html);
                           },
-                          function(jqXHR) {
+                          function (jqXHR) {
                             location.reload();
                           });
         };
@@ -202,8 +245,7 @@
         function render(selector, html) {
           $(selector).html(html);
         };
-      };
-    });
+      });
 
     /*]]>*/
   </script>

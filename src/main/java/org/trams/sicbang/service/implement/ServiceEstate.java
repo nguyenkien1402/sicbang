@@ -262,53 +262,75 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     }
 
     @Override
-    public List<Estate> filterBy(int pageIndex, String city, String district, String town) {
+    public Integer updateImageEstate(MultipartFile file, Estate estate) {
+        try {
+            String fileRelativePath[], fileUrl, thumbUrl;
+            fileRelativePath = FileUtils.uploadImage(file.getInputStream(), configParams.UPLOAD_DIRECTORY, "/estate/");
+            fileUrl = configParams.BASE_URL + "/public" + fileRelativePath[0];
+            thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
+            Attachment attachment = new Attachment();
+            attachment.setOrigin(fileUrl);
+            attachment.setThumbnail(thumbUrl);
+            attachment.setTableRef("estate");
+            attachment.setRowRef(estate.getId());
+            repositoryAttachment.save(attachment);
+            return 1;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<Estate> filterBy(int pageIndex, String city, String district, String town, String type) {
         List<Estate> estates = null;
         pageIndex = pageIndex * 10;
+        type = "%"+type+"%";
         // if 3 field is null, then search all
         if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town)){
             System.out.println("three field null");
-            estates = repositoryEstate.findAllEstate(pageIndex);
+            estates = repositoryEstate.findAllEstate(pageIndex,type);
             System.out.println("total size: "+estates.size());
             return estates;
         }
         if(!Strings.isNullOrEmpty(city)){
             System.out.println("city field not null");
-            estates = repositoryEstate.findEstateByCity(pageIndex,city);
+            estates = repositoryEstate.findEstateByCity(pageIndex,city,type);
             System.out.println("city size: "+estates.size());
             return estates;
         }
         if(!Strings.isNullOrEmpty(district)){
             System.out.println("district field not null");
-            estates = repositoryEstate.findEstateByDistrict(pageIndex,district);
+            estates = repositoryEstate.findEstateByDistrict(pageIndex,district,type);
             return estates;
         }
         if(!Strings.isNullOrEmpty(town)){
             System.out.println("town field not null");
-            estates = repositoryEstate.findEstateByTown(pageIndex,town);
+            estates = repositoryEstate.findEstateByTown(pageIndex,town,type);
             return estates;
         }
         return estates;
     }
 
     @Override
-    public Long totalEstateFilter(String city, String district, String town) {
+    public Long totalEstateFilter(String city, String district, String town, String type) {
         // if 3 field is null, then search all
         Long count = null;
+        type = "%"+type+"%";
         if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town)){
-            count = repositoryEstate.totalAllEstate();
+            count = repositoryEstate.totalAllEstate(type);
             return count;
         }
         if(!Strings.isNullOrEmpty(city)){
-            count = repositoryEstate.totalEstateByCity(city);
+            count = repositoryEstate.totalEstateByCity(city,type);
             return count;
         }
         if(!Strings.isNullOrEmpty(district)){
-            count = repositoryEstate.totalEstateByDistrict(district);
+            count = repositoryEstate.totalEstateByDistrict(district,type);
             return count;
         }
         if(!Strings.isNullOrEmpty(town)){
-            count = repositoryEstate.totalEstateByTown(town);
+            count = repositoryEstate.totalEstateByTown(town,type);
             return count;
         }
         return count;

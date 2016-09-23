@@ -140,6 +140,7 @@
 
             $('.tab-wrapper').on('click', '.pagination-wrapper a', function(evt) {
                 evt.preventDefault();
+                console.log("pagination");
                 var _url = $(this).attr('href');
                 request(_url, SELECTED_TAB);
             });

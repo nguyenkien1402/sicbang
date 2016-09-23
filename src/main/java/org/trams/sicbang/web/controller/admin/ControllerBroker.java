@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.dto.BaseFormSearch;
 import org.trams.sicbang.model.entity.*;
@@ -22,6 +23,8 @@ import org.trams.sicbang.model.form.FormUser;
 import org.trams.sicbang.service.implement.ServiceUser;
 import org.trams.sicbang.web.controller.AbstractController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -60,7 +63,6 @@ public class ControllerBroker extends AbstractController {
             form.setType(UserType.TRUSTED_BROKER.name());
         }
         Page<User> users = serviceUser.filter(form);
-
         map.put("items", users);
         return BASE_TEMPLATE + "list";
     }
@@ -73,11 +75,66 @@ public class ControllerBroker extends AbstractController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detailBroker(
             @ModelAttribute FormUser form,
+            @PathVariable(value = "userId") String userId,
             ModelMap map) {
+        System.out.println("user id load: "+userId);
+        System.out.println("reload");
+        form.setUserId(userId);
         User user = serviceUser.findOne(form);
         map.put("user", user);
         return BASE_TEMPLATE + "detail_list";
     }
+
+    /**
+     * Detail
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
+    public String detailAjax(
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
+            @RequestParam(value = "dataType", defaultValue = "tab-estates-registered") String dataType,
+            ModelMap map) {
+
+        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
+        FormUser formUser = new FormUser();
+        formUser.setUserId(userId);
+        User user = serviceUser.findOne(formUser);
+        map.put("user", user);
+        switch (dataType) {
+            case "tab-reports": {
+                FormReport formReport = new FormReport();
+                formReport.setUserId(userId);
+                formReport.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
+                Page<ReportInformation> reports = serviceReport.filter(formReport);
+                map.put("reports", reports);
+                return BASE_TEMPLATE + "ajax/tab-reports";
+            }
+            case "tab-advertised-estate": {
+                System.out.println("call advertised");
+                FormEstate formEstate = new FormEstate();
+                formEstate.setUserId(userId);
+                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
+                formEstate.setIsAdvertised(Boolean.TRUE.toString());
+                Page<Estate> estates = serviceEstate.filter(formEstate);
+                map.put("items", estates);
+                return BASE_TEMPLATE + "ajax/tab-advertised-estate";
+            }
+            case "tab-estates-registered": {
+                FormEstate formEstate = new FormEstate();
+                formEstate.setUserId(userId);
+                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
+                Page<Estate> estates = serviceEstate.filter(formEstate);
+                map.put("items", estates);
+            }
+            default:
+                System.out.println("tab estate");
+                return BASE_TEMPLATE + "ajax/tab-estates-registered";
+        }
+
+    }
+
 
     @RequestMapping(value = "/detail/{estateId}", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
     public String detailBrokerAjax(
@@ -163,56 +220,6 @@ public class ControllerBroker extends AbstractController {
 
 
 
-    /**
-     * Detail
-     * @param map
-     * @return
-     */
-    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
-    public String detailAjax(
-            @PathVariable(value = "userId") String userId,
-            @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
-            @RequestParam(value = "dataType", defaultValue = "tab-estates-registered") String dataType,
-            ModelMap map) {
-
-        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
-        FormUser formUser = new FormUser();
-        formUser.setUserId(userId);
-        User user = serviceUser.findOne(formUser);
-        map.put("user", user);
-        switch (dataType) {
-            case "tab-reports": {
-                FormReport formReport = new FormReport();
-                formReport.setUserId(userId);
-                formReport.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                Page<ReportInformation> reports = serviceReport.filter(formReport);
-                map.put("reports", reports);
-
-                return BASE_TEMPLATE + "ajax/tab-reports";
-            }
-            case "tab-advertised-estate": {
-                System.out.println("call advertised");
-                FormEstate formEstate = new FormEstate();
-                formEstate.setUserId(userId);
-                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                formEstate.setIsAdvertised(Boolean.TRUE.toString());
-                Page<Estate> estates = serviceEstate.filter(formEstate);
-                map.put("items", estates);
-                return BASE_TEMPLATE + "ajax/tab-advertised-estate";
-            }
-            case "tab-estates-registered": {
-                FormEstate formEstate = new FormEstate();
-                formEstate.setUserId(userId);
-                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                Page<Estate> estates = serviceEstate.filter(formEstate);
-                map.put("items", estates);
-            }
-            default:
-                System.out.println("tab estate");
-                return BASE_TEMPLATE + "ajax/tab-estates-registered";
-        }
-
-    }
 
     /*
     * Delete
@@ -381,14 +388,32 @@ public class ControllerBroker extends AbstractController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/upload/image", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/upload/image/{id}", method = RequestMethod.POST)
+    @ResponseBody
     public void uploadImage(
-//            @PathVariable(value = "estateId") String estateId,
-            @RequestParam(value = "id", required = false) String id,
-            @ModelAttribute FormEstate formEstate,
+            @RequestParam("qqfile") MultipartFile file,
+            MultipartHttpServletRequest request,
+            HttpServletResponse response,
+            @PathVariable(value = "id") String id,
             ModelMap map) {
         System.out.println("==============================");
+        Estate estate = new Estate();
+        estate.setId((long) Integer.parseInt(id));
         System.out.println("Go for upload image");
+        System.out.println("Size" + file.getSize());
+        System.out.println("File name:" + file.getOriginalFilename());
+        int result = serviceEstate.updateImageEstate(file,estate);
+        if(result == 1){
+            System.out.println("upload success");
+//            JSONObject json1 = new JSONObject();
+//            json1.put("success", true);
+//            response.setCharacterEncoding("UTF-8");
+//            response.setContentType("text");
+//            response.getWriter().print(json1);
+//            response.flushBuffer();
+        }else{
+            System.out.println("not successfully");
+        }
         System.out.println("ID image: " + id);
         System.out.println("==============================");
     }

@@ -39,17 +39,43 @@ public class ControllerEstate extends AbstractController {
     private static Logger logger = Logger.getLogger(ControllerEstate.class);
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String index(
-            @ModelAttribute FormEstate form,
+    public String index(ModelMap map
+//                        @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
+//                        @RequestParam(value = "city", defaultValue = "") String city,
+//                        @RequestParam(value = "district", defaultValue = "") String district,
+//                        @RequestParam(value = "town", defaultValue = "") String town
+    ) {
+        System.out.println("========================");
+        System.out.println("all estate from start");
+//        List<Estate> estates = null;
+//        Long count = null;
+//        estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"VACANT");
+//        count = serviceEstate.totalEstateFilter(city,district,town,"VACANT");
+//        Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
+//        Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
+//        map.put("items", pageConvert);
+        System.out.println("========================");
+        return BASE_TEMPLATE + "list";
+
+    }
+
+    /**
+     * Filter
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
+    public String detailAjax(
             @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
+            @RequestParam(value = "dataType", defaultValue = "tab-all-estates") String dataType,
             @RequestParam(value = "city", defaultValue = "") String city,
             @RequestParam(value = "district", defaultValue = "") String district,
             @RequestParam(value = "town", defaultValue = "") String town,
             ModelMap map) {
-//        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
-//        FormEstate formEstate = new FormEstate();
         System.out.println("===================================");
-        System.out.println("Load estate");
+        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
+        System.out.println("Load estate type");
         List<Estate> estates = null;
         Long count = null;
         if(!Strings.isNullOrEmpty(city)){
@@ -64,66 +90,44 @@ public class ControllerEstate extends AbstractController {
             town = "%"+town+"%";
             System.out.println("town: "+town);
         }
-        estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town);
-        count = serviceEstate.totalEstateFilter(city,district,town);
-        Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
-        Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
-//        formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-//        Page<Estate> estates = serviceEstate.filter(formEstate);
-        System.out.println("estate form");
-        map.put("items", estates);
-        System.out.println("===================================");
-        return BASE_TEMPLATE + "list";
-    }
 
-    /**
-     * Filter
-     *
-     * @param map
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
-    public String detailAjax(
-            @ModelAttribute FormEstate form,
-            @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
-            @RequestParam(value = "dataType", defaultValue = "tab-all-estates") String dataType,
-            ModelMap map) {
-
-//        logger.info("datatype datatype : "+dataType);
-        Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
-        System.out.println("estate ajax");
         switch (dataType) {
-            case "tab-all-estates": {
-                FormEstate formEstate = new FormEstate();
-                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                Page<Estate> estates = serviceEstate.filter(formEstate);
-                map.put("items", estates);
-                return BASE_TEMPLATE + "ajax/tab-all-estates";
-            }
+
             case "tab-start-list": {
-                FormEstate formEstate = new FormEstate();
-                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                formEstate.setEstateType("STARTUP");
-//                form.setSubwayStation(subway);
-                Page<Estate> estates = serviceEstate.filter(formEstate);
-                map.put("items", estates);
-                System.out.println("startup estate: "+estates.getSize());
+                System.out.println("startup estate");
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"STARTUP");
+                count = serviceEstate.totalEstateFilter(city,district,town,"STARTUP");
+                Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
+                Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
+                map.put("items", pageConvert);
+                System.out.println("startup estate: "+estates.size());
+                System.out.println("===================================");
                 return BASE_TEMPLATE + "ajax/tab-start-list";
             }
             case "tab-vacant-list": {
                 System.out.println("vacant estate");
-                FormEstate formEstate = new FormEstate();
-                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                formEstate.setEstateType("VACANT");
-//                form.setSubwayStation(subway);
-                Page<Estate> estates = serviceEstate.filter(formEstate);
-
-                map.put("items", estates);
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"VACANT");
+                count = serviceEstate.totalEstateFilter(city,district,town,"VACANT");
+                Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
+                Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
+                map.put("items", pageConvert);
+                System.out.println("===================================");
                 return BASE_TEMPLATE + "ajax/tab-vacant-list";
             }
+            case "tab-all-estates": {
+                System.out.println("all estate");
+                FormEstate formEstate = new FormEstate();
+                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
+                Page<Estate> estatesAll = serviceEstate.filter(formEstate);
+                map.put("items", estatesAll);
+                System.out.println("===================================");
+            }
             default:
-                return BASE_TEMPLATE + "ajax/tab-all-estate";
+                System.out.println("1===================================1");
+                return BASE_TEMPLATE + "ajax/tab-all-estates";
         }
+
+
     }
 
     @RequestMapping(value = "/detail/{estateId}", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)

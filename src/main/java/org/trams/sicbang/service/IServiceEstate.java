@@ -1,6 +1,7 @@
 package org.trams.sicbang.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 import org.trams.sicbang.model.dto.CustomUserDetail;
 import org.trams.sicbang.model.entity.Estate;
 import org.trams.sicbang.model.form.FormEstate;
@@ -70,14 +71,16 @@ public interface IServiceEstate {
      */
     Estate updateEstate(FormEstate form, Estate estate);
 
+    Integer updateImageEstate(MultipartFile file, Estate estate);
+
 //    List<Estate> filterByCity(int pageIndex, String name);
 //    List<Estate> filterByDistrict(int pageIndex, String name);
 //    List<Estate> filterByTown(int pageIndex, String name);
 //    List<Estate> filterBySubway(int pageIndex, String name);
 
-    List<Estate> filterBy(int pageIndex, String city, String district, String town);
+    List<Estate> filterBy(int pageIndex, String city, String district, String town, String type);
 
-    Long totalEstateFilter(String city, String district, String town);
+    Long totalEstateFilter(String city, String district, String town, String type);
 
 //    Long totalEstateFilterByCity(String name);
 //    Long totalEstateFilterByDistrict(String name);
