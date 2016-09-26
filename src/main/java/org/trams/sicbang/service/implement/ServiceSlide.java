@@ -41,6 +41,7 @@ public class ServiceSlide implements IServiceSlide {
 
     @Override
     public Slide uploadSlide(FormSlide form, String username) {
+        System.out.println("Upload image");
         // get admin user, who uploaded image
         MultipartFile slide = form.getAttachments();
         FormUser formUser = new FormUser();

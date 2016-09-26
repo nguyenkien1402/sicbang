@@ -185,6 +185,7 @@ function Admin() {
 
     this.convertForm = function($form) {
         // convert String to timestamp
+        console.log("go convert form");
         $form.find('.date-picker').each(function(idx, elem) {
             var dateVal = $(this).val();
             var momentObj = moment(dateVal, 'M/D/YYYY');
@@ -232,6 +233,7 @@ function Admin() {
         }
     };
 
+
     this.populateFilter = function() {
         console.log("populate filter");
         var match,
@@ -261,7 +263,7 @@ function Admin() {
                         moment(parseInt(value)).format('M/D/YYYY')
                     );
                 } else {
-                    $form.find("input[name='" + key + "']").val(value);
+                    $form.find("input[name='" + key + "'], input[name='"+key+"']").val(value).val(value);
                 }
             });
         });
@@ -360,8 +362,10 @@ $(function() {
     });
 
     $('.form-search').on('submit', function(evt) {
+        console.log("go form submit");
         admin.convertForm($(this));
     });
+
 
     $('.th-content').on('click', '.btn-action-delete', function(evt) {
         var url = $(this).attr('data-url');
@@ -384,6 +388,8 @@ $(function() {
         admin.switchSelect($(this));
     });
 
+
+
     $('.data-currency').on('keyup', function() {
         var formatted_value = admin.formatNumber($(this).val(), SEPARATOR_CURRENCY);
         $(this).val(formatted_value);
@@ -393,7 +399,6 @@ $(function() {
         var formatted_value = admin.formatNumber($(this).val(), SEPARATOR_NUMBER);
         $(this).val(formatted_value);
     });
-
     admin.populateFilter();
     admin.handleImgError();
 

@@ -39,10 +39,12 @@ public class FileUtils {
             logger.info("basepath : " + basepath);
             logger.info("directory : " + directory);
 
-
+//            basepath = "14.63.197.141/data/sicbang/image";
+            System.out.println("basepath: "+basepath);
+            System.out.println("directory: "+directory);
             String filename = UUID.randomUUID().toString() + ".jpg";
             String thumbname = "thumb_" + filename;
-
+            System.out.println("file name:"+filename);
             BufferedImage originalImage = ImageIO.read(is);
             BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, originalImage.getType());
 
@@ -50,6 +52,7 @@ public class FileUtils {
             graphics2D.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
             graphics2D.dispose();
             logger.info("basepath + directory, filename : " + basepath + directory + filename);
+            System.out.println("basepath + directory, filename : " + basepath + directory + filename);
             ImageIO.write(originalImage, "jpg", new FileOutputStream(new File(basepath + directory, filename)));
             ImageIO.write(resizedImage, "jpg", new FileOutputStream(new File(basepath + directory, thumbname)));
 

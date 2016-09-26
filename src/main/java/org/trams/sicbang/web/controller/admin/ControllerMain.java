@@ -24,7 +24,9 @@ import org.trams.sicbang.model.form.FormMail;
 import org.trams.sicbang.model.form.FormSlide;
 import org.trams.sicbang.web.controller.AbstractController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,9 +89,13 @@ public class ControllerMain extends AbstractController {
             @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
             @RequestParam(value = "mailSubject", defaultValue = "") String mailSubject,
             @RequestParam(value = "mailContent", defaultValue = "") String mailContent,
+            @RequestParam(value = "startDate", defaultValue = "") String startDate,
+            @RequestParam(value = "endDate", defaultValue = "") String endDate,
             ModelMap map) {
         System.out.println("==========================");
         System.out.println("call history");
+        System.out.println("startDate: "+startDate);
+        System.out.println("endDate  : "+endDate);
         Page<Mail> emails = null;
         List<Mail> mailList = null;
         System.out.println("Page index: "+pageIndex);
@@ -98,47 +104,63 @@ public class ControllerMain extends AbstractController {
         mailSubject = "%"+mailSubject+"%";
         mailContent = "%"+mailContent+"%";
         Long count = null;
-        if(type != null){
-            switch (type){
-                case "0":
-                    map.put("type","0");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countAllElement(mailSubject,mailContent);
-                    break;
-                case "1": // mean to day
-                    map.put("type","1");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countToDay(mailSubject,mailContent);
-                    break;
-                case "2": // mean one week
-                    map.put("type","2");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countOneWeek(mailSubject,mailContent);
-                    break;
-                case "3": // mean 15 day
-                    map.put("type","3");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countOneFifteenDay(mailSubject,mailContent);
-                    break;
-                case "4": // mean one month
-                    map.put("type","4");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countMonth(0,mailSubject,mailContent);
-                    break;
-                case "5": // mean two month
-                    map.put("type","5");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countMonth(1,mailSubject,mailContent);
-                    break;
-                case "6": //mean three month
-                    map.put("type","6");
-                    mailList = serviceMail.filterBy(type,Integer.parseInt(pageIndex),mailSubject,mailContent);
-                    count = serviceMail.countMonth(2,mailSubject,mailContent);
-                    break;
+
+        if(Strings.isNullOrEmpty(startDate) || Strings.isNullOrEmpty(endDate)) {
+            if (type != null) {
+                switch (type) {
+                    case "0":
+                        map.put("type", "0");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countAllElement(mailSubject, mailContent);
+                        break;
+                    case "1": // mean to day
+                        map.put("type", "1");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countToDay(mailSubject, mailContent);
+                        break;
+                    case "2": // mean one week
+                        map.put("type", "2");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countOneWeek(mailSubject, mailContent);
+                        break;
+                    case "3": // mean 15 day
+                        map.put("type", "3");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countOneFifteenDay(mailSubject, mailContent);
+                        break;
+                    case "4": // mean one month
+                        map.put("type", "4");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countMonth(0, mailSubject, mailContent);
+                        break;
+                    case "5": // mean two month
+                        map.put("type", "5");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countMonth(1, mailSubject, mailContent);
+                        break;
+                    case "6": //mean three month
+                        map.put("type", "6");
+                        mailList = serviceMail.filterBy(type, Integer.parseInt(pageIndex), mailSubject, mailContent);
+                        count = serviceMail.countMonth(2, mailSubject, mailContent);
+                        break;
+                }
+                Date date = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                startDate = format.format(date);
+                endDate   = format.format(date);
+                System.out.println("start date 2: "+startDate);
+                System.out.println("end date 2  : "+endDate);
+            } else {
+
             }
         }else{
-
+            System.out.println("both not null");
+            map.put("type", "0");
+            mailList = serviceMail.filterByWithDate(Integer.parseInt(pageIndex), mailSubject, mailContent,startDate,endDate);
+            count = serviceMail.countAllElementWithDate(mailSubject, mailContent,startDate,endDate);
         }
+        map.put("startdate",startDate);
+        map.put("enddate", endDate);
             System.out.println("type other");
             for (int i = 0; i < mailList.size(); i++) {
                 try {

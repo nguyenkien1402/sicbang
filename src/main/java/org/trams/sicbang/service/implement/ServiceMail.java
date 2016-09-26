@@ -1,5 +1,6 @@
 package org.trams.sicbang.service.implement;
 
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -59,49 +60,67 @@ public class ServiceMail extends BaseService implements IServiceMail{
         int year = Integer.parseInt(dateFm[0]);
         int month = Integer.parseInt(dateFm[1]);
         int day = Integer.parseInt(dateFm[2]);
-        switch (type){
-            case "0":
-                System.out.println("find all");
-                list = repositoryMail.findAllMail(pageIndex, mailSubject,  mailContent);
-            case "1": { // email today
-                System.out.println("Email today");
-                list = repositoryMail.findByToDay(day,month,year,pageIndex, mailSubject,  mailContent);
-                System.out.println("total element: "+list.size());
-                break;
+            switch (type) {
+                case "0":
+                    System.out.println("find all");
+                    list = repositoryMail.findAllMail(pageIndex, mailSubject, mailContent);
+                case "1": { // email today
+                    System.out.println("Email today");
+                    list = repositoryMail.findByToDay(day, month, year, pageIndex, mailSubject, mailContent);
+                    System.out.println("total element: " + list.size());
+                    break;
+                }
+                case "2": // email one week
+                {
+                    System.out.println("Email one week");
+                    list = repositoryMail.findByOneWeek(pageIndex, mailSubject, mailContent);
+                    break;
+                }
+                case "3": // email 15 day
+                {
+                    System.out.println("Email 15 day nearest");
+                    list = repositoryMail.findByFifteenDay(pageIndex, mailSubject, mailContent);
+                    break;
+                }
+                case "4": // email one month
+                {
+                    System.out.println("Email 1 month nearest");
+                    list = repositoryMail.findByMonth(0, pageIndex, mailSubject, mailContent);
+                    break;
+                }
+                case "5": // email two month
+                {
+                    System.out.println("Email 2 month nearest");
+                    list = repositoryMail.findByMonth(1, pageIndex, mailSubject, mailContent);
+                    break;
+                }
+                case "6": // email three month
+                {
+                    System.out.println("Email 3 month nearest");
+                    list = repositoryMail.findByMonth(2, pageIndex, mailSubject, mailContent);
+                    break;
+                }
             }
-            case "2": // email one week
-            {
-                System.out.println("Email one week");
-                list = repositoryMail.findByOneWeek(pageIndex, mailSubject,  mailContent);
-                break;
-            }
-            case "3": // email 15 day
-            {
-                System.out.println("Email 15 day nearest");
-                list = repositoryMail.findByFifteenDay(pageIndex, mailSubject,  mailContent);
-                break;
-            }
-            case "4": // email one month
-            {
-                System.out.println("Email 1 month nearest");
-                list = repositoryMail.findByMonth(0,pageIndex, mailSubject,  mailContent);
-                break;
-            }
-            case "5": // email two month
-            {
-                System.out.println("Email 2 month nearest");
-                list = repositoryMail.findByMonth(1,pageIndex, mailSubject,  mailContent);
-                break;
-            }
-            case "6": // email three month
-            {
-                System.out.println("Email 3 month nearest");
-                list = repositoryMail.findByMonth(2,pageIndex, mailSubject,  mailContent);
-                break;
-            }
-        }
-
         return list;
+    }
+
+    @Override
+    public List<Mail> filterByWithDate(int pageIndex, String mailSubject, String mailContent, String startDate, String endDate) {
+        List<Mail> list = null;
+        pageIndex = pageIndex * 10;
+        String[] start = startDate.split("/");
+        String[] end   = endDate.split("/");
+        startDate = start[0]+"-"+start[1]+"-"+start[2];
+        endDate = end[0]+"-"+end[1]+"-"+end[2];
+        System.out.println("start date 3: "+startDate);
+        System.out.println("end date 3: "+endDate);
+        list = repositoryMail.findAllWithDate(pageIndex,mailSubject,mailContent,startDate,endDate);
+        return list;
+    }
+
+    @Override
+    public Long countAllElementWithDate(String mailSubject, String mailContent, String startDate, String endDate) {
+        return repositoryMail.totalOfEmailWithDate( mailSubject,  mailContent, startDate,endDate);
     }
 
     @Override

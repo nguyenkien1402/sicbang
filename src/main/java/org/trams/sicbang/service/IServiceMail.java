@@ -42,6 +42,10 @@ public interface IServiceMail {
 
     List<Mail> filterBy(String type, int pageIndex, String mailSubject, String mailContent);
 
+    List<Mail> filterByWithDate(int pageIndex, String mailSubject, String mailContent,String startDate,String endDate);
+
+    Long countAllElementWithDate(String mailSubject,String mailContent,String startDate,String endDate);
+
     Long countAllElement(String mailSubject, String mailContent);
 
     Long countOneWeek(String mailSubject, String mailContent);

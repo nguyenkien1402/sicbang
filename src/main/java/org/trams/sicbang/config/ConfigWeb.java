@@ -62,8 +62,7 @@ public class ConfigWeb extends WebMvcConfigurerAdapter {
                 .setCachePeriod(Integer.parseInt(env.getProperty("cache.time")));
         registry
                 .addResourceHandler("/public/**")
-
-                .addResourceLocations("file:/data/sicbang/public/")
+                .addResourceLocations("file:/data/sicbang/image/")
                 .setCachePeriod(Integer.parseInt(env.getProperty("cache.time")));
     }
 

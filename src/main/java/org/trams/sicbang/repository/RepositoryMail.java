@@ -22,6 +22,13 @@ public interface RepositoryMail extends JpaRepository<Mail, Long>, JpaSpecificat
     List<Mail> findAllMail(@Param("page") Integer page, @Param("subject") String mailSubject, @Param("content") String mailContent);
 
     /*
+     * find all email with date
+     */
+    @Query(value = "SELECT * FROM mail m WHERE m.is_delete = 0 " +
+            "AND m.mail_subject like :subject AND m.mail_content like :content AND m.created_date BETWEEN :start and :enddate LIMIT :page, 10 ", nativeQuery = true)
+    List<Mail> findAllWithDate(@Param("page") Integer page, @Param("subject") String mailSubject, @Param("content") String mailContent, @Param("start") String start, @Param("enddate") String end);
+
+    /*
     * find all email in today
      */
     @Query(value = "SELECT * FROM mail m " +
@@ -54,6 +61,14 @@ public interface RepositoryMail extends JpaRepository<Mail, Long>, JpaSpecificat
 
     @Query(value = "SELECT COUNT(m.id) as count FROM mail m WHERE m.is_delete = 0  AND m.mail_subject like :subject AND m.mail_content like :content ", nativeQuery = true)
     Long totalOfEmail(@Param("subject") String mailSubject, @Param("content") String mailContent);
+
+
+    /*
+     * total of email filter by start date and end date
+     */
+    @Query(value = "SELECT COUNT(m.id) as count FROM mail m WHERE m.is_delete = 0  AND m.mail_subject like :subject AND m.mail_content like :content AND m.created_date BETWEEN :start and :enddate", nativeQuery = true)
+    Long totalOfEmailWithDate(@Param("subject") String mailSubject, @Param("content") String mailContent, @Param("start") String start, @Param("enddate") String end);
+
 
     @Query(value = "SELECT COUNT(m.id) as count FROM mail m WHERE YEARWEEK(m.created_date) = YEARWEEK(NOW()) AND m.is_delete = 0  " +
             "AND m.mail_subject like :subject AND m.mail_content like :content ", nativeQuery = true)

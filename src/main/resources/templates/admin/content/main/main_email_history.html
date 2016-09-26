@@ -24,34 +24,34 @@
 
                         <div class="form-horizontal">
                           <div class="form-body">
-                            <div class="form-group">
-                              <div class="col-md-4">
-                                <div data-date-format="yyyy/mm/dd" class="input-group input-large date-picker input-daterange">
-                                  <input type="text" name="from" value="2014/04/14" class="form-control"/>
-                                    <span class="input-group-addon">~</span>
-                                  <input type="text" name="to" value="2015/05/12" class="form-control"/>
-                                </div>
-                              </div>
-                              <form class="form" method="post">
-                                <div style="text-align: right;" class="col-md-8">
-                                  <a th:href="@{/admin/main/history/1}" class="btn default btn-history-mail" data-page="1">오늘</a>
-                                  <a th:href="@{/admin/main/history/2}" class="btn default btn-history-mail" data-page="2">최근 일주일</a>
-                                  <a th:href="@{/admin/main/history/3}" class="btn default btn-history-mail" data-page="3">최근 15일</a>
-                                  <a th:href="@{/admin/main/history/4}" class="btn default btn-history-mail" data-page="4">최근 한 달</a>
-                                  <a th:href="@{/admin/main/history/5}" class="btn default btn-history-mail" data-page="5">최근 두 달</a>
-                                  <a th:href="@{/admin/main/history/6}" class="btn default btn-history-mail" data-page="6">최근 세 달</a>
-
-                                  <!--<a class="btn default btn-history-mail" data-page="1">오늘</a>-->
-                                  <!--<a class="btn default btn-history-mail" data-page="2">최근 일주일</a>-->
-                                  <!--<a class="btn default btn-history-mail" data-page="3">최근 15일</a>-->
-                                  <!--<a class="btn default btn-history-mail" data-page="4">최근 한 달</a>-->
-                                  <!--<a class="btn default btn-history-mail" data-page="5">최근 두 달</a>-->
-                                  <!--<a class="btn default btn-history-mail" data-page="6">최근 세 달</a>-->
-
-                                </div>
-                              </form>
-                            </div>
                             <form class="form-search">
+                              <div class="form-group">
+                                <div class="col-md-4">
+                                  <div data-date-format="yyyy/mm/dd" class="input-group input-large date-picker input-daterange">
+                                    <input type="text" name="startDate" th:value="${startdate}" class="form-control inp-search"/>
+                                      <span class="input-group-addon">~</span>
+                                    <input type="text" name="endDate" th:value="${enddate}" class="form-control inp-search"/>
+                                  </div>
+                                </div>
+
+                                  <div style="text-align: right;" class="col-md-8">
+                                    <a th:href="@{/admin/main/history/1}" class="btn default btn-history-mail" data-page="1">오늘</a>
+                                    <a th:href="@{/admin/main/history/2}" class="btn default btn-history-mail" data-page="2">최근 일주일</a>
+                                    <a th:href="@{/admin/main/history/3}" class="btn default btn-history-mail" data-page="3">최근 15일</a>
+                                    <a th:href="@{/admin/main/history/4}" class="btn default btn-history-mail" data-page="4">최근 한 달</a>
+                                    <a th:href="@{/admin/main/history/5}" class="btn default btn-history-mail" data-page="5">최근 두 달</a>
+                                    <a th:href="@{/admin/main/history/6}" class="btn default btn-history-mail" data-page="6">최근 세 달</a>
+
+                                    <!--<a class="btn default btn-history-mail" data-page="1">오늘</a>-->
+                                    <!--<a class="btn default btn-history-mail" data-page="2">최근 일주일</a>-->
+                                    <!--<a class="btn default btn-history-mail" data-page="3">최근 15일</a>-->
+                                    <!--<a class="btn default btn-history-mail" data-page="4">최근 한 달</a>-->
+                                    <!--<a class="btn default btn-history-mail" data-page="5">최근 두 달</a>-->
+                                    <!--<a class="btn default btn-history-mail" data-page="6">최근 세 달</a>-->
+
+                                  </div>
+                              </div>
+
                               <div class="form-group">
                                 <div class="col-md-4">
                                   <select id="selectMail" style="width: 320px;" class="form-control sel-nav">
@@ -180,6 +180,7 @@
                 var key    = $("#keymail").val();
                 console.log("key: "+key);
               }
+
             });
           </script>
 
