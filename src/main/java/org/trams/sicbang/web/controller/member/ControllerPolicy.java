@@ -28,5 +28,11 @@ public class ControllerPolicy extends AbstractController {
         return BASE_TEMPLATE + "use";
     }
 
+    @RequestMapping(value="/lbs-policy",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String lbs(ModelMap map) {
+
+        return BASE_TEMPLATE + "lbs";
+    }
+
 
 }
