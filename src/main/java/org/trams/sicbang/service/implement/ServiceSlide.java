@@ -68,7 +68,10 @@ public class ServiceSlide implements IServiceSlide {
         if(slide != null && !slide.isEmpty()){
             try {
                 String fileRelativePath[], fileUrl;
-                fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/slide/");
+                if(form.getType().equals("WEB") || form.getType().equals("APP"))
+                    fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/slide/");
+                else
+                    fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/popup/");
                 System.out.println("fileRelativePath:" +fileRelativePath[0]);
                 fileUrl = configParams.BASE_URL +"/public" + fileRelativePath[0];
                 System.out.println("file url: "+fileUrl);
