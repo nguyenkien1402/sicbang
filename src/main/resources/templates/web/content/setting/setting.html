@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base-login">
  <head>
         <meta charset="utf-8"/>
         <title>식방</title>
@@ -85,12 +85,11 @@
             <div class="modalAlignArea">
                 <div class="formControlGroup horizontal">
                     <label class="narrow">비밀번호</label>
-                    <input name="withdrawPass" type="password" class="formControl wide warning" />
+                    <input id = "withdrawPass" name="withdrawPass" type="password" class="formControl wide warning" />
                 </div>
-
                 <div class="formControlGroup horizontal">
                     <label class="narrow">탈퇴사유</label>
-                    <textarea name="withdrawContents" class="formControl wide warning"></textarea>
+                    <textarea id = "withdrawContents" name="withdrawContents" class="formControl wide warning"></textarea>
 
                 </div>
 
@@ -165,16 +164,33 @@
                 var pass = $("input[name=withdrawPass]").val();
                 var contents = $("input[name=withdrawContents]").val();
 
-
                 if(pass == "" || contents == ""){
                     alert("모든 정보를 입력하여 주세요.");
                     return false;
                 }
+                $.ajax({
+                    url: "setting/update/withdraw",
+                    type: "POST",
+                    data:{
+                        "userId": userId,
+                        "password": $("#withdrawPass").val(),
+                        "content": $("#withdrawContents").val(),
+                    },
+                    success: function(data){
+                        if(data == "SUCCESS"){
+                            alert("탈퇴 완료");
+                            location.href = "/logout";
+                        }else{
+                            alert("FALSE");
+                        }
+                    }
 
-                alert("탈퇴 완료");
-                location.href = "main.html";
+                });
+
+
 
             });
+
             $("#nameChange").click(function(){
                 currentName = $("#companyName").val();
                 $.ajax({

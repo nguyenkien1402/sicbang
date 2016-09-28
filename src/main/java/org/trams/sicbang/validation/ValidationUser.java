@@ -204,4 +204,53 @@ public class ValidationUser {
         return error.hasErrors() ? error : null;
     }
 
+    public FormError validateJoin(FormUser form) {
+        FormError error = new FormError();
+
+        String email = form.getEmail();
+        String password = form.getPassword();
+        String passwordConfirm = form.getPasswordConfirm();
+        String type = form.getType();
+        String role = form.getRole();
+        String status = form.getStatus();
+        String avatar = form.getBase64image();
+
+        if (Strings.isNullOrEmpty(email) || !EmailValidator.getInstance().isValid(email)) {
+            error.rejectValue("email", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        User existedUser = repositoryUser.findByEmail(email);
+        if (existedUser != null) {
+            error.rejectValue("email", MessageResponse.EXCEPTION_EXISTED.getMessage());
+        }
+        if (Strings.isNullOrEmpty(password)) {
+            error.rejectValue("password", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        if (Strings.isNullOrEmpty(passwordConfirm)) {
+            error.rejectValue("passwordConfirm", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        if (password != null && passwordConfirm != null && !password.equals(passwordConfirm)) {
+            error.rejectValue("passwordConfirm", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        if (Strings.isNullOrEmpty(type)) {
+            error.rejectValue("type", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        if (Strings.isNullOrEmpty(role)) {
+            error.rejectValue("role", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        if (Strings.isNullOrEmpty(status)) {
+            error.rejectValue("status", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+
+        UserRole userRole = repositoryUserRole.findByName(role);
+        if (userRole == null) {
+            error.rejectValue("role", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+        try {
+            CommonStatus.valueOf(status);
+        } catch (Exception e) {
+            error.rejectValue("status", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+        }
+
+        return error.hasErrors() ? error : null;
+    }
 }

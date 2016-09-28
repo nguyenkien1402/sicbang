@@ -24,7 +24,7 @@
 			<div th:unless="${@serviceAuthorized.isAuthenticated()}">
 			<li class="loginButton">로그인</li>
 			<li id="joinButton">회원가입</li>
-			<a href=""><li class="primary">중개사무소 가입 및 광고문의</li></a>
+			<a th:href="@{/broker-join}"><li class="primary">중개사무소 가입 및 광고문의</li></a>
 			</div>
 			<div th:if="${@serviceAuthorized.isAuthenticated()}">
 			<li><a th:href="@{/logout}"> 로그아웃</a></li>
@@ -48,7 +48,7 @@
 		<ul class="clearFix">
 			<a th:href="@{/use-policy}"><li>이용약관</li></a>
 			<a th:href="@{/privacy-policy}"><li>개인정보취급방침</li></a>
-			<a><li>위치기반서비스 이용약관</li></a>
+			<a th:href="@{/lbs-policy}"><li>위치기반서비스 이용약관</li></a>
 			<a><li>회사소개서</li></a>
 		</ul>
 		<ul class="clearFix">
@@ -76,6 +76,32 @@
 				</div>
 			</div>
 		</div>
+	</div>
+
+    <!-- DIV Header 2-->
+	<div th:fragment="header2" id="header2">
+		<a href="main.html">
+			<div class="logoImage">
+				<img src="include/images/header/logo.png"/>
+			</div>
+		</a>
+		<ul class="headerList clearFix">
+			<a href=""><li>전체매물보기</li></a>
+			<a href="content.html"><li>인수창업</li></a>
+			<a href=""><li>공실매물</li></a>
+		</ul>
+		<ul class="headerRightList">
+			<li class="loginButton">로그인</li>
+			<li id="joinButton">회원가입</li>
+			<a href=""><li class="primary">중개사무소 가입 및 광고문의</li></a>
+			<!--
+            <a href=""><li>로그아웃</li></a>
+            <a href=""><li>설정</li></a>
+            <a href=""><li>최근 살펴본 매물</li></a>
+            <a href=""><li>찜목록</li></a>
+            <a href=""><li>매물올리기</li></a>
+            -->
+		</ul>
 	</div>
 
 </body>

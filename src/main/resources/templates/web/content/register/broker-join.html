@@ -1,0 +1,191 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base-login">
+<head>
+    <meta charset="utf-8"/>
+    <title>식방</title>
+</head>
+<body>
+<div layout:fragment="content" id="contents">
+    <div id="container">
+        <div class="containerTitle">
+                    <h2>중개사로 회원가입</h2>
+                </div>
+                <table id="joinTable" class="table full">
+                    <tr>
+                        <th class="paddingLeft" style="width:200px; text-align:left;">이메일</th>
+                        <td>
+                            <input type="text" name = "email" class="formControl wide" style="height:30px;" required="required"/>
+                            <label id="emailMessage" class="helpBlock primary"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">비밀번호</th>
+                        <td>
+                            <input type="password" name="password" class="formControl wide" style="height:30px;"  required="required"/>
+                            <label id="passwordMessage" class="helpBlock primary"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">비밀번호 확인</th>
+                        <td>
+                            <input type="password" name="passwordConfirm" class="formControl wide" style="height:30px;" />
+                            <label id="passwordConfirmMessage" class="helpBlock primary"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">사업자등록번호</th>
+                        <td>
+                            <input type="text" name = "corporationRegistration" class="formControl wide" style="height:30px;" />
+                            <label class="helpBlock">* 하이푼(-)없이 입력해주세요.</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">사용자명</th>
+                        <td>
+                            <input type="text" name = "username" class="formControl wide" style="height:30px;" required="required"/>
+                            <label id="usernameMessage" class="helpBlock primary"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">회사명</th>
+                        <td>
+                            <input type="text" name = "companyName" class="formControl wide" style="height:30px;" />
+                        </td>
+                    </tr>
+                    
+                    <tr style="height:100px;">
+                        <th class="paddingLeft" style="text-align:left;">주소</th>
+                        <td>
+                            <div class="formControlGroup horizontal">
+                                <label class="narrow">읍/면/동</label>
+                                <input type="text" name="townAddress" class="formControl wide" style="height:30px;" placeholder="서울시 관악구 신대방동" />
+                            </div>
+                            
+                            <div class="formControlGroup horizontal" style="margin-bottom:0;">
+                                <label class="narrow">상세 주소</label>
+                                <input type="text" name="addressDetail" class="formControl wide" style="height:30px;" placeholder="상세주소를 입력해 주세요." />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="width:200px; text-align:left;">전화번호</th>
+                        <td>
+                            <input type="text" name="phoneNumber" class="formControl wide" style="height:30px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="width:200px; text-align:left;">핸드폰</th>
+                        <td>
+                            <input type="text" name="cellphoneNumber" class="formControl wide" style="height:30px;" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="waitCheck">
+                    <input id="wait" type="checkbox" class="formControl primary" required="required"/>
+                    <label for="wait"></label>
+                    <label><strong>이용약관, 개인정보 취급방침</strong> 및 <strong>위치기반서비스 이용약관</strong>에 동의합니다.</label>
+                </div>
+                <div class="btnGroup">
+                    <button id="approvalButton" type="submit" class="btn primary wide">승인요청</button>
+                </div>
+                
+                <div class="waitHelp">
+                    <p>승인요청 시 회원가입 정보를 확인하여 회원가입을 결정합니다.</p>
+                    <p>최대 대기 시간은 24시간 입니다.</p>
+                </div>
+            </div>
+
+    <script>
+        $(document).ready(function(){
+
+            function resetAllMessage(){
+                $("#emailMessage").html("");
+                $("#passwordMessage").html("");
+                $("#passwordConfirmMessage").html("");
+                $("#usernameMessage").html("")
+
+            }
+
+            $("#approvalButton").click(function(){
+
+                var email = $("input[name=email]").val();
+                var password =  $("input[name=password]").val();
+                var passwordConf = $("input[name=passwordConfirm]").val();
+                var corporationRegistration = $("input[name=corporationRegistration]").val();
+                var username = $("input[name=username]").val();
+                var companyName = $("input[name=companyName]").val();
+                var townAddress = $("input[name=townAddress]").val();
+                var addressDetail = $("input[name=addressDetail]").val();
+                var phoneNumber = $("input[name=phoneNumber]").val();
+                var cellphoneNumber = $("input[name=cellphoneNumber]").val();
+                resetAllMessage();
+
+                if(email == ""){
+                    $("#emailMessage").html("e-mail 를 입력하세요.");
+                    $("input[name=email]").focus();
+                    return false;
+                }
+                if(password == ""){
+                    $("#passwordMessage").html("* 암호는 비워 둘 수 없습니다")
+                    $("input[name=password]").focus();
+                    return false;
+                }
+                if(passwordConf != password){
+                    $("#passwordConfirmMessage").html("일치하지 않습니다.")
+                    $("input[name=passwordConfirm]").focus();
+                    return false;
+                }else{
+                    $("#passwordConfirmMessage").html("비밀번호와 일치합니다.");
+                    $("#passwordConfirmMessage").removeClass("primary").addClass("success-message");
+                }
+                if(townAddress == ""){
+                    $("input[name=townAddress]").focus();
+                    return;
+                }
+                if(addressDetail == ""){
+                    $("input[name=addressDetail]").focus();
+                    return;
+                }
+                if($("#wait").prop("checked") == false){
+                    alert("개인정보 취급방침에 동의해주세요.");
+                    return;
+                }
+                $.ajax({
+                    url: "/create-broker",
+                    type: "POST",
+                    dataType: "json",
+                    data:{
+                        "email" : email,
+                        "password" : password,
+                        "passwordConfirm" : passwordConf,
+                        "corporationRegistration" : corporationRegistration,
+                        "username" : username,
+                        "companyName": companyName,
+                        "townAddress": townAddress,
+                        "addressDetail": addressDetail,
+                        "phoneNumber": phoneNumber,
+                        "cellphoneNumber" : cellphoneNumber,
+
+                    },
+                    success:function (data) {
+                        if(data.errors != null){
+                            if(data.errors.email != null){
+                                $("#emailMessage").html(data.errors.email);
+                                $("input[name=email]").focus();
+                                return;
+                            }
+                        }
+                        top.location.href="/broker-join-waiting";
+                    }
+
+                });
+            });
+        });
+
+    </script>
+
+</div>
+</body>
+
+</html>

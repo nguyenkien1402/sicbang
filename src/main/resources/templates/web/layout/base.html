@@ -10,7 +10,9 @@
         .error-message{
             color:red;
         }
-
+        .success-message{
+            color:green;
+        }
     </style>
     <!-- Latest compiled and minified CSS -->
     <!-- Optional theme -->
@@ -26,6 +28,7 @@
     <link rel="stylesheet" th:href="@{static/admin/include/css/main.css}"/>
     <link rel="stylesheet" th:href="@{static/admin/include/css/modal.css}"/>
     <link rel="stylesheet" th:href="@{static/admin/include/css/popup.css}"/>
+    <link rel="stylesheet" th:href="@{static/admin/include/css/join.css}"/>
 </head>
 <body>
 	<div th:replace="web/fragment/common :: header"></div>
@@ -73,7 +76,7 @@
             <div class="formControlGroup horizontal">
                 <label class="">이메일</label>
                 <input name="joinEmail" type="text" class="formControl wide warning" />
-                <span class="helpBlock primary">* 사용하실 아이디를 이메일로 입력해주세요.</span>
+                <span id = "helpBlockMessage" class="helpBlock primary">* 사용하실 아이디를 이메일로 입력해주세요.</span>
             </div>
 
             <div class="formControlGroup horizontal">
@@ -83,6 +86,8 @@
             <div class="formControlGroup horizontal">
                 <label class="">비밀번호확인</label>
                 <input name="joinPassConf" type="password" class="formControl wide warning" />
+                <span id = "passBlockMessage" class="helpBlock primary"></span>
+
             </div>
             <div class="formControlGroup">
                 <label class="strong">이용약관(필수)</label>
@@ -134,7 +139,7 @@ TOP
             <div class="linkArea clearFix">
                 <ul class="right">
                     <li class="loginButton">기존 회원 로그인</li>
-                    <a href="#"><li>중개사무소 가입신청</li></a>
+                    <a th:href="@{/broker-join}"><li>중개사무소 가입신청</li></a>
                 </ul>
             </div>
         </div>
@@ -279,6 +284,14 @@ TOP
                     return false;
                 }
 
+                if(password != passConf){
+                    $("#passBlockMessage").html("Password doesn't match!");
+                    $("input[name=joinPassConf]").focus();
+                    $("#helpBlockMessage").html("");
+                    return false;
+                }
+
+
                 if(policy == false){
                     alert("이용약관에 동의해주세요.");
                     return false;
@@ -294,7 +307,42 @@ TOP
                 }
 
                 //TODO : Ajax 통신
+                $.ajax({
+                    url : "/member-join",
+                    type: "POST",
+                    data:{
+                        "email" : email,
+                        "password": password,
+                        "passwordConfirm": passConf
+                    },
+                    success: function(data){
+                        if(data == "SUCCESS"){
+                            alert("Success!");
+                            $.ajax({
+                                url:"/login",
+                                type:"POST",
+                                data: {
+                                    "username": email,
+                                    "password": password,
+                                },
+                                success: function(data){
+                                    if(data == 'login_success'){
+                                        top.location.href="/";
+                                    }else{
+                                        alert("FAIL!");
+                                    }
+                                }
+                            });
+                        }else{
+                            $("#helpBlockMessage").html(data);
+                            $("input[name=joinPassword]").val("");
+                            $("input[name=joinPassConf]").val("");
+                            $("#passBlockMessage").html("");
+                            $("input[name=joinEmail]").focus();
+                        }
+                    }
 
+                });
             });
 
             //매물 찾기 방법 선택
