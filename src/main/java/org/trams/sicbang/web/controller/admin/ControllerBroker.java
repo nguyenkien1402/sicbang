@@ -2,6 +2,7 @@ package org.trams.sicbang.web.controller.admin;
 
 import com.google.common.base.Strings;
 import org.codehaus.groovy.runtime.powerassert.SourceText;
+import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.trams.sicbang.web.controller.AbstractController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,7 +57,8 @@ public class ControllerBroker extends AbstractController {
         // authorized request
         System.out.println("go to broker");
         form.setRole("MEMBER");
-        form.setType(UserType.BROKER.name() + "," + UserType.TRUSTED_BROKER.name());
+//        form.setType(UserType.BROKER.name() + "," + UserType.TRUSTED_BROKER.name());
+        form.setType(UserType.TRUSTED_BROKER.name());
         if (typeBroker != null) {
             form.setType(UserType.BROKER.name());
         }
@@ -315,7 +318,7 @@ public class ControllerBroker extends AbstractController {
         // authorized request
         System.out.println("go for approved");
         form.setRole("MEMBER");
-        form.setType("TRUSTED_BROKER");
+        form.setType("BROKER");
         Page<User> users = serviceUser.filter(form);
 
         map.put("items", users);
@@ -405,12 +408,16 @@ public class ControllerBroker extends AbstractController {
         int result = serviceEstate.updateImageEstate(file,estate);
         if(result == 1){
             System.out.println("upload success");
-//            JSONObject json1 = new JSONObject();
-//            json1.put("success", true);
-//            response.setCharacterEncoding("UTF-8");
-//            response.setContentType("text");
-//            response.getWriter().print(json1);
-//            response.flushBuffer();
+            try {
+                JSONObject json1 = new JSONObject();
+                json1.put("success", true);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("text");
+                response.getWriter().print(json1);
+                response.flushBuffer();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }else{
             System.out.println("not successfully");
         }

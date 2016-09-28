@@ -5,7 +5,7 @@ package org.trams.sicbang.model.enumerate;
  */
 public enum UserType {
 
-    TRUSTED_BROKER, BROKER, MEMBER;
+    BROKER, TRUSTED_BROKER, MEMBER;
 
     public static UserType getOrNull(String name) {
         for (UserType type : UserType.values()) {
