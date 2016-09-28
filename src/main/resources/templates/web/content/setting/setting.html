@@ -128,7 +128,7 @@
                     return false;
                 }
                 $.ajax({
-                    url: "setting/update/password",
+                    url: "/member/user/update/password",
                     type: "POST",
                     data:{
                         "userId": userId,
@@ -169,7 +169,7 @@
                     return false;
                 }
                 $.ajax({
-                    url: "setting/update/withdraw",
+                    url: "/member/user/update/withdraw",
                     type: "POST",
                     data:{
                         "userId": userId,
@@ -194,7 +194,7 @@
             $("#nameChange").click(function(){
                 currentName = $("#companyName").val();
                 $.ajax({
-                    url: "setting/update",
+                    url: "/member/user/update",
                     type:"POST",
                     data:{
                         "companyName" : currentName,
@@ -213,7 +213,7 @@
             $("#cellphoneChange").click(function(){
                 currentCellphone = $("#cellphoneNumber").val();
                 $.ajax({
-                    url: "setting/update",
+                    url: "/member/user/update",
                     type:"POST",
                     data:{
                         "companyName" : currentName,

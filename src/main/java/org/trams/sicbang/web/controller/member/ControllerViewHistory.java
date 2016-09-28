@@ -27,6 +27,7 @@ import java.util.Collection;
  * Created by DinhTruong on 9/28/2016.
  */
 @Controller(value = "anonymousControllerViewHistory")
+@RequestMapping(value = "/member/lately")
 public class ControllerViewHistory extends AbstractController {
 
     final String BASE_TEMPLATE = "web/content/";
@@ -35,7 +36,7 @@ public class ControllerViewHistory extends AbstractController {
     private ServiceAuthorized serviceAuthorized;
 
 
-    @RequestMapping(value = "/lately", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String lately(@ModelAttribute FormRecent form, ModelMap map) throws IOException {
         Authentication auth = serviceAuthorized.isAuthenticated();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();

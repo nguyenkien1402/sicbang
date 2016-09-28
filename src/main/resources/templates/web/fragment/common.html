@@ -28,8 +28,8 @@
 			</div>
 			<div th:if="${@serviceAuthorized.isAuthenticated()}">
 			<li><a th:href="@{/logout}"> 로그아웃</a></li>
-            <li><a th:href="@{/setting}">설정</a></li>
-			<li><a th:href="@{/lately}"> 최근 살펴본 매물</a></li>
+            <li><a th:href="@{/member/user}">설정</a></li>
+			<li><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
 			<li>찜목록</li>
             <li>매물 올리기</li>
 			</div>
