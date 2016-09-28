@@ -1,0 +1,255 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base-login">
+<head>
+    <meta charset="utf-8"/>
+    <title>식방</title>
+</head>
+<body>
+<div layout:fragment="content" id="contents">
+    <div class="titleImage" style="background:url(/static/admin/include/images/content/back.png) no-repeat center;">
+        <h2 style="clear:both">인수창업</h2>
+    </div>
+    <div id="container">
+        <div class="slideBox">
+                    <div class="slideArea">
+                        <div class="sideBox">
+                            <div class="arrow leftArrow"></div>
+                        </div>
+                        <div class="centerBox">
+                            <div class="viewImage">
+                                <img th:src="@{/static/admin/include/images/content/view.png}"/>
+                            </div>
+                            <div class="thumbImage">
+                                <img  th:src="@{/static/admin/include/images/content/1.png}"/>
+                                <img class="active" th:src="@{/static/admin/include/images/content/2.png}"/>
+                                <img th:src="@{/static/admin/include/images/content/3.png}"/>
+                                <img th:src="@{/static/admin/include/images/content/4.png}"/>
+                                <img th:src="@{/static/admin/include/images/content/5.png}"/>
+                                <span class="thumbNum">1/5</span>
+                            </div>
+                        </div>
+                        <div class="sideBox">
+                            <div class="arrow rightArrow"></div>
+                        </div>
+                    </div>
+                    <div class="infoArea">
+                        <h3>담당자 정보</h3>
+                        <img class="basicImg" src=""/>
+                        
+                        <div class="infoText">
+                            <p><strong>담당자:</strong> 김중개</p>
+                            <p><strong>연락처:</strong> 010-1234-5678</p>
+                            <p>
+                                <strong>담당자 정보:</strong><br/>
+                                <span>
+                                    이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.
+    </span>
+                            </p>
+                        </div>
+                        <button class="btn primary wide">찜하기</button>
+                    </div>
+                </div>
+                
+                <div class="tableArea">
+                    <span class="date right">등록일: 2016.04.01</span>
+                    <h2 class="title">흥부 부대찌개 뱅뱅사거리점</h2>
+                    
+                    
+                    <table class="table full">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="width:50%;">기본정보</th>
+                                <th colspan="2" style="width:50%;">수익비용구조</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="paddingLeft strong" style="width:25%;">매물번호</td>
+                                <td class="center" style="width:25%;">201601011121212102</td>
+                                <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
+                                <td style="width:25%;" class="center">10,000</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">매물유형</td>
+                                <td class="center">창업인수</td>
+                                <td class="paddingLeft strong">월세(만원)</td>
+                                <td class="center">800</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">카테고리</td>
+                                <td class="center">일반음식점</td>
+                                <td class="paddingLeft strong">관리비(만원)</td>
+                                <td class="center">20,000</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">업종</td>
+                                <td class="center">한식점</td>
+                                <td class="paddingLeft strong">권리금(만원)</td>
+                                <td class="center">2,322</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">상권</td>
+                                <td class="center">서울시 관악구 신림동</td>
+                                <td class="paddingLeft strong">기타경비(만원)</td>
+                                <td class="center">4,000</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">인근지하철역</td>
+                                <td class="center">신림역</td>
+                                <td class="paddingLeft strong">월매출(만원)</td>
+                                <td class="center">878</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">층</td>
+                                <td class="center">2</td>
+                                <td class="paddingLeft strong">세전월수입(만원)</td>
+                                <td class="center">22</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">면적</td>
+                                <td class="center">99(30)</td>
+                                <td class="paddingLeft strong">실수익률(%)</td>
+                                <td class="center">2355</td>
+                            </tr>
+                            <tr>
+                                <td class="paddingLeft strong">주차여부</td>
+                                <td class="center">가능</td>
+                                <td class="paddingLeft strong"></td>
+                                <td class="center"></td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">상세설명</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="color:#666;">
+                                    신림동 최고의 부대찌개 집입니다.<br/>
+                                    매출 보장합니다. 상세설명 예시부분입니다.<br/>
+                                    상세설명 예시부분입니다.<br/><br/>
+                                    
+                                    <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
+                                    <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="row report">
+                    <span class="right reportButton">잘못된 정보 신고</span>
+                </div>
+            </div>
+
+    <script>
+        $(document).ready(function() {
+            //초기 변수 설정
+            var overlay = $(".overlay");
+            var loginModal = $(".loginModal");
+            var joinModal = $(".joinModal");
+            var reportModal = $(".reportModal");
+            $("#liContent").addClass("active");
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                    mapOption = {
+                        center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                        level: 3 // 지도의 확대 레벨
+                    };
+
+            var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+            // 마커가 표시될 위치입니다 
+            var markerPosition = new daum.maps.LatLng(33.450701, 126.570667);
+
+            // 마커를 생성합니다
+            var marker = new daum.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+
+            //로드뷰
+            var roadviewContainer = document.getElementById('roadView'); //로드뷰를 표시할 div
+            var roadview = new daum.maps.Roadview(roadviewContainer); //로드뷰 객체
+            var roadviewClient = new daum.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+            var position = new daum.maps.LatLng(33.450701, 126.570667);
+
+            // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+            roadviewClient.getNearestPanoId(position, 50, function (panoId) {
+                roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+            });
+
+            //썸네일을 클릭하면 viewImage에 보여준다.
+            $(".thumbImage img").click(function (e) {
+                var imgs = $(".thumbImage img");
+                imgs.removeClass("active");
+
+                $(this).addClass("active");
+
+                $(".viewImage img").attr("src", $(this).attr("src"));
+
+                $(".thumbNum").text($(this).index() + 1 + "/" + imgs.length);
+            });
+
+            //화살표를 클릭하면 보여준다.
+            $(".sideBox").click(function (e) {
+                var arrow = $(this).find(".arrow");
+                var imgs = $(".thumbImage img");
+                var currentImg = $(".thumbImage img.active");
+
+                imgs.removeClass("active");
+
+                if (arrow.hasClass("leftArrow")) {
+                    var prevImg;
+
+                    if (currentImg.index() != 0)
+                        prevImg = currentImg.prev();
+                    else
+                        prevImg = imgs.eq(imgs.length - 1);
+
+                    prevImg.addClass("active");
+
+                    $(".viewImage img").attr("src", prevImg.attr("src"));
+                    $(".thumbNum").text(prevImg.index() + 1 + "/" + imgs.length);
+                } else {
+                    var nextImg;
+
+                    if (currentImg.index() != imgs.length - 1)
+                        nextImg = currentImg.next();
+                    else
+                        nextImg = imgs.eq(0);
+
+                    nextImg.addClass("active");
+
+                    $(".viewImage img").attr("src", nextImg.attr("src"));
+                    $(".thumbNum").text(nextImg.index() + 1 + "/" + imgs.length);
+                }
+
+            });
+
+            //잘못된 정보 신고 버튼
+            $(".reportButton").click(function (e) {
+                overlay.addClass("active");
+                reportModal.addClass("active");
+                $(window).scrollTop(0);
+            });
+
+            $("#reportConfirmButton").click(function (e) {
+                var name = $("input[name=reportName]").val();
+                var phone = $("input[name=reportPhone]").val();
+                var contents = $("input[name=reportContents]").val();
+
+                if (name == "" || phone == "" || contents == "") {
+                    alert("모든 정보를 입력해주세요.");
+                    return false;
+                }
+
+                alert("신고가 접수되었습니다.");
+                overlay.removeClass("active");
+                reportModal.removeClass("active");
+            });
+        });
+            
+
+    </script>
+    </div>
+</body>
+</html>

@@ -2658,7 +2658,7 @@
     };
 
     /**
-     * restore lately range
+     * restore optional range
      *
      * @param {jQuery} $editable
      */

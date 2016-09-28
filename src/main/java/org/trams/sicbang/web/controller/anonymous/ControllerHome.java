@@ -14,10 +14,12 @@ import java.io.IOException;
 @Controller(value = "anonymousControllerHome")
 public class ControllerHome extends AbstractController {
 
+    final String BASE_TEMPLATE = "web/content/";
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index() throws IOException {
         return "web/index";
     }
+
 
 }

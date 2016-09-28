@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.trams.sicbang.model.entity.Attachment;
+import org.trams.sicbang.model.entity.Estate;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.web.controller.AbstractController;
+
+import java.util.Collection;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -39,11 +43,27 @@ public class ControllerEstate extends AbstractController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detail(
-            @PathVariable(value = "id") String id,
+            @PathVariable(value = "id") String estateId,
             ModelMap map) {
-        return BASE_TEMPLATE + "detail";
+        FormEstate estateForm = new FormEstate();
+        estateForm.setEstateId(estateId);
+        Estate estate = serviceEstate.findOne(estateForm);
+
+        Collection<Attachment> listAttach = estate.getAttachments();
+        System.out.println("list attach: " +listAttach.size());
+        map.put("attachments", listAttach);
+        map.put("estate",estate);
+        map.put("sizeattach", listAttach.size());
+        if(estate.getEstateType().equals("STARTUP")){
+            System.out.println("go for startup");
+            return BASE_TEMPLATE +"/detail-startup";
+        }else{
+            System.out.println("go for vacant");
+            return BASE_TEMPLATE +"/detail-vacant";
+        }
+
     }
 
     /**
