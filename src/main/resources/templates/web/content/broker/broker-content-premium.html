@@ -56,86 +56,17 @@
                 </div>
             </div>
         </div>
-                
-                <div class="tableArea">
-                    <span class="date right">등록일: 2016.04.01</span>
-                    <h2 class="title">흥부 부대찌개 뱅뱅사거리점</h2>
-                    
-                    
-                    <table class="table full">
-                        <thead>
-                            <tr>
-                                <th colspan="2" style="width:50%;">기본정보</th>
-                                <th colspan="2" style="width:50%;">수익비용구조</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="paddingLeft strong" style="width:25%;">매물번호</td>
-                                <td class="center" style="width:25%;">201601011121212102</td>
-                                <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
-                                <td style="width:25%;" class="center">10,000</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">매물유형</td>
-                                <td class="center">창업인수</td>
-                                <td class="paddingLeft strong">월세(만원)</td>
-                                <td class="center">800</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">카테고리</td>
-                                <td class="center">일반음식점</td>
-                                <td class="paddingLeft strong">관리비(만원)</td>
-                                <td class="center">20,000</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">업종</td>
-                                <td class="center">한식점</td>
-                                <td class="paddingLeft strong">권리금(만원)</td>
-                                <td class="center">2,322</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">상권</td>
-                                <td class="center">서울시 관악구 신림동</td>
-                                <td class="paddingLeft strong">기타경비(만원)</td>
-                                <td class="center">4,000</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">인근지하철역</td>
-                                <td class="center">신림역</td>
-                                <td class="paddingLeft strong">월매출(만원)</td>
-                                <td class="center">878</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">층</td>
-                                <td class="center">2</td>
-                                <td class="paddingLeft strong">세전월수입(만원)</td>
-                                <td class="center">22</td>
-                            </tr>
-                            <tr>
-                                <td class="paddingLeft strong">면적</td>
-                                <td class="center">99(30)</td>
-                                <td class="paddingLeft strong">실수익률(%)</td>
-                                <td class="center">2355</td>
-                            </tr>
-                            <tr>
-                                <th colspan="4">상세설명</th>
-                            </tr>
-                            <tr>
-                                <td colspan="4" style="color:#666;">
-                                    신림동 최고의 부대찌개 집입니다.<br/>
-                                    매출 보장합니다. 상세설명 예시부분입니다.<br/>
-                                    상세설명 예시부분입니다.<br/><br/>
-                                    
-                                    <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
-                                    <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="row report">
+        <div th:if="${estate.estateType == 'STARTUP'}">
+            <div th:replace="web/fragment/common-login :: estateStartup(estate=${estate})"></div>
+        </div>
+        <div th:if="${estate.estateType == 'VACANT'}" >
+            <div  th:replace="web/fragment/common-login :: estateVacant(estate=${estate})"></div>
+        </div>
+        <input type="hidden" id="latitude" th:value="${estate.latitude}"/>
+        <input type="hidden" id="longitude" th:value="${estate.longitude}"/>
+        <input type="hidden" id="estateType" th:value="${estate.estateType}"/>
+
+        <div class="row report">
                     <span class="right reportButton">잘못된 정보 신고</span>
                 </div>
             </div>
@@ -147,17 +78,24 @@
             var loginModal = $(".loginModal");
             var joinModal = $(".joinModal");
             var reportModal = $(".reportModal");
-            
+            var longitude = $("#longitude").val();
+            var latitude = $("#latitude").val();
+            var estateType = $('#estateType').val();
+            if(estateType == 'STARTUP'){
+                $("#liStartup").addClass("active");
+            }else{
+                $("#liVacancy").addClass("active");
+            }
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
                 mapOption = { 
-                    center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    center: new daum.maps.LatLng(latitude, longitude), // 지도의 중심좌표
                     level: 3 // 지도의 확대 레벨
                 };
 
             var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
             // 마커가 표시될 위치입니다 
-            var markerPosition  = new daum.maps.LatLng(33.450701, 126.570667); 
+            var markerPosition  = new daum.maps.LatLng(latitude, longitude);
 
             // 마커를 생성합니다
             var marker = new daum.maps.Marker({
@@ -172,7 +110,7 @@
             var roadview = new daum.maps.Roadview(roadviewContainer); //로드뷰 객체
             var roadviewClient = new daum.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
 
-            var position = new daum.maps.LatLng(33.450701, 126.570667);
+            var position = new daum.maps.LatLng(latitude, longitude);
 
             // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
             roadviewClient.getNearestPanoId(position, 50, function(panoId) {

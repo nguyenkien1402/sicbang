@@ -95,6 +95,165 @@
         </ul>
     </div>
 </div>
+<div th:fragment="estateStartup" class="tableArea">
+    <span class="date right" th:text="${#dates.format(estate.createdDate, 'dd/MM/YYYY')}">등록일: 2016.04.01</span>
+    <h2 class="title" th:text="${estate.name}"></h2>
 
+    <table class="table full">
+        <thead>
+        <tr>
+            <th colspan="2" style="width:50%;">기본정보</th>
+            <th colspan="2" style="width:50%;">수익비용구조</th>
+        </tr>
+        </thead>
+<tbody >
+<tr>
+    <td class="paddingLeft strong" style="width:25%;">매물번호</td>
+    <td class="center" style="width:25%;" th:text="${estate.estateCode}"></td>
+    <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
+    <td style="width:25%;" class="center" th:text="${estate.depositeCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">매물유형</td>
+    <td class="center" th:text="${estate.estateType}"></td>
+    <td class="paddingLeft strong">월세(만원)</td>
+    <td class="center" th:text="${estate.rentCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">현재업종</td>
+    <td class="center" th:text="${estate.category.name}"></td>
+    <td class="paddingLeft strong">관리비(만원)</td>
+    <td class="center" th:text="${estate.serviceCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">업종</td>
+    <td class="center" th:text="${estate.businessType.name}"></td>
+    <td class="paddingLeft strong">권리금(만원)</td>
+    <td class="center" th:text="${estate.premiumCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">상권</td>
+    <td class="center" th:text="${estate.businessZone}"></td>
+    <td class="paddingLeft strong">기타경비(만원)</td>
+    <td class="center" th:text="${estate.otherCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">인근지하철역</td>
+    <td class="center" th:text="${estate.subwayStation}"></td>
+    <td class="paddingLeft strong">월매출(만원)</td>
+    <td class="center" th:text="${estate.monthlyIncome}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">층</td>
+    <td class="center" th:text="${estate.floor}"></td>
+    <td class="paddingLeft strong">세전월수입(만원)</td>
+    <td class="center" th:text="${estate.monthlyTax}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">면적</td>
+    <td class="center" th:text="${estate.area}"></td>
+    <td class="paddingLeft strong">실수익률(%)</td>
+    <td class="center" th:text="${estate.gainRatio}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">주차여부</td>
+    <td class="center" th:text="${estate.parking}?'가능':'아니'"></td>
+    <td class="paddingLeft strong"></td>
+    <td class="center"></td>
+</tr>
+<tr>
+    <th colspan="4">상세설명</th>
+</tr>
+<tr>
+    <td colspan="4" style="color:#666;">
+        <div>
+            <p th:text="${estate.detail}"></p>
+        </div>
+        <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
+        <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+<div th:fragment="estateVacant" class="tableArea">
+    <span class="date right" th:text="${#dates.format(estate.createdDate, 'dd/MM/YYYY')}">등록일: 2016.04.01</span>
+    <h2 class="title" th:text="${estate.name}"></h2>
+
+
+    <table class="table full">
+        <thead>
+        <tr>
+            <th colspan="2" style="width:50%;">기본정보</th>
+            <th colspan="2" style="width:50%;">수익비용구조</th>
+        </tr>
+        </thead>
+<tbody >
+<tr>
+    <td class="paddingLeft strong" style="width:25%;">매물번호</td>
+    <td class="center" style="width:25%;" th:text="${estate.estateCode}"></td>
+    <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
+    <td style="width:25%;" class="center" th:text="${estate.depositeCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">매물유형</td>
+    <td class="center" th:text="${estate.estateType}"></td>
+    <td class="paddingLeft strong">월세(만원)</td>
+    <td class="center" th:text="${estate.rentCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">현재업종</td>
+    <td class="center" th:text="${estate.category.name}"></td>
+    <td class="paddingLeft strong">권리금(만원)</td>
+    <td class="center" th:text="${estate.premiumCost}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">상권</td>
+    <td class="center" th:text="${estate.businessType.name}"></td>
+    <td class="paddingLeft strong">융자금(만원)</td>
+    <td class="center" th:text="${estate.loan}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">인근지하철역</td>
+    <td class="center" th:text="${estate.subwayStation}"></td>
+    <td class="paddingLeft strong">계약면적</td>
+    <td class="center" th:text="${estate.contractArea}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">층</td>
+    <td class="center" th:text="${estate.floor}"></td>
+    <td class="paddingLeft strong">전용면적</td>
+    <td class="center" th:text="${estate.exclusiveArea}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">준공년월</td>
+    <td class="center" th:text="${#dates.format(estate.constructDate, 'dd/MM/YYYY')}" ></td>
+    <td class="paddingLeft strong">전용률(%)</td>
+    <td class="center" th:text="${estate.exclusiveRate}"></td>
+</tr>
+<tr>
+    <td class="paddingLeft strong">입주가능일</td>
+    <td class="center" th:text="${#dates.format(estate.availableDate, 'dd/MM/YYYY')}"></td>
+    <td class="paddingLeft strong">주차여부</td>
+    <td class="center" th:text="${estate.parking}?'가능':'아니'"></td>
+</tr>
+<tr>
+    <th colspan="4">상세설명</th>
+</tr>
+<tr>
+    <td colspan="4" style="color:#666;">
+        <div>
+            <p th:text="${estate.detail}"></p>
+        </div>
+
+        <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
+        <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
 </body>
 </html>
