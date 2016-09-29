@@ -33,6 +33,8 @@ public class AbstractController {
     @Autowired
     protected IServiceReport serviceReport;
     @Autowired
+    protected IServiceRecent serviceRecent;
+    @Autowired
     protected IServiceReportAnswer serviceReportAnswer;
     @Autowired
     protected IServiceBoard serviceBoard;

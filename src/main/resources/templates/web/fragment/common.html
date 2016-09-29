@@ -14,7 +14,7 @@
 		</a>
 		<ul class="headerList clearFix">
 			<a th:href="@{/estate}"><li>전체 매물 보기</li></a>
-			<a href="content.html"><li>창업인수</li></a>
+			<a href="content.html"><li id="liContent" >창업인수</li></a>
 			<a href=""><li>공실매물</li></a>
 			<a href=""><li>외식 창업 소식</li></a>
 			<a href=""><li>공지사항</li></a>
@@ -28,9 +28,9 @@
 			</div>
 			<div th:if="${@serviceAuthorized.isAuthenticated()}">
 			<li><a th:href="@{/logout}"> 로그아웃</a></li>
-            <li><a th:href="@{/setting}">설정</a></li>
-            <li>최근 살펴본 매물</li>
-            <li>찜목록</li>
+            <li><a th:href="@{/member/user}">설정</a></li>
+			<li><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
+			<li>찜목록</li>
             <li>매물 올리기</li>
 			</div>
 
@@ -102,6 +102,27 @@
             <a href=""><li>매물올리기</li></a>
             -->
 		</ul>
+	</div>
+
+	<div class="pagination" th:fragment="pagination">
+		<div class="sb-pagination">
+			<ul class="pagination">
+				<!--First-->
+				<li th:class="${items.first ? 'disabled' : ''}"><a th:href="@{${uri}(pageIndex=0)}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+				<!--Middle-->
+				<li th:if="${items.totalPages-items.number ge 3 and items.number ge 3}"><a th:href="@{${uri}(pageIndex=${items.number-3})}" th:text="${items.number-2}">1 <span class="sr-only">(current)</span></a></li>
+				<li th:if="${items.totalPages-items.number ge 2 and items.number ge 2}"><a th:href="@{${uri}(pageIndex=${items.number-2})}" th:text="${items.number-1}">1 <span class="sr-only">(current)</span></a></li>
+				<li th:if="${items.totalPages-items.number ge 1 and items.number ge 1}"><a th:href="@{${uri}(pageIndex=${items.number-1})}" th:text="${items.number}">1 <span class="sr-only">(current)</span></a></li>
+
+				<li class="active"><a th:text="${items.number+1}">1 <span class="sr-only">(current)</span></a></li>
+
+				<li th:if="${items.totalPages-items.number gt 1}"><a th:href="@{${uri}(pageIndex=${items.number+1})}" th:text="${items.number+2}">1 <span class="sr-only">(current)</span></a></li>
+				<li th:if="${items.totalPages-items.number gt 2}"><a th:href="@{${uri}(pageIndex=${items.number+2})}" th:text="${items.number+3}">1 <span class="sr-only">(current)</span></a></li>
+				<li th:if="${items.totalPages-items.number gt 3}"><a th:href="@{${uri}(pageIndex=${items.number+3})}" th:text="${items.number+4}">1 <span class="sr-only">(current)</span></a></li>
+				<!--Last-->
+				<li th:class="${items.last ? 'disabled' : ''}"><a th:href="@{${uri}(pageIndex=${items.totalPages-1})}" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+			</ul>
+		</div>
 	</div>
 
 </body>

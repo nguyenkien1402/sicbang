@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +20,8 @@ import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormPassword;
 import org.trams.sicbang.model.form.FormReport;
 import org.trams.sicbang.model.form.FormUser;
+import org.trams.sicbang.model.form.FormWithdraw;
+import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.validation.ValidationUser;
 import org.trams.sicbang.web.controller.AbstractController;
 
@@ -28,8 +32,12 @@ import org.trams.sicbang.web.controller.AbstractController;
 @RequestMapping(value = "/member/user")
 public class ControllerUser extends AbstractController {
 
+    @Autowired
+    private ServiceAuthorized serviceAuthorized;
+
+
     final String BASE_URL = "/member/user/";
-    final String BASE_TEMPLATE = "web/content/user/";
+    final String BASE_TEMPLATE = "web/content/setting/";
 
     /**
      * Filter
@@ -37,16 +45,12 @@ public class ControllerUser extends AbstractController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String index(
-            @ModelAttribute FormUser form,
-            ModelMap map) {
-
-        // authorized request
-        form.setRole("MEMBER");
-        Page<User> users = serviceUser.filter(form);
-
-        map.put("items", users);
-        return BASE_TEMPLATE + "list";
+    public String index(ModelMap map) {
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        map.put("user",user);
+        return BASE_TEMPLATE + "setting";
     }
 
     /**
@@ -73,7 +77,7 @@ public class ControllerUser extends AbstractController {
      * @param form
      * @return
      */
-    @RequestMapping(value = "/{userId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/update",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity update(
             @ModelAttribute FormUser form) {
@@ -81,7 +85,6 @@ public class ControllerUser extends AbstractController {
         if (error != null) {
             return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
         }
-
         serviceUser.update(form);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -91,16 +94,34 @@ public class ControllerUser extends AbstractController {
      * @param form
      * @return
      */
-    @RequestMapping(value = "/{userId}/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/update/password", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public ResponseEntity resetPassword(
-            @ModelAttribute FormPassword form) {
+    public String resetPassword(
+            @ModelAttribute FormPassword form,@ModelAttribute String email) {
         FormError error = validationUser.validateResetPassword(form);
+
         if (error != null) {
-            return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+            return "FAIL";
         }
-        serviceUser.resetPassword(form);
-        return new ResponseEntity(HttpStatus.OK);
+        try {
+            serviceUser.resetPassword(form);
+        }catch (Exception e){
+            return "PASSWORD_INCORRECT";
+        }
+        return "SUCCESS";
+    }
+
+
+    @RequestMapping(value = "/update/withdraw", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String withdraw(
+            @ModelAttribute FormWithdraw form) {
+        FormError error = validationUser.validateWithdraw(form);
+        if (error != null) {
+            return "FAIL";
+        }
+        serviceUser.withdraw(form);
+        return "SUCCESS";
     }
 
     /**
