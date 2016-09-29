@@ -1,8 +1,11 @@
 package org.trams.sicbang.web.controller.anonymous;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.trams.sicbang.model.entity.Attachment;
 import org.trams.sicbang.model.entity.Estate;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
+import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
 import java.util.Collection;
@@ -26,6 +31,10 @@ public class ControllerEstate extends AbstractController {
 
     final String BASE_URL = "/estate/";
     final String BASE_TEMPLATE = "web/content/estate/";
+    final String BASE_TEMPLATE_BROKER = "web/content/broker";
+
+    @Autowired
+    private ServiceAuthorized serviceAuthorized;
 
     /**
      * Filter
@@ -50,12 +59,26 @@ public class ControllerEstate extends AbstractController {
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
         Estate estate = serviceEstate.findOne(estateForm);
-
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        //if logged as realtor
+        if(auth != null){
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            User user = serviceUser.findUserByEmail(userDetails.getUsername());
+            if(user.getId() == estate.getUser().getId()){
+                if(estate.getAdvertised() == true){ // if estate is premium.
+                    return BASE_TEMPLATE_BROKER +"/broker-content-premium";
+                }
+                // estate isn't premium.
+                System.out.println("go for broker-content");
+                return BASE_TEMPLATE_BROKER +"/broker-content";
+            }
+        }
+        // anonymous
         if(estate.getEstateType().equals("STARTUP")){
             System.out.println("go for startup");
             return BASE_TEMPLATE +"/detail-startup";

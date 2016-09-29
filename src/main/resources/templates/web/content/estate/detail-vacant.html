@@ -10,22 +10,19 @@
         <h2 style="clear:both">공실매물</h2>
     </div>
     <div id="container">
-        <div class="slideBox">
+            <div class="slideBox">
                     <div class="slideArea">
                         <div class="sideBox">
                             <div class="arrow leftArrow"></div>
                         </div>
                         <div class="centerBox">
                             <div class="viewImage">
-                                <img th:src="@{/static/admin/include/images/content/view.png}"/>
+                                <img th:src="${not #lists.isEmpty(attachments) ? attachments[0].origin : '/admin/assets/images/no_image.jpg'}"/>
                             </div>
                             <div class="thumbImage">
-                                <img th:src="@{/static/admin/include/images/content/1.png}"/>
-                                <img class="active" th:src="@{/static/admin/include/images/content/2.png}"/>
-                                <img th:src="@{/static/admin/include/images/content/3.png}"/>
-                                <img th:src="@{/static/admin/include/images/content/4.png}"/>
-                                <img th:src="@{/static/admin/include/images/content/5.png}"/>
-                                <span class="thumbNum">1/5</span>
+                                <img class = "active" th:src="${not #lists.isEmpty(attachments) ? attachments[0].origin : '/admin/assets/images/no_image.jpg'}"/>
+                                <img th:each="attachment,iterStat : ${attachments}" th:if="${iterStat.index} != 0" th:src="${attachment.origin}"/>
+                                <span class="thumbNum">1/<span th:text="${sizeattach}"></span></span>
                             </div>
 
                         </div>
@@ -35,16 +32,16 @@
                     </div>
                     <div class="infoArea">
                         <h3>담당자 정보</h3>
-                        <img class="basicImg" src=""/>
+                        <img class="basicImg" th:src="${estate.user.avatar.origin}"/>
                         
                         <div class="infoText">
-                            <p><strong>담당자:</strong> 김중개</p>
-                            <p><strong>연락처:</strong> 010-1234-5678</p>
+                            <p><strong>담당자:</strong> <span th:text="${estate.user.companyName}"></span></p>
+                            <p><strong>연락처:</strong> <span th:text="${estate.user.cellphoneNumber}"></span></p>
                             <p>
                                 <strong>담당자 정보:</strong><br/>
                                 <span>
                                     이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.
-    </span>
+                                </span>
                             </p>
                         </div>
                         <button class="btn primary wide">찜하기</button>
@@ -52,8 +49,8 @@
                 </div>
                 
                 <div class="tableArea">
-                    <span class="date right">등록일: 2016.04.01</span>
-                    <h2 class="title">김중개 사무소</h2>
+                    <span class="date right">등록일: <span th:text="${#dates.format(estate.createdDate, 'dd/MM/YYYY')}"></span></span>
+                    <h2 class="title" th:text="${estate.name}"></h2>
                     
                     
                     <table class="table full">
@@ -66,61 +63,60 @@
                         <tbody>
                             <tr>
                                 <td class="paddingLeft strong" style="width:25%;">매물번호</td>
-                                <td class="center" style="width:25%;">201601011121212102</td>
+                                <td class="center" style="width:25%;" th:text="${estate.estateCode}"></td>
                                 <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
-                                <td style="width:25%;" class="center">10,000</td>
+                                <td style="width:25%;" class="center" th:text="${estate.depositeCost}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">매물유형</td>
-                                <td class="center">창업인수</td>
+                                <td class="center" th:text="${estate.estateType}"></td>
                                 <td class="paddingLeft strong">월세(만원)</td>
-                                <td class="center">800</td>
+                                <td class="center" th:text="${estate.rentCost}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">현재업종</td>
-                                <td class="center">법무사 사무소</td>
+                                <td class="center" th:text="${estate.category.name}"></td>
                                 <td class="paddingLeft strong">권리금(만원)</td>
-                                <td class="center">20,000</td>
+                                <td class="center" th:text="${estate.premiumCost}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">상권</td>
-                                <td class="center">서울시 강남구 양재동
-</td>
+                                <td class="center" th:text="${estate.businessType.name}"></td>
                                 <td class="paddingLeft strong">융자금(만원)</td>
-                                <td class="center">2,322</td>
+                                <td class="center" th:text="${estate.loan}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">인근지하철역</td>
-                                <td class="center">양재역</td>
+                                <td class="center" th:text="${estate.subwayStation}"></td>
                                 <td class="paddingLeft strong">계약면적</td>
-                                <td class="center">62.8</td>
+                                <td class="center" th:text="${estate.contractArea}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">층</td>
-                                <td class="center">2</td>
+                                <td class="center" th:text="${estate.floor}"></td>
                                 <td class="paddingLeft strong">전용면적</td>
-                                <td class="center">101.73</td>
+                                <td class="center" th:text="${estate.exclusiveArea}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">준공년월</td>
-                                <td class="center">2011.03</td>
+                                <td class="center" th:text="${#dates.format(estate.constructDate, 'dd/MM/YYYY')}" ></td>
                                 <td class="paddingLeft strong">전용률(%)</td>
-                                <td class="center">61.7</td>
+                                <td class="center" th:text="${estate.exclusiveRate}"></td>
                             </tr>
                             <tr>
                                 <td class="paddingLeft strong">입주가능일</td>
-                                <td class="center">2016.02.16</td>
+                                <td class="center" th:text="${#dates.format(estate.availableDate, 'dd/MM/YYYY')}"></td>
                                 <td class="paddingLeft strong">주차여부</td>
-                                <td class="center">가능</td>
+                                <td class="center" th:text="${estate.parking}?'가능':'아니'"></td>
                             </tr>
                             <tr>
                                 <th colspan="4">상세설명</th>
                             </tr>
                             <tr>
                                 <td colspan="4" style="color:#666;">
-                                    신림동 최고의 부대찌개 집입니다.<br/>
-                                    매출 보장합니다. 상세설명 예시부분입니다.<br/>
-                                    상세설명 예시부분입니다.<br/><br/>
+                                    <div>
+                                        <p th:text="${estate.detail}"></p>
+                                    </div>
                                     
                                     <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
                                     <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
@@ -129,7 +125,8 @@
                         </tbody>
                     </table>
                 </div>
-                
+                <input type="hidden" id="latitude" th:value="${estate.latitude}"/>
+                <input type="hidden" id="longitude" th:value="${estate.longitude}"/>
                 <div class="row report">
                     <span class="right reportButton">잘못된 정보 신고</span>
                 </div>
@@ -141,17 +138,20 @@
             var loginModal = $(".loginModal");
             var joinModal = $(".joinModal");
             var reportModal = $(".reportModal");
-            $("#liContent").addClass("active");
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            $("#liVacancy").addClass("active");
+            var longitude = $("#longitude").val();
+            var latitude = $("#latitude").val();
+
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                 mapOption = { 
-                    center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    center: new daum.maps.LatLng(latitude, longitude), // 지도의 중심좌표
                     level: 3 // 지도의 확대 레벨
                 };
 
             var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
             // 마커가 표시될 위치입니다 
-            var markerPosition  = new daum.maps.LatLng(33.450701, 126.570667); 
+            var markerPosition  = new daum.maps.LatLng(latitude, longitude);
 
             // 마커를 생성합니다
             var marker = new daum.maps.Marker({
@@ -165,8 +165,7 @@
             var roadviewContainer = document.getElementById('roadView'); //로드뷰를 표시할 div
             var roadview = new daum.maps.Roadview(roadviewContainer); //로드뷰 객체
             var roadviewClient = new daum.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-
-            var position = new daum.maps.LatLng(33.450701, 126.570667);
+             var position = new daum.maps.LatLng(latitude,longitude);
 
             // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
             roadviewClient.getNearestPanoId(position, 50, function(panoId) {

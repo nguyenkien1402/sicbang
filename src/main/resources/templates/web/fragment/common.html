@@ -15,7 +15,7 @@
 		<ul class="headerList clearFix">
 			<a th:href="@{/estate}"><li>전체 매물 보기</li></a>
 			<a href="content.html"><li id="liContent" >창업인수</li></a>
-			<a href=""><li>공실매물</li></a>
+			<a href=""><li>공실매물</li ></a>
 			<a href=""><li>외식 창업 소식</li></a>
 			<a href=""><li>공지사항</li></a>
 
@@ -28,7 +28,7 @@
 			</div>
 			<div th:if="${@serviceAuthorized.isAuthenticated()}">
 			<li><a th:href="@{/logout}"> 로그아웃</a></li>
-            <li><a th:href="@{/member/user}">설정</a></li>
+            <li ><a th:href="@{/member/user}">설정</a></li>
 			<li><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
 			<li>찜목록</li>
             <li>매물 올리기</li>

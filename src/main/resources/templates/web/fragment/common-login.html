@@ -14,8 +14,8 @@
     </a>
     <ul class="headerList clearFix">
         <a href=""><li>전체매물보기</li></a>
-        <a href="content.html"><li id="liContent" >인수창업</li></a>
-        <a href=""><li>공실매물</li></a>
+        <a href="content.html"><li id="liStartup" >인수창업</li></a>
+        <a href=""><li id="liVacancy">공실매물</li></a>
     </ul>
     <ul class="headerRightList">
         <div th:unless="${@serviceAuthorized.isAuthenticated()}">
@@ -26,7 +26,7 @@
         <div th:if="${@serviceAuthorized.isAuthenticated()}">
             <li><a th:href="@{/logout}"> 로그아웃</a></li>
             <li id="setting"><a th:href="@{/member/user}">설정</a></li>
-            <li><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
+            <li id="lately"><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
             <li>찜목록</li>
             <li>매물 올리기</li>
         </div>
