@@ -20,8 +20,8 @@ public enum MessageResponse {
     EXCEPTION_BAD_REQUEST(997, "Request params missing or invalid"),
     EXCEPTION_PARSE_JSON(998, "Cannot parse json"),
     EXCEPTION_UNHANDLE(999, "Unhandled exception"),
-    EXCEPTION_PASSWORD_NOT_CONFIRM(5, "Password and Password confirmation do not match");
-
+    EXCEPTION_PASSWORD_NOT_CONFIRM(5, "Password and Password confirmation do not match"),
+    EXCEPTION_NOT_TRUST_BROKER(6,"승인 처리중입니다.");
     private int code;
     private String message;
 

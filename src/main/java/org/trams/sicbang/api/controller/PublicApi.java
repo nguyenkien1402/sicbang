@@ -14,6 +14,7 @@ import org.trams.sicbang.model.dto.Response;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.CommonStatus;
 import org.trams.sicbang.model.enumerate.MessageResponse;
+import org.trams.sicbang.model.enumerate.UserType;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.*;
 import org.trams.sicbang.validation.ValidationEstate;
@@ -55,6 +56,11 @@ public class PublicApi extends AbstractController {
             return new Response(MessageResponse.EXCEPTION_BAD_REQUEST, error);
         }
         CustomUserDetail userDetail = serviceUser.authenticateUser(form);
+        if(userDetail.getType().equals(UserType.BROKER.name())) {
+            error = new FormError();
+            error.rejectValue("message",MessageResponse.EXCEPTION_NOT_TRUST_BROKER.getMessage());
+            return new Response(MessageResponse.EXCEPTION_NOT_TRUST_BROKER, error);
+        }
         logger.info(userDetail.getUserId());
         return new Response(MessageResponse.OK, EncryptionUtils.jwtBuild(userDetail));
     }
@@ -94,6 +100,8 @@ public class PublicApi extends AbstractController {
     public Response userCreate(@RequestBody FormUser form) {
 
         // default value
+        System.out.println("===============================");
+        System.out.println("api join user - broker: "+form.getType());
         form.setRole("MEMBER");
         form.setStatus(CommonStatus.ACTIVE.name());
         FormError error = validationUser.validateCreate(form);

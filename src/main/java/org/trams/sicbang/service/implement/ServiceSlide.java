@@ -19,6 +19,7 @@ import org.trams.sicbang.repository.RepositorySlide;
 import org.trams.sicbang.service.IServiceSlide;
 import org.trams.sicbang.service.IServiceUser;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -67,13 +68,14 @@ public class ServiceSlide implements IServiceSlide {
         }
         if(slide != null && !slide.isEmpty()){
             try {
-                String fileRelativePath[], fileUrl;
+                String fileRelativePath[], fileUrl, thumbUrl;
                 if(form.getType().equals("WEB") || form.getType().equals("APP"))
-                    fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/slide/");
+                    fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(slide.toString().getBytes()), configParams.UPLOAD_DIRECTORY,"/slide/");
                 else
-                    fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/popup/");
+                    fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(slide.toString().getBytes()), configParams.UPLOAD_DIRECTORY,"/popup/");
                 System.out.println("fileRelativePath:" +fileRelativePath[0]);
                 fileUrl = configParams.BASE_URL +"/public" + fileRelativePath[0];
+                thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
                 System.out.println("file url: "+fileUrl);
                 Slide file = new Slide();
                 if(form.getType().equals("APP")){
@@ -97,7 +99,7 @@ public class ServiceSlide implements IServiceSlide {
                 }
                 repositorySlide.save(file);
                 return file;
-            }catch (IOException e){
+            }catch (Exception e){
                 throw new ApplicationException(MessageResponse.EXCEPTION_FILEUPLOAD_FAILED);
             }
         }

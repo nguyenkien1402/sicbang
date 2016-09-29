@@ -66,6 +66,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
         userDetail.setAccountNonLocked(true);
         userDetail.setEnabled(true);
         userDetail.setCredentialsNonExpired(true);
+        userDetail.setType(user.getType().name());
         if (rememberme != null && !rememberme.trim().isEmpty() && rememberme.equals("on")) {
             userDetail.setExpiry(-1L);
         }
@@ -116,6 +117,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
                         attachment = repositoryAttachment.save(attachment);
                         user.setAvatar(attachment);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         throw new ApplicationException(MessageResponse.EXCEPTION_FILEUPLOAD_FAILED);
                     }
                 }

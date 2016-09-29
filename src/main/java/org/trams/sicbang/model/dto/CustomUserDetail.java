@@ -22,6 +22,7 @@ public class CustomUserDetail implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
     private long expiry = DateTimeUtils.add(Calendar.HOUR, 168);
+    private String type;
 
     public CustomUserDetail() {
     }
@@ -109,5 +110,13 @@ public class CustomUserDetail implements UserDetails {
 
     public void setExpiry(long expiry) {
         this.expiry = expiry;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
