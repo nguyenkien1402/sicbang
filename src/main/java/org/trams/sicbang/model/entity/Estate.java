@@ -355,4 +355,8 @@ public class Estate extends BaseTimestampEntity {
     public void setWishlist(Boolean wishlist) {
         isWishlist = wishlist;
     }
+
+    public String getAll_addr() { return all_addr;}
+
+    public void setAll_addr(String all_addr) {this.all_addr = all_addr;}
 }
