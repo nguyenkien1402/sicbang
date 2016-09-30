@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.trams.sicbang.model.entity.ReportInformation;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormReport;
+import org.trams.sicbang.model.form.FormUser;
 import org.trams.sicbang.validation.ValidationReport;
 import org.trams.sicbang.web.controller.AbstractController;
 
@@ -83,23 +84,15 @@ public class ControllerReport extends AbstractController {
      * @param form
      * @return
      */
-    @RequestMapping(value = "/create", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object create(
-            @ModelAttribute FormReport form
-    ) {
-        switch (getRequestMethod()) {
-            case POST:
-                FormError error = validationReport.validateCreateReport(form);
-                if (error != null) {
-                    return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
-                }
-                // TODO call create service
-                serviceReport.create(form);
-                return new ResponseEntity(HttpStatus.OK);
-            case GET:
-            default:
-                return BASE_TEMPLATE + "create";
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity create(@ModelAttribute FormReport form ) {
+        FormError error = validationReport.validateCreateReport(form);
+        if(error != null){
+            return new ResponseEntity(error, HttpStatus.OK);
         }
+        serviceReport.create(form);
+        return new ResponseEntity("{\"errors\":{}}",HttpStatus.OK);
     }
 
 }

@@ -45,6 +45,8 @@ public class AbstractController {
     protected IServiceMail serviceMail;
     @Autowired
     protected IServiceSlide serviceSlide;
+    @Autowired
+    protected IServiceWishlist serviceWishlist;
 
     @Autowired
     protected ServiceAuthorized serviceAuthorized;

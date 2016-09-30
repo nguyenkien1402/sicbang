@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.trams.sicbang.model.entity.Attachment;
 import org.trams.sicbang.model.entity.Estate;
 import org.trams.sicbang.model.entity.User;
+import org.trams.sicbang.model.entity.Wishlist;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
+import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
@@ -45,10 +47,12 @@ public class ControllerEstate extends AbstractController {
 
     /**
      * Detail
-     * @param id
+     * @param estateId
      * @param map
      * @return
      */
+
+    /*
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detail(
             @PathVariable(value = "id") String estateId,
@@ -62,6 +66,7 @@ public class ControllerEstate extends AbstractController {
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
         Authentication auth = serviceAuthorized.isAuthenticated();
+
         //if logged as realtor
         if(auth != null){
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -74,6 +79,7 @@ public class ControllerEstate extends AbstractController {
                 System.out.println("go for broker-content");
                 return BASE_TEMPLATE_BROKER +"/broker-content";
             }
+
         }
         // anonymous
         if(estate.getEstateType().equals("STARTUP")){
@@ -85,7 +91,57 @@ public class ControllerEstate extends AbstractController {
         }
 
     }
+    */
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String detail(
+            @PathVariable(value = "id") String estateId,
+            ModelMap map) {
+        FormEstate estateForm = new FormEstate();
+        estateForm.setEstateId(estateId);
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        Estate estate = serviceEstate.findOne(estateForm);
+        Collection<Attachment> listAttach = estate.getAttachments();
+        System.out.println("list attach: " +listAttach.size());
+        map.put("attachments", listAttach);
+        map.put("estate",estate);
+        map.put("sizeattach", listAttach.size());
 
+        //if logged as realtor
+        if(auth != null){
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            User user = serviceUser.findUserByEmail(userDetails.getUsername());
+            FormWishlist formWishlist = new FormWishlist();
+            formWishlist.setUserId(user.getId().toString());
+            formWishlist.setEstateId(estateId);
+            Wishlist wishlist = serviceWishlist.findOne(formWishlist);
+            if(wishlist != null){
+                System.out.println("Khác null");
+               map.put("isWishList","true");
+            }else{
+                System.out.println("null");
+                map.put("isWishList","false");
+            }
+
+            if(user.getId() == estate.getUser().getId()){
+                if(estate.getAdvertised() == true){ // if estate is premium.
+                    return BASE_TEMPLATE_BROKER +"/broker-content-premium";
+                }
+                // estate isn't premium.
+                System.out.println("go for broker-content");
+                return BASE_TEMPLATE_BROKER +"/broker-content";
+            }
+
+        }
+        // anonymous
+        if(estate.getEstateType().equals("STARTUP")){
+            System.out.println("go for startup");
+            return BASE_TEMPLATE +"/detail-startup";
+        }else{
+            System.out.println("go for vacant");
+            return BASE_TEMPLATE +"/detail-vacant";
+        }
+
+    }
     /**
      * Update
      * @param id

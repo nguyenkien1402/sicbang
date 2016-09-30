@@ -262,8 +262,45 @@
 <input type="hidden" id="longitude" th:value="${estate.longitude}"/>
 <input type="hidden" id="estateType" th:value="${estate.estateType}"/>
 <input type="hidden" id="estateId" th:value="${estate.id}"/>
+<input type="hidden" id="userId" th:value="${estate.user.id}"/>
+<input type="hidden" id="isWishList" th:value="${isWishList}"/>
+
 </tbody>
 </table>
+</div>
+
+<div th:fragment="reportModal">
+    <div class="overlay"></div>
+    <div class="modal reportModal" style="width:520px;">
+        <div class="title clearFix">
+            <p>잘못된 정보 신고</p>
+            <span class="exitIcon"><i class="fa fa-times"></i></span>
+        </div>
+        <div class="contents">
+            <div class="modalAlignArea">
+                <div class="formControlGroup horizontal">
+                    <label class="narrow">이름</label>
+                    <input name="reportName" type="text" class="formControl wide warning" />
+                </div>
+
+                <div class="formControlGroup horizontal">
+                    <label class="narrow">휴대폰번호</label>
+                    <input name="reportPhone" type="password" class="formControl wide warning" />
+                </div>
+
+                <div class="formControlGroup horizontal">
+                    <label class="narrow">신고내용</label>
+                    <textarea name="reportContents" class="formControl wide warning">사진이랑 너무 다릅니다.</textarea>
+
+                </div>
+
+                <div class="btnGroup">
+                    <button id="reportConfirmButton" class="btn warning littleWide">접수하기</button>
+                    <button id="" class="btn cancel littleWide">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

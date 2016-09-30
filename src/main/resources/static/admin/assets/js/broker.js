@@ -1,5 +1,6 @@
 $(document).ready(function() {
     //초기 변수 설정
+    var overlay = $(".overlay");
     var estateType = $('#estateType').val();
     if(estateType == 'STARTUP'){
         $("#liStartup").addClass("active");
@@ -10,6 +11,8 @@ $(document).ready(function() {
     var longitude = $("#longitude").val();
     var latitude = $("#latitude").val();
     var estateId = $("#estateId").val();
+    var userId = $("#userId").val();
+
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new daum.maps.LatLng(latitude,longitude), // 지도의 중심좌표
@@ -105,11 +108,29 @@ $(document).ready(function() {
             alert("모든 정보를 입력해주세요.");
             return false;
         }
+        $.ajax({
+            url : '/member/report/create',
+            type:"POST",
+            dataType:"json",
+            data:{
+                "userId" : userId,
+                "estateId" : estateId,
+                "name" : name,
+                "cellphone" : phone,
+                "content" : contents
+            },success:function (data) {
+                if(data.errors != null){
+                    alert("false");
+                    return;
+                }
+                alert("신고가 접수되었습니다.");
+                overlay.removeClass("active");
+                reportModal.removeClass("active");
+            }
+        });
 
-        alert("신고가 접수되었습니다.");
-        overlay.removeClass("active");
-        reportModal.removeClass("active");
     });
+
     $("#deleteMarket").click(function(e){
         if(confirm("해당 매물을 삭제하시겠습니까?")){
             $.ajax({
@@ -126,5 +147,25 @@ $(document).ready(function() {
             });
         }
     });
+
+    var isWishList = $("#isWishList").val();
+    if(isWishList == 'true'){
+        $("#wishList").html("위시리스트에서제거");
+    }else{
+        $("#wishList").html("위시리스트에추가");
+    }
+
+    $("#wishList").click(function(){
+        if(isWishList == 'true'){
+           alert("remove from wishlist");
+        }else{
+            alert("add to wishlist");
+        }
+    });
+
+    $("#alertMessage").click(function(){
+        alert("Members only; please login.(로그인해주세요)");
+    });
+
 });
 

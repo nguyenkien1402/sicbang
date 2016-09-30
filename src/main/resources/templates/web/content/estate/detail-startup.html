@@ -9,7 +9,6 @@
         <h2 style="clear:both">인수창업</h2>
     </div>
     <div id="container">
-
         <div class="slideBox">
             <div class="slideArea">
                 <div class="sideBox">
@@ -44,19 +43,21 @@
                                 </span>
                     </p>
                 </div>
-                <button class="btn primary wide">찜하기</button>
+
+                <button th:if="${@serviceAuthorized.isAuthenticated()}" class="btn primary wide" id="wishList">
+                </button>
+                <button th:unless="${@serviceAuthorized.isAuthenticated()}" class="btn primary wide" id="alertMessage">찜하기</button>
             </div>
         </div>
-        <div th:replace="web/fragment/common-login :: estateStartup(estate=${estate})">
+        <div th:replace="web/fragment/common-login :: estateStartup(estate=${estate})"></div>
 
-        </div>
-        <input type="hidden" id="latitude" th:value="${estate.latitude}"/>
-        <input type="hidden" id="longitude" th:value="${estate.longitude}"/>
+        <div th:replace="web/fragment/common-login :: reportModal"></div>
 
         <div class="row report">
                     <span class="right reportButton">잘못된 정보 신고</span>
                 </div>
             </div>
+
 
     <script th:src="@{../../static/admin/assets/js/broker.js}"></script>
     </div>
