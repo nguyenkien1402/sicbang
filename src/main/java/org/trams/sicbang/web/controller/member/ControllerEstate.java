@@ -1,16 +1,21 @@
 package org.trams.sicbang.web.controller.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.trams.sicbang.model.entity.Estate;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
+import org.trams.sicbang.model.form.FormUser;
+import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
 /**
@@ -21,7 +26,8 @@ import org.trams.sicbang.web.controller.AbstractController;
 public class ControllerEstate extends AbstractController {
 
     final String BASE_URL = "/member/estate/";
-    final String BASE_TEMPLATE = "web/content/estate/";
+    final String BASE_TEMPLATE = "web/content/broker/";
+
 
     /**
      * Filter
@@ -29,8 +35,18 @@ public class ControllerEstate extends AbstractController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String index(ModelMap map) {
-        return BASE_TEMPLATE + "list";
+    public String index(@ModelAttribute FormEstate formEstate, ModelMap map) {
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        formEstate.setUserId(user.getId().toString());
+        if(formEstate.getEstateType() == null)
+            formEstate.setEstateType("STARTUP");
+        formEstate.setEstateType(formEstate.getEstateType().toUpperCase());
+        Page<Estate> estates = serviceEstate.filter(formEstate);
+        map.put("estates",estates);
+        map.put("type",formEstate.getEstateType());
+        return BASE_TEMPLATE + "broker-content-list";
     }
 
     /**
@@ -62,14 +78,17 @@ public class ControllerEstate extends AbstractController {
     /**
      * Delete
      * @param id
-     * @param map
      * @return
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
     public String delete(
-            @PathVariable(value = "id") String id,
-            ModelMap map) {
-        return "redirect:" + BASE_URL + id;
+            @PathVariable(value = "id") String id
+            ) {
+        FormEstate formEstate = new FormEstate();
+        formEstate.setEstateId(id);
+        serviceEstate.delete(formEstate);
+        return "success";
     }
 
     /**

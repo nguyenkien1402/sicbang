@@ -6,24 +6,22 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import org.trams.sicbang.common.utils.ConvertUtils;
-import org.trams.sicbang.common.utils.DateTimeUtils;
 import org.trams.sicbang.common.utils.FileUtils;
 import org.trams.sicbang.model.dto.CustomUserDetail;
-import org.trams.sicbang.model.entity.*;
+import org.trams.sicbang.model.entity.Attachment;
+import org.trams.sicbang.model.entity.Estate;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.enumerate.EstateType;
 import org.trams.sicbang.model.enumerate.MessageResponse;
 import org.trams.sicbang.model.exception.ApplicationException;
 import org.trams.sicbang.model.form.FormEstate;
-import org.trams.sicbang.model.form.FormUser;
 import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.BaseService;
 import org.trams.sicbang.service.IServiceEstate;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

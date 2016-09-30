@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base-login">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
 <head>
     <meta charset="utf-8"/>
     <title>식방</title>
@@ -13,7 +13,7 @@
                     <li th:each="recent : ${recents}" class="market clearFix">
                         <a class="tab-detail-all" th:href="@{/estate/detail/{id}(id=${recent.estate.id})}">
                         <div class="imageArea">
-                            <img th:src="${not #lists.isEmpty(recent.estate.attachments) ? recent.estate.attachments[0].origin : '/admin/assets/images/no_image.jpg'}"
+                            <img th:src="${not #lists.isEmpty(recent.estate.attachments) ? recent.estate.attachments[0].origin : '/static/admin/assets/images/no_image.jpg'}"
                                  src="/admin/assets/images/no_image.jpg"/>
                         </div>
                         <div class="textArea">

@@ -42,6 +42,7 @@ public class ServiceRecent extends BaseService implements IServiceRecent {
     @Override
     public Page<Recent> filter(FormRecent form) {
         Page<Recent> recents = repositoryRecent.findAll(form.getSpecification(), form.getPaging());
+        System.err.println(recents.getTotalElements());
         for (Recent recent : recents) {
             Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", recent.getEstate().getId());
             recent.getEstate().setAttachments(attachments);

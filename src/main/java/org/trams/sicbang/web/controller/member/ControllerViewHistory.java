@@ -32,8 +32,6 @@ public class ControllerViewHistory extends AbstractController {
 
     final String BASE_TEMPLATE = "web/content/";
 
-    @Autowired
-    private ServiceAuthorized serviceAuthorized;
 
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)

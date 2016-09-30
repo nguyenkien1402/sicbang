@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base-login">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
 <head>
     <meta charset="utf-8"/>
     <title>식방</title>
@@ -13,7 +13,7 @@
                     <button class="btn warning littleWide">광고해제</button>
                     <button class="btn warning littleWide">수정</button>
                     <button id="deleteMarket" class="btn warning littleWide">삭제</button>
-                    <a href="broker-content-list.html"><button class="btn warning littleWide">목록</button></a>
+                    <a th:href="@{/member/estate}"><button class="btn warning littleWide">목록</button></a>
                     <button class="btn warning littleWide">연장</button>
                     <div class="extendDate">
                         <img th:src="@{../../static/admin/include/images/content/clock.png}" />
@@ -27,7 +27,7 @@
                 </div>
                 <div class="centerBox">
                     <div class="viewImage">
-                        <img th:src="${not #lists.isEmpty(attachments) ? attachments[0].origin : '/admin/assets/images/no_image.jpg'}"/>
+                        <img th:src="${not #lists.isEmpty(attachments) ? attachments[0].origin : '/static/admin/assets/images/no_image.jpg'}"/>
                     </div>
                     <div class="thumbImage">
                         <img class = "active" th:src="${not #lists.isEmpty(attachments) ? attachments[0].origin : '/admin/assets/images/no_image.jpg'}"/>
@@ -62,200 +62,14 @@
         <div th:if="${estate.estateType == 'VACANT'}" >
             <div  th:replace="web/fragment/common-login :: estateVacant(estate=${estate})"></div>
         </div>
-        <input type="hidden" id="latitude" th:value="${estate.latitude}"/>
-        <input type="hidden" id="longitude" th:value="${estate.longitude}"/>
-        <input type="hidden" id="estateType" th:value="${estate.estateType}"/>
 
         <div class="row report">
                     <span class="right reportButton">잘못된 정보 신고</span>
                 </div>
             </div>
 
-    <script>
-        $(document).ready(function(){
-            //초기 변수 설정
-            var overlay = $(".overlay");
-            var loginModal = $(".loginModal");
-            var joinModal = $(".joinModal");
-            var reportModal = $(".reportModal");
-            var longitude = $("#longitude").val();
-            var latitude = $("#latitude").val();
-            var estateType = $('#estateType').val();
-            if(estateType == 'STARTUP'){
-                $("#liStartup").addClass("active");
-            }else{
-                $("#liVacancy").addClass("active");
-            }
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-                mapOption = { 
-                    center: new daum.maps.LatLng(latitude, longitude), // 지도의 중심좌표
-                    level: 3 // 지도의 확대 레벨
-                };
 
-            var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-            // 마커가 표시될 위치입니다 
-            var markerPosition  = new daum.maps.LatLng(latitude, longitude);
-
-            // 마커를 생성합니다
-            var marker = new daum.maps.Marker({
-                position: markerPosition
-            });
-
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(map);
-            
-            //로드뷰
-            var roadviewContainer = document.getElementById('roadView'); //로드뷰를 표시할 div
-            var roadview = new daum.maps.Roadview(roadviewContainer); //로드뷰 객체
-            var roadviewClient = new daum.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-
-            var position = new daum.maps.LatLng(latitude, longitude);
-
-            // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
-            roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-                roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
-            });
-            
-            $("#deleteMarket").click(function(e){
-                if(confirm("해당 매물을 삭제하시겠습니까?")){
-                    
-                }
-            });
-            
-            //썸네일을 클릭하면 viewImage에 보여준다.
-            $(".thumbImage img").click(function(e){
-                var imgs = $(".thumbImage img");
-                imgs.removeClass("active");
-                
-                $(this).addClass("active");
-                
-                $(".viewImage img").attr("src",$(this).attr("src"));
-                
-                $(".thumbNum").text($(this).index() + 1 + "/" + imgs.length);
-            });
-            
-            //화살표를 클릭하면 보여준다.
-            $(".sideBox").click(function(e){
-                var arrow = $(this).find(".arrow");
-                var imgs = $(".thumbImage img");
-                var currentImg = $(".thumbImage img.active");
-                
-                imgs.removeClass("active");
-                
-                if(arrow.hasClass("leftArrow")){
-                    var prevImg;
-                    
-                    if(currentImg.index() != 0)
-                        prevImg = currentImg.prev();
-                    else
-                        prevImg = imgs.eq(imgs.length - 1);
-                    
-                    prevImg.addClass("active");
-                    
-                    $(".viewImage img").attr("src",prevImg.attr("src"));
-                    $(".thumbNum").text(prevImg.index() + 1 + "/" + imgs.length);
-                }else{
-                    var nextImg;
-                    
-                    if(currentImg.index() != imgs.length - 1)
-                        nextImg = currentImg.next();
-                    else
-                        nextImg = imgs.eq(0);
-                    
-                    nextImg.addClass("active");
-                    
-                    $(".viewImage img").attr("src",nextImg.attr("src"));
-                    $(".thumbNum").text(nextImg.index() + 1 + "/" + imgs.length);
-                }
-                
-            });
-            
-            //잘못된 정보 신고 버튼
-            $(".reportButton").click(function(e){
-                overlay.addClass("active");
-                reportModal.addClass("active");
-                $(window).scrollTop(0);
-            });
-            
-            $("#reportConfirmButton").click(function(e){
-                var name = $("input[name=reportName]").val();
-                var phone = $("input[name=reportPhone]").val();
-                var contents = $("input[name=reportContents]").val();
-                
-                if(name == "" || phone == "" || contents == ""){
-                    alert("모든 정보를 입력해주세요.");
-                    return false;
-                }
-                
-                alert("신고가 접수되었습니다.");
-                overlay.removeClass("active");
-                reportModal.removeClass("active");
-            });
-            
-            //로그인 창 띄우는 버튼
-            $(".loginButton").click(function(e){
-                overlay.addClass("active");
-                joinModal.removeClass("active");
-                $(window).scrollTop(0);
-                loginModal.addClass("active");
-            });
-            
-            //회원가입 창 띄우는 버튼
-            $("#joinButton").click(function(e){
-                overlay.addClass("active");
-                joinModal.addClass("active");
-            });
-            
-            //로그인 버튼
-            $("#loginConfirmButton").click(function(e){
-            });
-                 
-            
-            //회원가입 버튼
-            $("#joinConfirmButton").click(function(e){
-                var email = $("input[name=joinEmail]").val();
-                var password = $("input[name=joinPassword]").val();
-                var passConf = $("input[name=joinPassConf]").val();
-                var policy = $("#c1").prop("checked");
-                var privacy = $("#c2").prop("checked");
-                
-                if(email == ""){
-                    alert("이메일을 입력해주세요.");
-                    return false;
-                }
-                
-                if(password == ""){
-                    alert("비빌번호를 입력해주세요.");
-                    return false;
-                }
-                
-                if(passConf == ""){
-                    alert("비밀번호확인을 입력해주세요.");
-                    return false;
-                }
-                
-                if(policy == false){
-                    alert("이용약관에 동의해주세요.");
-                    return false;
-                }
-                if(privacy == false){
-                    alert("개인정보 취급방침에 동의해주세요.");
-                    return false;
-                }
-                
-                //TODO : Ajax 통신
-                
-            });
-            
-            //모달 창 닫기
-            $(".modal .exitIcon").click(function(e){
-                $(this).parents(".modal").removeClass("active");
-                overlay.removeClass("active");
-            });
-        });
-    </script>
-
+    <script th:src="@{../../static/admin/assets/js/broker.js}"></script>
 </div>
 </body>
 </html>

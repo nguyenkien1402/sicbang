@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.trams.sicbang.service.*;
+import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.validation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,9 @@ public class AbstractController {
     protected IServiceMail serviceMail;
     @Autowired
     protected IServiceSlide serviceSlide;
+
+    @Autowired
+    protected ServiceAuthorized serviceAuthorized;
 
     @Autowired
     protected ValidationUser validationUser;

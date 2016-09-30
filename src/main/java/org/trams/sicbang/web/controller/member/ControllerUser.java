@@ -32,10 +32,6 @@ import org.trams.sicbang.web.controller.AbstractController;
 @RequestMapping(value = "/member/user")
 public class ControllerUser extends AbstractController {
 
-    @Autowired
-    private ServiceAuthorized serviceAuthorized;
-
-
     final String BASE_URL = "/member/user/";
     final String BASE_TEMPLATE = "web/content/setting/";
 

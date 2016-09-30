@@ -33,9 +33,6 @@ public class ControllerEstate extends AbstractController {
     final String BASE_TEMPLATE = "web/content/estate/";
     final String BASE_TEMPLATE_BROKER = "web/content/broker";
 
-    @Autowired
-    private ServiceAuthorized serviceAuthorized;
-
     /**
      * Filter
      * @param map
@@ -99,6 +96,7 @@ public class ControllerEstate extends AbstractController {
     public String update(
             @PathVariable(value = "id") String id,
             ModelMap map) {
+
         return "redirect:" + BASE_URL;
     }
 
