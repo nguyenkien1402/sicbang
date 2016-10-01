@@ -113,11 +113,12 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
                     attachment.setThumbnail(thumbUrl);
                     attachment.setTableRef("estate");
                     attachment.setRowRef(repositoryEstate.findOne(form.getSpecification()).getId());
-                    attachments.add(attachment);
+                    repositoryAttachment.save(attachment);
+//                    attachments.add(attachment);
                 }
-                repositoryAttachment.save(attachments);
-                estate.setAttachments(attachments);
-                logger.info("getattach : " + estate.getAttachments().iterator().next().getOrigin());
+//                repositoryAttachment.save(attachments);
+//                estate.setAttachments(attachments);
+//                logger.info("getattach : " + estate.getAttachments().iterator().next().getOrigin());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -263,7 +264,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     public Integer updateImageEstate(MultipartFile file, Estate estate) {
         try {
             String fileRelativePath[], fileUrl, thumbUrl;
-            fileRelativePath = FileUtils.uploadImage(file.getInputStream(), configParams.UPLOAD_DIRECTORY, "/estate/");
+            fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(file.getBytes()), configParams.UPLOAD_DIRECTORY, "/estate/");
             fileUrl = configParams.BASE_URL + "/public" + fileRelativePath[0];
             thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
             Attachment attachment = new Attachment();
