@@ -19,20 +19,26 @@ public interface RepositoryEstate extends JpaRepository<Estate, Long>, JpaSpecif
     @Query(value = "SELECT * FROM estate e INNER JOIN city c ON e.city_id=c.id and c.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
     List<Estate> findEstateByCity(@Param("page") Integer page, @Param("search") String city,@Param("type") String type);
 
-    @Query(value = "SELECT * FROM estate e INNER JOIN district d ON e.city_id=d.id and d.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
+    @Query(value = "SELECT * FROM estate e INNER JOIN district d ON e.district_id=d.id and d.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
     List<Estate> findEstateByDistrict(@Param("page") Integer page, @Param("search") String district,@Param("type") String type);
 
-    @Query(value = "SELECT * FROM estate e INNER JOIN town t ON e.city_id=t.id and t.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
+    @Query(value = "SELECT * FROM estate e INNER JOIN town t ON e.town_id=t.id and t.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
     List<Estate> findEstateByTown(@Param("page") Integer page, @Param("search") String town,@Param("type") String type);
+
+    @Query(value = "SELECT * FROM estate e WHERE e.subway_station like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
+    List<Estate> findEstateBySubway(@Param("page") Integer page, @Param("search") String subway,@Param("type") String type);
 
     @Query(value = "SELECT count(e.id) as count FROM estate e INNER JOIN city c ON e.city_id=c.id and c.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
     Long totalEstateByCity(@Param("search") String city,@Param("type") String type);
 
-    @Query(value = "SELECT count(e.id) as count FROM estate e INNER JOIN district d ON e.city_id=d.id and d.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
+    @Query(value = "SELECT count(e.id) as count FROM estate e INNER JOIN district d ON e.district_id=d.id and d.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
     Long totalEstateByDistrict(@Param("search") String district,@Param("type") String type);
 
-    @Query(value = "SELECT count(e.id) as count FROM estate e INNER JOIN town t ON e.city_id=t.id and t.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
+    @Query(value = "SELECT count(e.id) as count FROM estate e INNER JOIN town t ON e.town_id=t.id and t.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
     Long totalEstateByTown(@Param("search") String town,@Param("type") String type);
+
+    @Query(value = "SELECT count(e.id) as count FROM estate e WHERE e.subway_station like :search AND e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
+    Long totalEstateBySubway(@Param("search") String subway,@Param("type") String type);
 
     @Query(value = "SELECT count(e.id) as count FROM estate e WHERE e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
     Long totalAllEstate(@Param("type") String type);

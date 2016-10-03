@@ -200,7 +200,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
     public User findOne(FormUser form) {
         User user = repositoryUser.findOne(form.getSpecification());
         System.out.println("id user:"+user.getUsername());
-        return repositoryUser.findOne(form.getSpecification());
+        return user;
     }
 
     @Override

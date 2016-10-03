@@ -78,9 +78,9 @@ public interface IServiceEstate {
 //    List<Estate> filterByTown(int pageIndex, String name);
 //    List<Estate> filterBySubway(int pageIndex, String name);
 
-    List<Estate> filterBy(int pageIndex, String city, String district, String town, String type);
+    List<Estate> filterBy(int pageIndex, String city, String district, String town, String type,String subway);
 
-    Long totalEstateFilter(String city, String district, String town, String type);
+    Long totalEstateFilter(String city, String district, String town, String type, String subway);
 
 //    Long totalEstateFilterByCity(String name);
 //    Long totalEstateFilterByDistrict(String name);

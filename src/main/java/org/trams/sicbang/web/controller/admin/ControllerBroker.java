@@ -84,6 +84,7 @@ public class ControllerBroker extends AbstractController {
         System.out.println("reload");
         form.setUserId(userId);
         User user = serviceUser.findOne(form);
+        System.out.println("attach: "+user.getAvatar().getThumbnail());
         map.put("user", user);
         return BASE_TEMPLATE + "detail_list";
     }

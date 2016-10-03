@@ -281,12 +281,12 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     }
 
     @Override
-    public List<Estate> filterBy(int pageIndex, String city, String district, String town, String type) {
+    public List<Estate> filterBy(int pageIndex, String city, String district, String town, String type, String subway) {
         List<Estate> estates = null;
         pageIndex = pageIndex * 10;
         type = "%"+type+"%";
         // if 3 field is null, then search all
-        if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town)){
+        if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town) && Strings.isNullOrEmpty(subway)){
             System.out.println("three field null");
             estates = repositoryEstate.findAllEstate(pageIndex,type);
             System.out.println("total size: "+estates.size());
@@ -308,15 +308,20 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
             estates = repositoryEstate.findEstateByTown(pageIndex,town,type);
             return estates;
         }
+        if(!Strings.isNullOrEmpty(subway)){
+            System.out.println("subway field not null");
+            estates = repositoryEstate.findEstateBySubway(pageIndex,subway,type);
+            return estates;
+        }
         return estates;
     }
 
     @Override
-    public Long totalEstateFilter(String city, String district, String town, String type) {
+    public Long totalEstateFilter(String city, String district, String town, String type, String subway) {
         // if 3 field is null, then search all
         Long count = null;
         type = "%"+type+"%";
-        if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town)){
+        if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town) && Strings.isNullOrEmpty(subway)){
             count = repositoryEstate.totalAllEstate(type);
             return count;
         }
@@ -330,6 +335,10 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         }
         if(!Strings.isNullOrEmpty(town)){
             count = repositoryEstate.totalEstateByTown(town,type);
+            return count;
+        }
+        if(!Strings.isNullOrEmpty(subway)){
+            count = repositoryEstate.totalEstateBySubway(subway,type);
             return count;
         }
         return count;

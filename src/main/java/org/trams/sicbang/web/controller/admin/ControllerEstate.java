@@ -72,6 +72,7 @@ public class ControllerEstate extends AbstractController {
             @RequestParam(value = "city", defaultValue = "") String city,
             @RequestParam(value = "district", defaultValue = "") String district,
             @RequestParam(value = "town", defaultValue = "") String town,
+            @RequestParam(value = "subway", defaultValue = "") String subway,
             ModelMap map) {
         System.out.println("===================================");
         Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
@@ -91,12 +92,17 @@ public class ControllerEstate extends AbstractController {
             System.out.println("town: "+town);
         }
 
+        if(!Strings.isNullOrEmpty(subway)){
+            subway = "%"+subway+"%";
+            System.out.println("subway: "+subway);
+        }
+
         switch (dataType) {
 
             case "tab-start-list": {
                 System.out.println("startup estate");
-                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"STARTUP");
-                count = serviceEstate.totalEstateFilter(city,district,town,"STARTUP");
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"STARTUP",subway);
+                count = serviceEstate.totalEstateFilter(city,district,town,"STARTUP",subway);
                 Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
                 Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
                 map.put("items", pageConvert);
@@ -106,8 +112,8 @@ public class ControllerEstate extends AbstractController {
             }
             case "tab-vacant-list": {
                 System.out.println("vacant estate");
-                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"VACANT");
-                count = serviceEstate.totalEstateFilter(city,district,town,"VACANT");
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"VACANT",subway);
+                count = serviceEstate.totalEstateFilter(city,district,town,"VACANT",subway);
                 Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
                 Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
                 map.put("items", pageConvert);
@@ -116,10 +122,11 @@ public class ControllerEstate extends AbstractController {
             }
             case "tab-all-estates": {
                 System.out.println("all estate");
-                FormEstate formEstate = new FormEstate();
-                formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
-                Page<Estate> estatesAll = serviceEstate.filter(formEstate);
-                map.put("items", estatesAll);
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"",subway);
+                count = serviceEstate.totalEstateFilter(city,district,town,"",subway);
+                Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
+                Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
+                map.put("items", pageConvert);
                 System.out.println("===================================");
             }
             default:
