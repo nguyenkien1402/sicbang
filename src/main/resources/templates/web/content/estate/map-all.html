@@ -1,0 +1,415 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
+<head>
+    <meta charset="utf-8"/>
+    <title>식방</title>
+</head>
+<body>
+<div layout:fragment="content" id="contents">
+        <div class="mapArea">
+                <div class="infoBox">
+                    <div class="detailBox">
+                        <div class="priceBox">
+                            <div class="formControlGroup">
+                                <label>보증금</label>
+                                <select class="formControl" style="font-size:11px;">
+                                    <option>전체</option>
+                                    <option>3천만원 이하</option>
+                                    <option>3천~5천만원</option>
+                                    <option>5천만원 ~ 1억원</option>
+                                    <option>1억원 ~ 2억원</option>
+                                    <option>2억원 이상</option>
+                                </select>
+                            </div>
+                            <div class="formControlGroup">
+                                <label>월세</label>
+                                <select class="formControl" style="font-size:11px;">
+                                    <option>전체</option>
+                                    <option>100만원 이하</option>
+                                    <option>100~300만원</option>
+                                    <option>300만원~500만원</option>
+                                    <option>500만원~1000만원</option>
+                                    <option>1000만원이상</option>
+                                </select>
+                            </div>
+                            <div class="formControlGroup">
+                                <label>권리금</label>
+                                <select class="formControl" style="font-size:11px;">
+                                    <option>전체</option>
+                                    <option>없음</option>
+                                    <option>1천만원 이하</option>
+                                    <option>1천~3천만원</option>
+                                    <option>3천~5천만원</option>
+                                    <option>5천~1억</option>
+                                    <option>1억 이상</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="storeBox">
+                            <div class="storeArea">
+                                <h5>휴게음식점</h5>
+                                <div class="store">
+                                    <input id="c1" type="checkbox" class="formControl warning">
+                                    <label for="c1"></label>
+                                    <span>커피</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c2" type="checkbox" class="formControl warning">
+                                    <label for="c2"></label>
+                                    <span>치킨점</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c3" type="checkbox" class="formControl warning">
+                                    <label for="c3"></label>
+                                    <span>카페</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c4" type="checkbox" class="formControl warning">
+                                    <label for="c4"></label>
+                                    <span>제과점</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c5" type="checkbox" class="formControl warning">
+                                    <label for="c5"></label>
+                                    <span>피자점</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c6" type="checkbox" class="formControl warning">
+                                    <label for="c6"></label>
+                                    <span>떡볶이</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c7" type="checkbox" class="formControl warning">
+                                    <label for="c7"></label>
+                                    <span>튀김</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c8" type="checkbox" class="formControl warning">
+                                    <label for="c8"></label>
+                                    <span>아이스크림</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c9" type="checkbox" class="formControl warning">
+                                    <label for="c9"></label>
+                                    <span>기타</span>
+                                </div>
+                            </div>
+                            
+                            <div class="storeArea">
+                                <h5>일반음식점</h5>
+                                <div class="store">
+                                    <input id="c21" type="checkbox" class="formControl warning">
+                                    <label for="c21"></label>
+                                    <span>한식점</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c22" type="checkbox" class="formControl warning">
+                                    <label for="c22"></label>
+                                    <span>고깃집</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c23" type="checkbox" class="formControl warning">
+                                    <label for="c23"></label>
+                                    <span>분식점</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c24" type="checkbox" class="formControl warning">
+                                    <label for="c24"></label>
+                                    <span>생선회/해물</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c25" type="checkbox" class="formControl warning">
+                                    <label for="c25"></label>
+                                    <span>중국집</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c26" type="checkbox" class="formControl warning">
+                                    <label for="c26"></label>
+                                    <span>레스토랑</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c27" type="checkbox" class="formControl warning">
+                                    <label for="c27"></label>
+                                    <span>일식점</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c28" type="checkbox" class="formControl warning">
+                                    <label for="c28"></label>
+                                    <span>돈까스/우동</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c29" type="checkbox" class="formControl warning">
+                                    <label for="c29"></label>
+                                    <span>기타</span>
+                                </div>
+                            </div>
+                            
+                            <div class="storeArea">
+                                <h5>주류</h5>
+                                <div class="store">
+                                    <input id="c41" type="checkbox" class="formControl warning">
+                                    <label for="c41"></label>
+                                    <span>맥주호프집</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c42" type="checkbox" class="formControl warning">
+                                    <label for="c42"></label>
+                                    <span>이자카야</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c43" type="checkbox" class="formControl warning">
+                                    <label for="c43"></label>
+                                    <span>바</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c44" type="checkbox" class="formControl warning">
+                                    <label for="c44"></label>
+                                    <span>실내포차</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c45" type="checkbox" class="formControl warning">
+                                    <label for="c45"></label>
+                                    <span>꼬치구이</span>
+                                </div>
+                                <div class="store">
+                                    <input id="c46" type="checkbox" class="formControl warning">
+                                    <label for="c46"></label>
+                                    <span>기타</span>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="btnGroup">
+                                <button class="btn primary littleWide">조회하기</button>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="listBox">
+                        <div class="storeList">
+                            <div class="title">
+                                <h5>안심창업</h5>
+                            </div>
+                            <ul>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="storeList">
+                            <div class="title">
+                                <h5>중개사</h5>
+                            </div>
+                            <ul>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="storeList">
+                            <div class="title">
+                                <h5>직거래</h5>
+                            </div>
+                            <ul>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="imgArea">
+                                        <img th:src="@{/static/admin/include/images/map/store.png}" class="basicImg"/>
+                                    </div>
+                                    <div class="textArea">
+                                        <button>중개사</button>
+                                        <h5 class="primary">맛있는식당 신림점</h5>
+                                        <div class="price">
+                                            <span>보증금 3000</span>
+                                            <span>월세 3000</span>
+                                            <span>권리금 3000</span>
+                                        </div>
+                                        <div class="location">
+                                            <span>서울시 관악구 신대방동</span>
+                                            <span>26.45m²(8평)</span>
+                                        </div>
+                                        <span class="explain">월수익 500 신대방사거리 역세권</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="mapBox">
+                    <div class="searchBox">
+                        <div class="buttonArea clearFix">
+                            <button class="active" data-method="storeSearch">상권으로 찾기</button>
+                            <button class="" data-method="subwaySearch">지하철역으로 찾기</button>
+                        </div>
+                        <div class="storeSearch searchMethodArea active">
+                            <select class="formControl citySelect">
+                                <option selected disabled>선택</option>
+                            </select>
+                            <select class="formControl districtSelect">
+                                <option selected disabled>선택</option>
+                            </select>
+                            <select class="formControl">
+                                <option selected disabled>선택</option>
+                            </select>
+                            <button class="btn primary" style="height:35px;">조회</button>
+                        </div>
+                        <div class="subwaySearch searchMethodArea">
+                            <input type="text" class="subwayInput formControl" style="width:320px;margin-right:0px;" placeholder="지하철역"/>
+                            <button class="btn primary" style="height:35px;">조회</button>
+                        </div>
+                    </div>
+                    <div id="map" ></div>
+                </div>
+                
+                
+            </div>
+            
+        </div>
+    </body>
+    </div>
+</html>
