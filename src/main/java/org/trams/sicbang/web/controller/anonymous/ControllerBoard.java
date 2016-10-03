@@ -33,22 +33,6 @@ public class ControllerBoard extends AbstractController {
             ModelMap map) {
         Page<Board> boards = serviceBoard.filter(form);
         map.put("items", boards);
-        return BASE_TEMPLATE + "list";
+        return BASE_TEMPLATE + "board";
     }
-
-    /**
-     * Detail
-     * @param form
-     * @param map
-     * @return
-     */
-    @RequestMapping(value = "/{boardId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String detail(
-            @ModelAttribute FormBoard form,
-            ModelMap map) {
-        Board board = serviceBoard.findOne(form);
-        map.put("board", board);
-        return BASE_TEMPLATE + "update";
-    }
-
 }

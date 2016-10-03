@@ -11,12 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.trams.sicbang.model.entity.Estate;
+import org.trams.sicbang.model.entity.Recent;
 import org.trams.sicbang.model.entity.User;
+import org.trams.sicbang.model.entity.Wishlist;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
+import org.trams.sicbang.model.form.FormRecent;
 import org.trams.sicbang.model.form.FormUser;
+import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
+
+import java.io.IOException;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -40,12 +46,8 @@ public class ControllerEstate extends AbstractController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         User user = serviceUser.findUserByEmail(userDetails.getUsername());
         formEstate.setUserId(user.getId().toString());
-        if(formEstate.getEstateType() == null)
-            formEstate.setEstateType("STARTUP");
-        formEstate.setEstateType(formEstate.getEstateType().toUpperCase());
         Page<Estate> estates = serviceEstate.filter(formEstate);
         map.put("estates",estates);
-        map.put("type",formEstate.getEstateType());
         return BASE_TEMPLATE + "broker-content-list";
     }
 
@@ -62,6 +64,18 @@ public class ControllerEstate extends AbstractController {
         return BASE_TEMPLATE + "detail";
     }
 
+    @RequestMapping(value="/advertised",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getAdvertised(@ModelAttribute FormEstate formEstate, ModelMap map) {
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        formEstate.setUserId(user.getId().toString());
+        formEstate.setIsAdvertised("true");
+        Page<Estate> estates = serviceEstate.filter(formEstate);
+        map.put("estates",estates);
+        map.put("advertised","true");
+        return BASE_TEMPLATE + "broker-content-list";
+    }
     /**
      * Update
      * @param id
@@ -114,4 +128,29 @@ public class ControllerEstate extends AbstractController {
         }
     }
 
+    @RequestMapping(value="/addWishList",method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String addWishList(@ModelAttribute FormWishlist formWishlist) {
+        System.out.println("USER ID :"+formWishlist.getUserId());
+        System.out.println("ESTATE ID:"+formWishlist.getEstateId());
+        serviceWishlist.create(formWishlist);
+        return "SUCCESS";
+    }
+    @RequestMapping(value="/removeWishList",method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String removeWishList(@ModelAttribute FormWishlist formWishlist) {
+        serviceWishlist.delete(formWishlist);
+        return "SUCCESS";
+    }
+
+    @RequestMapping(value="/wishlist",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String wishlist(@ModelAttribute FormWishlist form, ModelMap map) throws IOException {
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        form.setUserId(user.getId().toString());
+        Page<Wishlist> wishlists = serviceWishlist.filter(form);
+        map.put("wishlists",wishlists);
+        return "web/content/" + "optional/wishlist";
+    }
 }

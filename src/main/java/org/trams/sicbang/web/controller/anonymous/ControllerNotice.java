@@ -32,22 +32,8 @@ public class ControllerNotice extends AbstractController {
             ModelMap map) {
         Page<Notice> notices = serviceNotice.filter(form);
         map.put("items", notices);
-        return BASE_TEMPLATE + "list";
+        return BASE_TEMPLATE + "event";
     }
 
-    /**
-     *
-     * @param form
-     * @param map
-     * @return
-     */
-    @RequestMapping(value = "/{noticeId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String detail(
-            @ModelAttribute FormNotice form,
-            ModelMap map) {
-        Notice notice = serviceNotice.findOne(form);
-        map.put("notice", notice);
-        return BASE_TEMPLATE + "update";
-    }
 
 }

@@ -1,0 +1,44 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
+<head>
+    <meta charset="utf-8"/>
+    <title>식방</title>
+</head>
+<body>
+<div layout:fragment="content" id="contents">
+    <div id="container">
+                <div class="containerTitle">
+                    <h2>찜목록</h2>
+                </div>
+                <ul class="marketList">
+                    <li th:each="wishlist : ${wishlists}" class="market clearFix">
+                        <a class="tab-detail-all" th:href="@{/estate/detail/{id}(id=${wishlist.estate.id})}">
+                        <div class="imageArea">
+                            <img th:src="${not #lists.isEmpty(wishlist.estate.attachments) ? wishlist.estate.attachments[0].origin : '/static/admin/assets/images/no_image.jpg'}"
+                                 src="/admin/assets/images/no_image.jpg"/>
+                        </div>
+                        <div class="textArea">
+                            <h3 class="title primary">흥부 부대찌개 중앙점</h3>
+                            <div class="priceArea">
+                                <span class="strong">보증금 <span class="strong" th:text="${wishlist.estate.depositeCost}"></span> 만원 </span>
+                                <span class="strong">월세 <span class="strong" th:text="${wishlist.estate.rentCost}"></span> 만원 </span>
+                                <span class="strong">권리금 <span class="strong" th:text="${wishlist.estate.premiumCost}"></span> 만원</span>
+                            </div>
+                            <span class="location" th:text="${wishlist.estate.all_addr}">서울시 관악구 신대방동</span>
+                        </div>
+                        </a>
+                    </li>
+                </ul>
+
+                 <div class = "pagination" th:replace="web/fragment/common-login :: pagination(items=${wishlists})"></div>
+
+
+                 </div>
+        <script>
+            $(document).ready(function(){
+               $("#wishlist").addClass("primary");
+            });
+        </script>
+        </div>
+
+</body>
+</html>

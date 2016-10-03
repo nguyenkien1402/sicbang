@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.trams.sicbang.model.entity.Attachment;
-import org.trams.sicbang.model.entity.Estate;
-import org.trams.sicbang.model.entity.User;
-import org.trams.sicbang.model.entity.Wishlist;
+import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
+import org.trams.sicbang.model.form.FormRecent;
 import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
@@ -100,10 +98,12 @@ public class ControllerEstate extends AbstractController {
         estateForm.setEstateId(estateId);
         Authentication auth = serviceAuthorized.isAuthenticated();
         Estate estate = serviceEstate.findOne(estateForm);
+
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
+
         map.put("attachments", listAttach);
-        map.put("estate",estate);
+        map.addAttribute("estate",estate);
         map.put("sizeattach", listAttach.size());
 
         //if logged as realtor
@@ -121,7 +121,16 @@ public class ControllerEstate extends AbstractController {
                 System.out.println("null");
                 map.put("isWishList","false");
             }
-
+            map.put("memberId",user.getId());
+            FormRecent formRecent = new FormRecent();
+            formRecent.setUserId(user.getId().toString());
+            formRecent.setEstateId(estateId);
+            Recent recent = serviceRecent.findOne(formRecent);
+            if(recent != null){
+            serviceRecent.update(formRecent);
+            }else{
+            serviceRecent.create(formRecent);
+            }
             if(user.getId() == estate.getUser().getId()){
                 if(estate.getAdvertised() == true){ // if estate is premium.
                     return BASE_TEMPLATE_BROKER +"/broker-content-premium";
