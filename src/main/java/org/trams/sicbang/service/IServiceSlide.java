@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IServiceSlide {
 
-    Slide uploadSlide(FormSlide form, String username);
+    Integer uploadSlide(FormSlide form, String username);
 
     /*
      * filter

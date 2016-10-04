@@ -41,7 +41,7 @@ public class ServiceSlide implements IServiceSlide {
 
 
     @Override
-    public Slide uploadSlide(FormSlide form, String username) {
+    public Integer uploadSlide(FormSlide form, String username) {
         System.out.println("Upload image");
         // get admin user, who uploaded image
         MultipartFile slide = form.getAttachments();
@@ -49,22 +49,30 @@ public class ServiceSlide implements IServiceSlide {
         formUser.setEmail(username);
         User user = serviceUser.findOne(formUser);
         System.out.println("id: "+user.getId());
+        Slide file = new Slide();
+        int check = 0;
         if(form.getLink()!= null && !form.getLink().trim().isEmpty()){
-            Slide file = new Slide();
             if(form.getType().equals("APP")){
                 file.setAppUrl(form.getLink());
 //                file.setName(form.getLink());
                 file.setType("APP");
                 file.setIsDelete(0);
                 file.setUser(user);
-            }else{
+            }else if(form.getType().equals("WEB")){
                 file.setWebUrl(form.getLink());
 //                file.setName(form.getAttachments().getOriginalFilename());
                 file.setType("WEB");
                 file.setIsDelete(0);
                 file.setUser(user);
+            }else{
+                file.setWebUrl(form.getLink());
+//                file.setName(form.getAttachments().getOriginalFilename());
+                file.setType("POPUP");
+                file.setIsDelete(0);
+                file.setUser(user);
             }
             repositorySlide.save(file);
+            check = 1;
         }
         if(slide != null && !slide.isEmpty()){
             try {
@@ -77,7 +85,7 @@ public class ServiceSlide implements IServiceSlide {
                 fileUrl = configParams.BASE_URL +"/public" + fileRelativePath[0];
                 thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
                 System.out.println("file url: "+fileUrl);
-                Slide file = new Slide();
+                file = new Slide();
                 if(form.getType().equals("APP")){
                     file.setAppUrl(fileUrl);
                     file.setName(form.getAttachments().getOriginalFilename());
@@ -98,12 +106,12 @@ public class ServiceSlide implements IServiceSlide {
                     file.setUser(user);
                 }
                 repositorySlide.save(file);
-                return file;
+                check = 1;
             }catch (Exception e){
                 throw new ApplicationException(MessageResponse.EXCEPTION_FILEUPLOAD_FAILED);
             }
         }
-        return null;
+        return check;
     }
 
     @Override

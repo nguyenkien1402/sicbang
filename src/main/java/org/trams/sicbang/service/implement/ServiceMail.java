@@ -190,12 +190,10 @@ public class ServiceMail extends BaseService implements IServiceMail{
                         mail.setMailSubject(form.getMailSubject());
                         mail.setMailContent(form.getMailContent());
                         logger.info("mail recipient : " + recipient + "title : " + form.getMailSubject() + "form.getContent() : " + form.getMailContent());
-//                String content = mail.getMailContent();
-//                String enContent = Base64.getEncoder().encodeToString( content.getBytes( "utf-8" ) );
                         mail.encodeContent();
                         System.out.println("Encode 1: " + mail.getMailContent());
                         repositoryMail.save(mail);
-//                mailSender.send(mimeMessage); // sau nay de cai nay len tren save mail
+                        mailSender.send(mimeMessage); // sau nay de cai nay len tren save mail
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
