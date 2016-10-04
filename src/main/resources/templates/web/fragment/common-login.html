@@ -13,9 +13,9 @@
         </div>
     </a>
     <ul class="headerList clearFix">
-        <a href=""><li>전체매물보기</li></a>
-        <a href="content.html"><li id="liStartup" >인수창업</li></a>
-        <a href=""><li id="liVacancy">공실매물</li></a>
+        <a th:href="@{/estate}"><li>전체매물보기</li></a>
+        <a th:href="@{/estate/startup}"><li id="liStartup" >인수창업</li></a>
+        <a th:href="@{/estate/vacant}"><li id="liVacancy">공실매물</li></a>
     </ul>
     <ul class="headerRightList">
         <div th:unless="${@serviceAuthorized.isAuthenticated()}">
@@ -27,7 +27,7 @@
             <li><a th:href="@{/logout}"> 로그아웃</a></li>
             <li id="setting"><a th:href="@{/member/user}">설정</a></li>
             <li th:if="${session.type} == 'MEMBER'" id="lately"><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
-            <li th:if="${session.type} == 'MEMBER'">찜목록</li>
+            <li th:if="${session.type} == 'MEMBER'" id="wishlist"><a th:href="@{/member/estate/wishlist}">찜목록</a></li>
             <li th:if="${session.type == 'BROKER' || session.type == 'TRUSTED_BROKER'}"><a th:href="@{/member/estate}">매물 관리</a></li>
             <li>매물 올리기</li>
         </div>
@@ -177,8 +177,10 @@
 <input type="hidden" id="latitude" th:value="${estate.latitude}"/>
 <input type="hidden" id="longitude" th:value="${estate.longitude}"/>
 <input type="hidden" id="estateType" th:value="${estate.estateType}"/>
-
 <input type="hidden" id="estateId" th:value="${estate.id}"/>
+<input type="hidden" id="userId" th:value="${estate.user.id}"/>
+<input type="hidden" id="isWishList" th:value="${isWishList}"/>
+<input type="hidden" id="memberId" th:value="${memberId}"/>
 </tbody>
 </table>
 </div>
@@ -264,7 +266,7 @@
 <input type="hidden" id="estateId" th:value="${estate.id}"/>
 <input type="hidden" id="userId" th:value="${estate.user.id}"/>
 <input type="hidden" id="isWishList" th:value="${isWishList}"/>
-
+<input type="hidden" id="memberId" th:value="${memberId}"/>
 </tbody>
 </table>
 </div>

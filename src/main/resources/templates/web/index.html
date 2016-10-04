@@ -41,48 +41,24 @@
                 <div class="mainBoard">
                     <div class="title clearFix">
                         <h3 class="name">외식 창업 소식</h3>
-                        <a href="#" class="viewMore">+ 더보기</a>
+                        <a th:href="@{/board}" class="viewMore">+ 더보기</a>
                     </div>
                     <table class="boardContents">
-                        <tr>
-                            <td><a href="#">식방 긴급 공지사항</a></td>
-                            <td>2016.06.24</td>
-                        </tr>
-                        <tr>
-                            <td><a href="#">식방 홈페이지 보수</a></td>
-                            <td>2016.06.24</td>
-                        </tr>
-                        <tr>
-                            <td><a href="#">식방 서비스 확대 시행 안내</a></td>
-                            <td>2016.06.24</td>
-                        </tr>
-                        <tr>
-                            <td><a href="#">식방 긴급 공지사항</a></td>
-                            <td>2016.06.24</td>
+                        <tr th:each="board : ${boards}">
+                            <td><a th:href="@{'http://'+${board.content}}" th:text="${board.title}"></a></td>
+                            <td ><span th:if="${board.createdDate != null}" th:text="${#dates.format(board.createdDate, 'dd/MM/YYYY')}"></span></td>
                         </tr>
                     </table>
                 </div>
                 <div class="mainBoard">
                     <div class="title clearFix">
                         <h3 class="name">공지사항</h3>
-                        <a href="#" class="viewMore">+ 더보기</a>
+                        <a th:href="@{/notice}" class="viewMore">+ 더보기</a>
                     </div>
                     <table class="boardContents">
-                        <tr>
-                            <td><a href="#">식방 긴급 공지사항</a></td>
-                            <td>2016.06.24</td>
-                        </tr>
-                        <tr>
-                            <td><a href="#">식방 홈페이지 보수</a></td>
-                            <td>2016.06.24</td>
-                        </tr>
-                        <tr>
-                            <td><a href="#">식방 서비스 확대 시행 안내</a></td>
-                            <td>2016.06.24</td>
-                        </tr>
-                        <tr>
-                            <td><a href="#">식방 긴급 공지사항</a></td>
-                            <td>2016.06.24</td>
+                        <tr th:each="notice : ${notices}">
+                            <td><a th:href="@{'http://'+@{notice.content}}" th:text="${notice.title}"></a></td>
+                            <td ><span th:if="${notice.createdDate != null}" th:text="${#dates.format(notice.createdDate, 'dd/MM/YYYY')}"></span></td>
                         </tr>
                     </table>
                 </div>

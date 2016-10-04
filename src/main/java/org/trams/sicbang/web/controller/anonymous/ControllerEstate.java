@@ -8,21 +8,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.trams.sicbang.model.entity.Attachment;
-import org.trams.sicbang.model.entity.Estate;
-import org.trams.sicbang.model.entity.User;
-import org.trams.sicbang.model.entity.Wishlist;
+import org.springframework.web.bind.annotation.*;
+import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
+import org.trams.sicbang.model.form.FormRecent;
 import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -42,7 +38,8 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) {
-        return BASE_TEMPLATE + "list";
+
+        return BASE_TEMPLATE + "map-all";
     }
 
     /**
@@ -52,46 +49,6 @@ public class ControllerEstate extends AbstractController {
      * @return
      */
 
-    /*
-    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String detail(
-            @PathVariable(value = "id") String estateId,
-            ModelMap map) {
-        FormEstate estateForm = new FormEstate();
-        estateForm.setEstateId(estateId);
-        Estate estate = serviceEstate.findOne(estateForm);
-        Collection<Attachment> listAttach = estate.getAttachments();
-        System.out.println("list attach: " +listAttach.size());
-        map.put("attachments", listAttach);
-        map.put("estate",estate);
-        map.put("sizeattach", listAttach.size());
-        Authentication auth = serviceAuthorized.isAuthenticated();
-
-        //if logged as realtor
-        if(auth != null){
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            User user = serviceUser.findUserByEmail(userDetails.getUsername());
-            if(user.getId() == estate.getUser().getId()){
-                if(estate.getAdvertised() == true){ // if estate is premium.
-                    return BASE_TEMPLATE_BROKER +"/broker-content-premium";
-                }
-                // estate isn't premium.
-                System.out.println("go for broker-content");
-                return BASE_TEMPLATE_BROKER +"/broker-content";
-            }
-
-        }
-        // anonymous
-        if(estate.getEstateType().equals("STARTUP")){
-            System.out.println("go for startup");
-            return BASE_TEMPLATE +"/detail-startup";
-        }else{
-            System.out.println("go for vacant");
-            return BASE_TEMPLATE +"/detail-vacant";
-        }
-
-    }
-    */
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detail(
             @PathVariable(value = "id") String estateId,
@@ -100,10 +57,12 @@ public class ControllerEstate extends AbstractController {
         estateForm.setEstateId(estateId);
         Authentication auth = serviceAuthorized.isAuthenticated();
         Estate estate = serviceEstate.findOne(estateForm);
+
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
+
         map.put("attachments", listAttach);
-        map.put("estate",estate);
+        map.addAttribute("estate",estate);
         map.put("sizeattach", listAttach.size());
 
         //if logged as realtor
@@ -122,6 +81,16 @@ public class ControllerEstate extends AbstractController {
                 map.put("isWishList","false");
             }
 
+            map.put("memberId",user.getId());
+            FormRecent formRecent = new FormRecent();
+            formRecent.setUserId(user.getId().toString());
+            formRecent.setEstateId(estateId);
+            Recent recent = serviceRecent.findOne(formRecent);
+            if(recent != null){
+            serviceRecent.update(formRecent);
+            }else{
+            serviceRecent.create(formRecent);
+            }
             if(user.getId() == estate.getUser().getId()){
                 if(estate.getAdvertised() == true){ // if estate is premium.
                     return BASE_TEMPLATE_BROKER +"/broker-content-premium";
@@ -191,6 +160,17 @@ public class ControllerEstate extends AbstractController {
             default:
                 return BASE_TEMPLATE + "create";
         }
+    }
+    /**
+     * Search startup
+     * @param formEstate
+     * @return
+     */
+    @RequestMapping(value = "/search/startup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity searchStartup(@ModelAttribute FormEstate formEstate){
+        List<Estate> estates = serviceEstate.filterBy(0,formEstate.getCity(),formEstate.getDistrict(),formEstate.getTown(),formEstate.getEstateType(),formEstate.getSubwayStation());
+        return new ResponseEntity(estates,HttpStatus.OK);
     }
 
 }

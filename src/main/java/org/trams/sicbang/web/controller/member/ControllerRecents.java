@@ -28,7 +28,7 @@ import java.util.Collection;
  */
 @Controller(value = "anonymousControllerViewHistory")
 @RequestMapping(value = "/member/lately")
-public class ControllerViewHistory extends AbstractController {
+public class ControllerRecents extends AbstractController {
 
     final String BASE_TEMPLATE = "web/content/";
 

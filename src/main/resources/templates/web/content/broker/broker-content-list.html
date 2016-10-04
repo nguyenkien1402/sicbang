@@ -10,8 +10,8 @@
                     <h2>내가 올린 매물 목록</h2>
                 </div>
                 <div class="marketButtonArea">
-                    <span id="startup"><a th:href="@{/member/estate(estateType='startup')}">인수창업</a></span>
-                    <span id="vacant"><a th:href="@{/member/estate(estateType='vacant')}">공실매물</a></span>
+                    <span id="normal"><a th:href="@{/member/estate}">인수창업</a></span>
+                    <span id="advertise"><a th:href="@{/member/estate/advertised}">공실매물</a></span>
                 </div>
                 <ul class="marketList">
                     <li class="market clearFix" th:each="estate : ${estates}">
@@ -31,7 +31,7 @@
                         </a>
                     </li>
                 </ul>
-                <input type="hidden" id = "type" th:value="${type}">
+                <input type="hidden" id = "advertised" th:value="${advertised}">
             <div class = "pagination" th:replace="web/fragment/common-login :: pagination(items=${estates})"></div>
                 
             </div>
@@ -39,12 +39,12 @@
             <script>
         $(document).ready(function() {
             //초기 변수 설정
-            var type = $("#type").val();
-            if(type == "STARTUP"){
-                $("#startup").addClass("active");
+            var advertised = $("#advertised").val();
+            if(advertised == "true"){
+                $("#advertise").addClass("active");
             }
             else{
-                $("#vacant").addClass("active");
+                $("#normal").addClass("active");
             }
             $(".marketButtonArea span").click(function (e) {
                 $(".marketButtonArea span").removeClass("active");

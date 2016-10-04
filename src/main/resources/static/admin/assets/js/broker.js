@@ -12,7 +12,7 @@ $(document).ready(function() {
     var latitude = $("#latitude").val();
     var estateId = $("#estateId").val();
     var userId = $("#userId").val();
-
+    var memberId = $("#memberId").val();
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new daum.maps.LatLng(latitude,longitude), // 지도의 중심좌표
@@ -157,9 +157,41 @@ $(document).ready(function() {
 
     $("#wishList").click(function(){
         if(isWishList == 'true'){
-           alert("remove from wishlist");
+            $.ajax({
+                url: "/member/estate/removeWishList",
+                type:"POST",
+                data:{
+                    "estateId" : estateId,
+                    "userId": memberId,
+                },
+                success:function(data){
+                    if(data == "SUCCESS")
+                    {
+                        $("#wishList").html("위시리스트에추가");
+                        isWishList = 'false';
+                    }else{
+                        alert("FAILED");
+                    }
+                }
+            });
         }else{
-            alert("add to wishlist");
+            $.ajax({
+                url: "/member/estate/addWishList",
+                type:"POST",
+                data:{
+                    "estateId" : estateId,
+                    "userId": memberId,
+                },
+                success:function(data){
+                    if(data == "SUCCESS")
+                    {
+                        $("#wishList").html("위시리스트에서제거");
+                        isWishList = 'true';
+                    }else{
+                        alert("FAILED");
+                    }
+                }
+            });
         }
     });
 

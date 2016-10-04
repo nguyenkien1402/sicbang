@@ -27,7 +27,6 @@ public class Estate extends BaseTimestampEntity {
     private String onelineComment;
     private String detail;
     private String floor;
-
     private String estateType;
     private String latitude;
     private String longitude;
