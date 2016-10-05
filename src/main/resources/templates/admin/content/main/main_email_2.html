@@ -3,15 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Admin</title>
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
-  <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+  <link rel="stylesheet" type="text/css" th:href="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" />
+  <script type="text/javascript" th:src="@{/static/admin/libs/metronic-admin/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js}"></script>
 
-  <style>
-    .bootstrap-tagsinput {
-      width: 100% !important;
-    }
 
-  </style>
 
 </head>
 <body>
@@ -58,7 +53,7 @@
                               <th:block th:switch="${type}">
                                 <div th:case="'0'" style="width: 100%">
                                   <input id="multiEmailTo" type="text" name="emailsTo" value=""
-                                         class="form-control" data-role="tagsinput" onChange="inputChange(event)"/>
+                                         class="form-control" data-role="tagsinput" onChange="inputChange(event)" />
                                 </div>
                                 <div id="input_email1" th:case="'1'">
                                   <input type="text" name="emailsTo" th:value="${mailsTo}" class="form-control" data-role="tagsinput" readonly="readonly" />

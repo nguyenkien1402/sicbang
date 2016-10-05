@@ -45,8 +45,9 @@ public class ServiceSlide implements IServiceSlide {
         System.out.println("Upload image");
         // get admin user, who uploaded image
         MultipartFile slide = form.getAttachments();
+        System.out.println("user name: "+username);
         FormUser formUser = new FormUser();
-        formUser.setEmail(username);
+        formUser.setEmailAbsolute(username);
         User user = serviceUser.findOne(formUser);
         System.out.println("id: "+user.getId());
         Slide file = new Slide();
@@ -117,7 +118,7 @@ public class ServiceSlide implements IServiceSlide {
         // get admin user, who uploaded image
         MultipartFile slide = form.getAttachments();
         FormUser formUser = new FormUser();
-        formUser.setEmail(username);
+        formUser.setEmailAbsolute(username);
         User user = serviceUser.findOne(formUser);
         System.out.println("id: "+user.getId());
         Slide file = new Slide();
