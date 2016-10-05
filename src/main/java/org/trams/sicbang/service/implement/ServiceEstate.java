@@ -264,7 +264,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     public Integer updateImageEstate(MultipartFile file, Estate estate) {
         try {
             String fileRelativePath[], fileUrl, thumbUrl;
-            fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(file.getBytes()), configParams.UPLOAD_DIRECTORY, "/estate/");
+            fileRelativePath = FileUtils.uploadImage(file.getInputStream(), configParams.UPLOAD_DIRECTORY, "/estate/");
             fileUrl = configParams.BASE_URL + "/public" + fileRelativePath[0];
             thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
             Attachment attachment = new Attachment();

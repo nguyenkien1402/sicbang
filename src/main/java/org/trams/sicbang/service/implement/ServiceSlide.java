@@ -54,19 +54,16 @@ public class ServiceSlide implements IServiceSlide {
         if(form.getLink()!= null && !form.getLink().trim().isEmpty()){
             if(form.getType().equals("APP")){
                 file.setAppUrl(form.getLink());
-//                file.setName(form.getLink());
                 file.setType("APP");
                 file.setIsDelete(0);
                 file.setUser(user);
             }else if(form.getType().equals("WEB")){
                 file.setWebUrl(form.getLink());
-//                file.setName(form.getAttachments().getOriginalFilename());
                 file.setType("WEB");
                 file.setIsDelete(0);
                 file.setUser(user);
             }else{
                 file.setWebUrl(form.getLink());
-//                file.setName(form.getAttachments().getOriginalFilename());
                 file.setType("POPUP");
                 file.setIsDelete(0);
                 file.setUser(user);
@@ -78,9 +75,9 @@ public class ServiceSlide implements IServiceSlide {
             try {
                 String fileRelativePath[], fileUrl, thumbUrl;
                 if(form.getType().equals("WEB") || form.getType().equals("APP"))
-                    fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(slide.getBytes()), configParams.UPLOAD_DIRECTORY,"/slide/");
+                    fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/slide/");
                 else
-                    fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(slide.getBytes()), configParams.UPLOAD_DIRECTORY,"/popup/");
+                    fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/popup/");
                 System.out.println("fileRelativePath:" +fileRelativePath[0]);
                 fileUrl = configParams.BASE_URL +"/public" + fileRelativePath[0];
                 thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
@@ -105,6 +102,48 @@ public class ServiceSlide implements IServiceSlide {
                     file.setIsDelete(0);
                     file.setUser(user);
                 }
+                repositorySlide.save(file);
+                check = 1;
+            }catch (Exception e){
+                throw new ApplicationException(MessageResponse.EXCEPTION_FILEUPLOAD_FAILED);
+            }
+        }
+        return check;
+    }
+
+    @Override
+    public Integer uploadMainImg(FormSlide form, String username) {
+        System.out.println("Upload main image");
+        // get admin user, who uploaded image
+        MultipartFile slide = form.getAttachments();
+        FormUser formUser = new FormUser();
+        formUser.setEmail(username);
+        User user = serviceUser.findOne(formUser);
+        System.out.println("id: "+user.getId());
+        Slide file = new Slide();
+        int check = 0;
+        if(form.getLink()!= null && !form.getLink().trim().isEmpty()){
+            file.setWebUrl(form.getLink());
+            file.setType("MAIN");
+            file.setIsDelete(0);
+            file.setUser(user);
+            repositorySlide.save(file);
+            check = 1;
+        }
+        if(slide != null && !slide.isEmpty()){
+            try {
+                String fileRelativePath[], fileUrl, thumbUrl;
+                fileRelativePath = FileUtils.uploadImage(slide.getInputStream(), configParams.UPLOAD_DIRECTORY,"/slide/");
+                System.out.println("fileRelativePath:" +fileRelativePath[0]);
+                fileUrl = configParams.BASE_URL +"/public" + fileRelativePath[0];
+                thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
+                System.out.println("file url: "+fileUrl);
+                file = new Slide();
+                file.setWebUrl(fileUrl);
+                file.setName(form.getAttachments().getOriginalFilename());
+                file.setType("MAIN");
+                file.setIsDelete(0);
+                file.setUser(user);
                 repositorySlide.save(file);
                 check = 1;
             }catch (Exception e){
