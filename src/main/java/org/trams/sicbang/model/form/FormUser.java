@@ -252,7 +252,7 @@ public class FormUser extends BaseFormSearch<User> {
 
             if(!Strings.isNullOrEmpty(emailAbsolute)){
                 predicates.add(
-                        criteriaBuilder.equal(root.get(User_.emailAbsolute), emailAbsolute)
+                        criteriaBuilder.equal(root.get(User_.email), emailAbsolute)
                 );
             }
 
