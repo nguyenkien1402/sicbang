@@ -26,4 +26,6 @@ public interface IServiceSlide {
 
     void delete(FormSlide formSlide);
 
+    Integer uploadMainImg(FormSlide form, String username);
+
 }

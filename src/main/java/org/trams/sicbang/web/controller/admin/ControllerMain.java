@@ -285,10 +285,29 @@ public class ControllerMain extends AbstractController {
             System.out.println("cannot upload image");
         }
         System.out.println("====================================");
-//        return "redirect:/admin/main";
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/create/mainImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity createMainImg(
+            @ModelAttribute FormSlide formSlide,
+            ModelMap map
+    ){
+        System.out.println("====================================");
+        System.out.println("upload main image");
+        System.out.println("link: "+formSlide.getLink());
+        System.out.println("attachment: "+formSlide.getAttachments().getOriginalFilename());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int checkUpload = serviceSlide.uploadMainImg(formSlide, username);
+        if(checkUpload == 1){
+            System.out.println("upload successfully");
+        }else{
+            System.out.println("cannot upload image");
+        }
+        System.out.println("====================================");
+        return new ResponseEntity(HttpStatus.OK);
+    }
 //    /**
 //     *
 //     * @param form

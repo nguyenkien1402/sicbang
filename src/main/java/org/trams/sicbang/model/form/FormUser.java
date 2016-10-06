@@ -50,6 +50,8 @@ public class FormUser extends BaseFormSearch<User> {
 
     private String base64image;
 
+    private String emailAbsolute;
+
     public String getUserId() {
         return userId;
     }
@@ -170,6 +172,14 @@ public class FormUser extends BaseFormSearch<User> {
         this.base64image = base64image;
     }
 
+    public String getEmailAbsolute() {
+        return emailAbsolute;
+    }
+
+    public void setEmailAbsolute(String emailAbsolute) {
+        this.emailAbsolute = emailAbsolute;
+    }
+
     @Override
     public Specification<User> getSpecification() {
         return (Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
@@ -237,6 +247,12 @@ public class FormUser extends BaseFormSearch<User> {
             if(!Strings.isNullOrEmpty(email)){
                 predicates.add(
                         criteriaBuilder.like(root.get(User_.email), "%"+email+"%")
+                );
+            }
+
+            if(!Strings.isNullOrEmpty(emailAbsolute)){
+                predicates.add(
+                        criteriaBuilder.equal(root.get(User_.email), emailAbsolute)
                 );
             }
 
