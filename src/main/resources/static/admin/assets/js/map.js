@@ -3,7 +3,7 @@ $(document).ready(function(){
     //시, 도 Select
     var city = ["서울","경기","인천","강원도","충남","대전","충북","세종","부산","울산","대구","경북","경남","전남","광주","전북","제주"];
     city.forEach(function(item,index){
-        var $option = $("<option></option>");
+        var $option = $("<option ></option>");
         $option.data("index",index);
         $option.text(item);
         $option.appendTo($(".citySelect"));
@@ -65,15 +65,9 @@ $(document).ready(function(){
         }
     };
     //init map
-    search("Seoul",null,null,"STARTUP");
+    search("서울",null,null,"STARTUP");
     //
     $(".subwayInput").easyAutocomplete(subway);
-
-    var longitude = 0;
-    var latitude = 0;
-    var count = 0;
-    var avarageLong = 0;
-    var avarageLa = 0;
 
     //검색 버튼
     $(".searchBox .buttonArea button").click(function(){
@@ -185,6 +179,40 @@ $(document).ready(function(){
 
     });
 
+    var places = new daum.maps.services.Places();
+    var callback = function(status, result) {
+        if (status === daum.maps.services.Status.OK) {
+            console.log(result);
+            var coords = new daum.maps.LatLng(result.places[0].latitude, result.places[0].longitude);
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            map.setCenter(coords);
+            var imageSrc = '/static/admin/include/images/map/subway.png', // 마커이미지의 주소입니다
+                imageSize = new daum.maps.Size(57, 68), // 마커이미지의 크기입니다
+                imageOption = {offset: new daum.maps.Point(28.5, 68)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption),
+                markerPosition = coords;
+            // 마커를 생성합니다
+            marker = new daum.maps.Marker({
+                position: markerPosition,
+                image: markerImage // 마커이미지 설정
+            });
+            map.setLevel(5);
+            var circle = new daum.maps.Circle({
+                map: map,
+                center: coords,
+                radius: 1000,
+                strokeWeight: 2,
+                strokeColor: '#FF00FF',
+                strokeOpacity: 0.8,
+                strokeStyle: 'dashed',
+                fillColor: 'blue',
+                fillOpacity: 0.1
+            });
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+        }
+    };
 
     // function search map.
     function search(city,district,subway,estateType){
@@ -204,9 +232,6 @@ $(document).ready(function(){
                 map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
 
                 $.each(data,function(key,val){
-                    count++;
-                    longitude = longitude + parseFloat(val.longitude);
-                    latitude = latitude + parseFloat(val.latitude);
                     var imageSrc = "/static/admin/include/images/map/";
                     var category = parseInt(val.category);
                     switch(category){
@@ -248,13 +273,17 @@ $(document).ready(function(){
                     });
                 });
                 var str = (city == null ? "" : city) + " " + (district == null ? "" : district);
-                if(subway != null)
-                    str = subway;
+                map.setLevel(5);
+                if(subway != null) {
+                    str = subway + "역";
+                    places.keywordSearch(str, callback);
+                }else{
                 // 주소-좌표 변환 객체를 생성합니다
                 var geocoder = new daum.maps.services.Geocoder();
                 // 주소로 좌표를 검색합니다
                 geocoder.addr2coord(str, function(status, result) {
                     // 정상적으로 검색이 완료됐으면
+                    console.log(result);
                     if (status === daum.maps.services.Status.OK) {
                         var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
                         // 결과값으로 받은 위치를 마커로 표시합니다
@@ -263,29 +292,11 @@ $(document).ready(function(){
                             position: coords
                         });
                         map.setCenter(coords);
-                        if(subway != null){
-                            var imageSrc = '/static/admin/include/images/map/subway.png', // 마커이미지의 주소입니다
-                                imageSize = new daum.maps.Size(57, 68), // 마커이미지의 크기입니다
-                                imageOption = {offset: new daum.maps.Point(28.5, 68)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-
-                            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                            var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption),
-                                markerPosition = coords;
-
-                            // 마커를 생성합니다
-                            marker = new daum.maps.Marker({
-                                position: markerPosition,
-                                image: markerImage // 마커이미지 설정
-                            });
-
-                            // 마커가 지도 위에 표시되도록 설정합니다
-                            marker.setMap(map);
-
-                        }
                     }else{
                         alert("검색에 실패하였습니다. 주소를 다시 확인하여주세요.\n검색 주소 : "+str);
                     }
                 });
+                }
             }
         });
 

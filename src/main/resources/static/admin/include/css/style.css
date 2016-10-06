@@ -601,3 +601,8 @@ table.table.noSideBorder tr td{
 * html .clearfix { height: 1%; }
 .clearFix { display: block; }
 /* close commented backslash hack */
+.easy-autocomplete {
+    width: inherit !important;
+     display: inline-block;
+     margin-right: 5px;
+}
