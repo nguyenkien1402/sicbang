@@ -82,6 +82,7 @@ public interface IServiceEstate {
 
     Long totalEstateFilter(String city, String district, String town, String type, String subway);
 
+    public List<Estate> filterEstateByType(int pageSize,int type);
 //    Long totalEstateFilterByCity(String name);
 //    Long totalEstateFilterByDistrict(String name);
 //    Long totalEstateFilterByTown(String name);

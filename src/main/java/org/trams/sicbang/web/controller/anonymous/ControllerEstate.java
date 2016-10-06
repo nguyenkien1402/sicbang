@@ -1,6 +1,7 @@
 package org.trams.sicbang.web.controller.anonymous;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.trams.sicbang.model.dto.CustomUserDetail;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
@@ -17,8 +19,7 @@ import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -62,9 +63,8 @@ public class ControllerEstate extends AbstractController {
         System.out.println("list attach: " +listAttach.size());
 
         map.put("attachments", listAttach);
-        map.addAttribute("estate",estate);
+        map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
-
         //if logged as realtor
         if(auth != null){
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -86,6 +86,7 @@ public class ControllerEstate extends AbstractController {
             formRecent.setUserId(user.getId().toString());
             formRecent.setEstateId(estateId);
             Recent recent = serviceRecent.findOne(formRecent);
+            System.out.println(user.getType());
             if(recent != null){
             serviceRecent.update(formRecent);
             }else{
@@ -166,11 +167,28 @@ public class ControllerEstate extends AbstractController {
      * @param formEstate
      * @return
      */
-    @RequestMapping(value = "/search/startup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity searchStartup(@ModelAttribute FormEstate formEstate){
+    public ResponseEntity searchEstate(@ModelAttribute FormEstate formEstate){
+        if(!formEstate.getDistrict().equals(""))
+            formEstate.setCity(null);
         List<Estate> estates = serviceEstate.filterBy(0,formEstate.getCity(),formEstate.getDistrict(),formEstate.getTown(),formEstate.getEstateType(),formEstate.getSubwayStation());
+
         return new ResponseEntity(estates,HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/map", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity estateMap(@ModelAttribute FormEstate formEstate){
+
+        List<Estate> trusted = serviceEstate.filterEstateByType(3,1);
+        List<Estate> broker = serviceEstate.filterEstateByType(3,0);
+        List<Estate> member = serviceEstate.filterEstateByType(3,2);
+
+        Map<String,List> estates = new HashMap<>();
+        estates.put("trusted",trusted);
+        estates.put("broker",broker);
+        estates.put("member",member);
+        return new ResponseEntity(estates,HttpStatus.OK);
+    }
 }

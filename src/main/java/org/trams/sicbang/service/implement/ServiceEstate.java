@@ -343,6 +343,20 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         }
         return count;
     }
+    @Override
+    public List<Estate> filterEstateByType(int pageSize,int type) {
+        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,type);
+        Iterator<Estate> iterator = estates.iterator();
+        FormWishlist formWishlist = new FormWishlist();
+        while (iterator.hasNext()) {
+            Estate estate = iterator.next();
+            //set iswished
+            Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", estate.getId());
+            estate.setAttachments(attachments);
+        }
+        return estates;
+    }
+
 }
 
 
