@@ -290,28 +290,29 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
             System.out.println("three field null");
             estates = repositoryEstate.findAllEstate(pageIndex,type);
             System.out.println("total size: "+estates.size());
-            return estates;
         }
         if(!Strings.isNullOrEmpty(city)){
             System.out.println("city field not null");
             estates = repositoryEstate.findEstateByCity(pageIndex,city,type);
             System.out.println("city size: "+estates.size());
-            return estates;
         }
         if(!Strings.isNullOrEmpty(district)){
             System.out.println("district field not null");
             estates = repositoryEstate.findEstateByDistrict(pageIndex,district,type);
-            return estates;
         }
         if(!Strings.isNullOrEmpty(town)){
             System.out.println("town field not null");
             estates = repositoryEstate.findEstateByTown(pageIndex,town,type);
-            return estates;
         }
         if(!Strings.isNullOrEmpty(subway)){
             System.out.println("subway field not null");
             estates = repositoryEstate.findEstateBySubway(pageIndex,subway,type);
-            return estates;
+        }
+        Iterator<Estate> iterator = estates.iterator();
+        while(iterator.hasNext()){
+            Estate estate = iterator.next();
+            Collection<Attachment> attachments = repositoryAttachment.findByReference("estate",estate.getId());
+            estate.setAttachments(attachments);
         }
         return estates;
     }

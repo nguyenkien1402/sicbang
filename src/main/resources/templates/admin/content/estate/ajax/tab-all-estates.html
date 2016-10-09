@@ -15,8 +15,7 @@
             <a class="tab-detail-all" th:href="@{/admin/estate/detail/{id}(id=${item.id})}">
               <div class="row item-inner">
                 <div class="col-xs-2">
-                  <img th:src="${not #lists.isEmpty(item.attachments) ? item.attachments[0].thumbnail : '/admin/assets/images/no_image.jpg'}"
-                       src="/admin/assets/images/no_image.jpg"/>
+                  <img th:src="${not #lists.isEmpty(item.attachments) ? item.attachments[0].thumbnail : '/admin/assets/images/no_image.jpg'}"/>
                 </div>
 
                 <div class="col-md-10">
