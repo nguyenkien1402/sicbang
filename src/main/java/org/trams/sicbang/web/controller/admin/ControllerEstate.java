@@ -235,14 +235,15 @@ public class ControllerEstate extends AbstractController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.TEXT_HTML_VALUE)
-    public String delete(
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity delete(
             @PathVariable(value = "id") String id,
             ModelMap map) {
         FormEstate form = new FormEstate();
         form.setEstateId(id);
         serviceEstate.delete(form);
-        return "redirect:" + BASE_URL + id;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     /**

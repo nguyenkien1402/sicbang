@@ -439,8 +439,10 @@ public class ControllerMain extends AbstractController {
     // --------------------- End Mail -------------------------
     // --------------------------------------------------------
 
-    @RequestMapping(value="/delete/web", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String deleteSlideWeb(){
+    @RequestMapping(value="/delete/web", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity deleteSlideWeb(ModelMap map){
+        System.out.println("Delete slide web");
         FormSlide formSlide = new FormSlide();
         formSlide.setType("WEB");
         List<Slide> list = serviceSlide.filterPopup(formSlide);
@@ -448,12 +450,15 @@ public class ControllerMain extends AbstractController {
             FormSlide delete = new FormSlide();
             delete.setId(list.get(list.size()- 1).getId()+"");
             serviceSlide.delete(delete);
+            return new ResponseEntity(HttpStatus.OK);
         }
-        return "redirect:/admin/main";
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value="/delete/app", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String deleteSlideApp(){
+    @RequestMapping(value="/delete/app", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity deleteSlideApp(ModelMap map){
+        System.out.println("Delete slide app");
         FormSlide formSlide = new FormSlide();
         formSlide.setType("APP");
         List<Slide> list = serviceSlide.filterPopup(formSlide);
@@ -461,7 +466,8 @@ public class ControllerMain extends AbstractController {
             FormSlide delete = new FormSlide();
             delete.setId(list.get(list.size()- 1).getId()+"");
             serviceSlide.delete(delete);
+            return new ResponseEntity(HttpStatus.OK);
         }
-        return "redirect:/admin/main";
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

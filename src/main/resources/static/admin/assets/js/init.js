@@ -270,6 +270,7 @@ function Admin() {
     };
 
     this.deleteItem = function(url, callback) {
+        console.log("url delete: "+url);
         $.ajax({
             url: url,
             method: 'delete'
