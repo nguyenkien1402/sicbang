@@ -91,8 +91,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         }
         logger.info(form.toString());
 
-        repositoryEstate.save(estate);
-
+        Estate estate1 = repositoryEstate.save(estate);
 
         List<String> _attachments = form.getAttachments();
         String fileRelativePath[], fileUrl, thumbUrl;
@@ -112,7 +111,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
                     attachment.setOrigin(fileUrl);
                     attachment.setThumbnail(thumbUrl);
                     attachment.setTableRef("estate");
-                    attachment.setRowRef(repositoryEstate.findOne(form.getSpecification()).getId());
+                    attachment.setRowRef(estate1.getId());
                     repositoryAttachment.save(attachment);
 //                    attachments.add(attachment);
                 }
