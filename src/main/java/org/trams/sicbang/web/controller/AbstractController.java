@@ -47,7 +47,8 @@ public class AbstractController {
     protected IServiceSlide serviceSlide;
     @Autowired
     protected IServiceWishlist serviceWishlist;
-
+    @Autowired
+    protected IServiceBusinessType serviceBusinessType;
     @Autowired
     protected ServiceAuthorized serviceAuthorized;
 

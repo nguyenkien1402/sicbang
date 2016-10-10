@@ -10,8 +10,8 @@
                     <h2>최근 살펴본 매물</h2>
                 </div>
                 <ul class="marketList">
-                    <li th:each="recent : ${recents}" class="market clearFix">
-                        <a class="tab-detail-all" th:href="@{/estate/detail/{id}(id=${recent.estate.id})}">
+                    <a class="tab-detail-all" th:each="recent : ${recents}" th:href="@{/estate/detail/{id}(id=${recent.estate.id})}">
+                    <li  class="market clearFix" >
                         <div class="imageArea">
                             <img th:src="${not #lists.isEmpty(recent.estate.attachments) ? recent.estate.attachments[0].origin : '/static/admin/assets/images/no_image.jpg'}"
                                  src="/admin/assets/images/no_image.jpg"/>
@@ -25,8 +25,9 @@
                             </div>
                             <span class="location" th:text="${recent.estate.all_addr}">서울시 관악구 신대방동</span>
                         </div>
-                        </a>
+
                     </li>
+                        </a>
                 </ul>
 
                  <div class = "pagination" th:replace="web/fragment/common-login :: pagination(items=${recents})"></div>

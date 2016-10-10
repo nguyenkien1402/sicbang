@@ -264,6 +264,134 @@ public class FormEstate extends BaseFormSearch<Estate> {
         };
     }
 
+    public Specification<Estate> searchOnMap() {
+        return (Root<Estate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
+            root.join(Estate_.user, JoinType.INNER);
+            root.join(Estate_.city, JoinType.INNER);
+            root.join(Estate_.district, JoinType.INNER);
+
+             List<Predicate> predicates = new ArrayList<>();
+            Optional<Double> _depositeCost = ConvertUtils.toDoubleNumber(depositeCost);
+            Optional<Double> _rentCost = ConvertUtils.toDoubleNumber(rentCost);
+            Optional<Double> _premiumCost = ConvertUtils.toDoubleNumber(premiumCost);
+            Optional<Boolean> _isAdvertised = ConvertUtils.toBoolean(isAdvertised);
+
+            logger.info("depositeCost : "+depositeCost);
+            logger.info("rentCost : "+rentCost);
+            logger.info("premiumCost : "+premiumCost);
+            logger.info("isAdvertised : "+isAdvertised);
+            logger.info("isEstateType : "+ estateType);
+
+            if (!Strings.isNullOrEmpty(estateType)) {
+                String[] types = estateType.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<EstateType> _type = ConvertUtils.toEnum(t, EstateType.class);
+                    if (_type.isPresent()) {
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.estateType), _type.get().name());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+            }
+            if (!Strings.isNullOrEmpty(category)) {
+                String[] types = category.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+                    if (_id.isPresent()) {
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.category).get(Category_.id), _id.get());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+            }
+            if (!Strings.isNullOrEmpty(businessType)) {
+                String[] types = businessType.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+                    if (_id.isPresent()) {
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.businessType).get(BusinessType_.id), _id.get());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+            }
+            if (!Strings.isNullOrEmpty(city)) {
+                String[] types = city.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+                    if (_id.isPresent()) {
+                        System.out.println("ID city: "+_id.get());
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.city).get(City_.id), _id.get());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+                root.join(Estate_.city, JoinType.LEFT);
+                predicates.add(
+                       criteriaBuilder.equal(root.get(Estate_.city).get(City_.id), city)
+                );
+            }
+
+
+            if (!Strings.isNullOrEmpty(district)) {
+                String[] types = district.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+                    if (_id.isPresent()) {
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.district).get(District_.id), _id.get());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+                root.join(Estate_.district, JoinType.LEFT);
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.district).get(District_.id), district)
+                );
+            }
+
+            if (_depositeCost.isPresent()) {
+                predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.depositeCost), _depositeCost.get())
+                );
+            }
+
+            if (_rentCost.isPresent()) {
+                predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.rentCost), _rentCost.get())
+                );
+            }
+            if (_premiumCost.isPresent()) {
+                predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.premiumCost), _premiumCost.get())
+                );
+            }
+            if (_isAdvertised.isPresent()) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.isAdvertised), _isAdvertised.get())
+                );
+            }
+            if (!Strings.isNullOrEmpty(subwayStation)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.subwayStation), subwayStation)
+                );
+            }
+            predicates.add(
+                    criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
+            );
+
+
+            if (predicates.isEmpty()) {
+                return criteriaBuilder.isNotNull(root.get(Estate_.id));
+            } else {
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+    }
 
     public Logger getLogger() {
         return logger;

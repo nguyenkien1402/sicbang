@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.common.utils.FileUtils;
@@ -347,10 +348,20 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     public List<Estate> filterEstateByType(int pageSize,int type) {
         List<Estate> estates = repositoryEstate.findEstateByType(pageSize,type);
         Iterator<Estate> iterator = estates.iterator();
-        FormWishlist formWishlist = new FormWishlist();
         while (iterator.hasNext()) {
             Estate estate = iterator.next();
-            //set iswished
+             Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", estate.getId());
+            estate.setAttachments(attachments);
+        }
+        return estates;
+    }
+
+    @Override
+    public List<Estate> filterEstateOnMap(FormEstate formEstate) {
+        List<Estate> estates = repositoryEstate.findAll(formEstate.searchOnMap());
+        Iterator<Estate> iterator = estates.iterator();
+        while (iterator.hasNext()) {
+            Estate estate = iterator.next();
             Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", estate.getId());
             estate.setAttachments(attachments);
         }

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trams.sicbang.model.entity.Category;
 import org.trams.sicbang.model.entity.City;
+import org.trams.sicbang.model.entity.District;
 import org.trams.sicbang.repository.RepositoryCategory;
 import org.trams.sicbang.repository.RepositoryCity;
+import org.trams.sicbang.repository.RepositoryDistrict;
 import org.trams.sicbang.service.IServiceLocation;
 
 import java.util.List;
@@ -18,6 +20,10 @@ public class ServiceLocation implements IServiceLocation {
 
     @Autowired
     private RepositoryCity repositoryCity;
+
+    @Autowired
+    private RepositoryDistrict repositoryDistrict;
+
     @Autowired
     private RepositoryCategory repositoryCategory;
 
@@ -31,4 +37,6 @@ public class ServiceLocation implements IServiceLocation {
         return repositoryCategory.findAll();
     }
 
+    @Override
+    public List<District> findAllDistrict(){ return repositoryDistrict.findAll();}
 }

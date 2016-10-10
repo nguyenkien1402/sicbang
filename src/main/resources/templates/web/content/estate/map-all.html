@@ -48,111 +48,27 @@
                         <div class="storeBox">
                             <div class="storeArea">
                                 <h5>휴게음식점</h5>
-                                <div class="store">
-                                    <input id="c1" type="checkbox" checked = "checked" >
-                                     <span>커피</span>
+                                <div class="store" th:each="eatery,eateryStat : ${eatery}">
+                                     <input th:id="'c'+${eateryStat.index}" type="checkbox" th:value="${eatery.id}" checked  >
+                                     <span th:text="${eatery.name}"></span>
                                 </div>
-                                <div class="store">
-                                    <input id="c2" type="checkbox" checked = "checked" >
-                                    <span>치킨점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c3" type="checkbox" checked = "checked"  >
-                                    <span>카페</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c4" type="checkbox" checked = "checked"  >
-                                    <span>제과점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c5" type="checkbox" checked = "checked"  >
-                                    <span>피자점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c6" type="checkbox" checked = "checked"  >
-                                    <span>떡볶이</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c7" type="checkbox" checked = "checked"  >
-                                    <span>튀김</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c8" type="checkbox" checked = "checked"  >
-                                    <span>아이스크림</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c9" type="checkbox" checked = "checked"  >
-                                    <span>기타</span>
-                                </div>
+
                             </div>
-                            
+
                             <div class="storeArea">
                                 <h5>일반음식점</h5>
-                                <div class="store">
-                                    <input id="c21" type="checkbox" checked = "checked"  >
-                                    <span>한식점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c22" type="checkbox" checked = "checked"  >
-                                    <span>고깃집</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c23" type="checkbox" checked = "checked"  >
-                                    <span>분식점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c24" type="checkbox" checked = "checked" >
-                                    <span>생선회/해물</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c25" type="checkbox" checked = "checked" >
-                                    <span>중국집</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c26" type="checkbox" checked = "checked" >
-                                    <span>레스토랑</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c27" type="checkbox" checked = "checked" >
-                                    <span>일식점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c28" type="checkbox" checked = "checked" >
-                                    <span>돈까스/우동</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c29" type="checkbox" checked = "checked" >
-                                     <span>기타</span>
+                                <div class="store" th:each="restaurant,restaurantStat : ${restaurants}">
+                                    <input th:id="'c1'+${restaurantStat.index}" type="checkbox" th:value="${restaurant.id}" checked  >
+                                    <span th:text="${restaurant.name}"></span>
                                 </div>
                             </div>
-                            
+
                             <div class="storeArea">
                                 <h5>주류</h5>
-                                <div class="store">
-                                    <input id="c41" type="checkbox" checked = "checked" >
-                                    <span>맥주호프집</span>
+                                <div class="store" th:each="liquor,liquorStat : ${liquors}">
+                                    <input th:id="'c2'+${liquorStat.index}" type="checkbox" th:value="${liquor.id}" checked >
+                                    <span th:text="${liquor.name}"></span>
                                 </div>
-                                <div class="store">
-                                    <input id="c42" type="checkbox" checked = "checked" >
-                                    <span>이자카야</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c43" type="checkbox" checked = "checked" >
-                                    <span>바</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c44" type="checkbox" checked = "checked" >
-                                    <span>실내포차</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c45" type="checkbox" checked = "checked" >
-                                    <span>꼬치구이</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c46" type="checkbox" checked = "checked" >
-                                    <span>기타</span>
-                                </div>
-                                
                             </div>
                             
                             <div class="btnGroup">

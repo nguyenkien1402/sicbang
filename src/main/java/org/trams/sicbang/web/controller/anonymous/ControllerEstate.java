@@ -39,7 +39,23 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) {
+        List<BusinessType> businessTypes = serviceBusinessType.findAll();
+        List<BusinessType> eatery = new ArrayList<>();
+        List<BusinessType> restaurants =new ArrayList<>();
+        List<BusinessType> liquors = new ArrayList<>();
 
+
+        for(BusinessType tmp : businessTypes){
+            switch (tmp.getCategory().getId().toString()) {
+                case "1": eatery.add(tmp); break;
+                case "2": restaurants.add(tmp); break;
+                case "3": liquors.add(tmp); break;
+            }
+        }
+
+        map.put("eatery",eatery);
+        map.put("restaurants",restaurants);
+        map.put("liquors",liquors);
         return BASE_TEMPLATE + "map-all";
     }
 
@@ -176,19 +192,45 @@ public class ControllerEstate extends AbstractController {
 
         return new ResponseEntity(estates,HttpStatus.OK);
     }
+    @RequestMapping(value = "/search/business", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity searchEstateByBusiness(@ModelAttribute FormEstate formEstate){
+        if(formEstate.getDistrict().equals("")){
+            formEstate.setDistrict(null);
+        }
+        if(formEstate.getDistrict() != null ) {
+            formEstate.setCity(null);
+            formEstate.setSubwayStation(null);
+        }
+        if(formEstate.getSubwayStation() != null){
+            formEstate.setCity(null);
+            formEstate.setDistrict(null);
+        }
 
+        List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
+        System.out.println(formEstate.getCity() + " : " + formEstate.getBusinessType() + " : " + formEstate.getDistrict()+": " + formEstate.getEstateType());
+        System.out.println("subway station : "+formEstate.getSubwayStation());
+        return new ResponseEntity(estates,HttpStatus.OK);
+    }
     @RequestMapping(value = "/map", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity estateMap(@ModelAttribute FormEstate formEstate){
 
-        List<Estate> trusted = serviceEstate.filterEstateByType(3,1);
-        List<Estate> broker = serviceEstate.filterEstateByType(3,0);
-        List<Estate> member = serviceEstate.filterEstateByType(3,2);
+        List<Estate> trusted = serviceEstate.filterEstateByType(10,1);
+        List<Estate> broker = serviceEstate.filterEstateByType(10,0);
+        List<Estate> member = serviceEstate.filterEstateByType(10,2);
 
         Map<String,List> estates = new HashMap<>();
         estates.put("trusted",trusted);
         estates.put("broker",broker);
         estates.put("member",member);
         return new ResponseEntity(estates,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getAllCity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity getAllCity(){
+        List<City> cities = serviceLocation.findAllCity();
+        return new ResponseEntity(cities,HttpStatus.OK);
     }
 }
