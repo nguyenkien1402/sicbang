@@ -306,6 +306,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
                 }
                 predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
             }
+
             if (!Strings.isNullOrEmpty(businessType)) {
                 String[] types = businessType.split(",");
                 List<Predicate> subPredicates = new ArrayList<>();
@@ -318,6 +319,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
                 }
                 predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
             }
+
             if (!Strings.isNullOrEmpty(city)) {
                 String[] types = city.split(",");
                 List<Predicate> subPredicates = new ArrayList<>();

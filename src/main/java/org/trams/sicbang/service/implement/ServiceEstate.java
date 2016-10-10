@@ -345,8 +345,8 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         return count;
     }
     @Override
-    public List<Estate> filterEstateByType(int pageSize,int type) {
-        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,type);
+    public List<Estate> filterEstateByType(int pageSize,int userType,String type) {
+        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,userType,type);
         Iterator<Estate> iterator = estates.iterator();
         while (iterator.hasNext()) {
             Estate estate = iterator.next();

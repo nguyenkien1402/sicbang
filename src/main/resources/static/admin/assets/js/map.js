@@ -1,7 +1,14 @@
 $(document).ready(function(){
     //초기 변수 설정
-
-
+    var estateType = $("#estateType").val();
+    if(estateType == 'STARTUP'){
+        $("#liStartup").addClass("active");
+    }else if(estateType == 'VACANT'){
+        $("#liVacancy").addClass("active");
+    }
+    else{
+        $("#liEstate").addClass("active");
+    }
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new daum.maps.LatLng(37.563723, 126.903237), // 지도의 중심좌표
@@ -68,7 +75,7 @@ $(document).ready(function(){
         }
     };
     //init map
-    search("서울",null,null,"STARTUP");
+    search("서울",null,null,estateType);
     //
     $(".subwayInput").easyAutocomplete(subway);
 
@@ -113,47 +120,16 @@ $(document).ready(function(){
         });
 
     }
-    /* 지하철 역 마커 */
-    {
-        var imageSrc = '/static/admin/include/images/map/subway.png', // 마커이미지의 주소입니다
-            imageSize = new daum.maps.Size(57, 68), // 마커이미지의 크기입니다
-            imageOption = {offset: new daum.maps.Point(28.5, 68)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-        var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption),
-            markerPosition = new daum.maps.LatLng(37.563723, 126.903237); // 마커가 표시될 위치입니다
-
-        // 마커를 생성합니다
-        var marker = new daum.maps.Marker({
-            position: markerPosition,
-            image: markerImage // 마커이미지 설정
-        });
-
-        // 마커가 지도 위에 표시되도록 설정합니다
-        marker.setMap(map);
-
-        // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        var content = '<div class="customOverlay">' +
-            '    <span class="title">마포구청역</span>' +
-            '</div>';
-
-        // 커스텀 오버레이가 표시될 위치입니다
-        var position = new daum.maps.LatLng(37.563723 - 0.000350, 126.903237);
-
-        // 커스텀 오버레이를 생성합니다
-        var customOverlay = new daum.maps.CustomOverlay({
-            map: map,
-            position: position,
-            content: content,
-            yAnchor: 1
-        });
-    }
 
     // call api to get estate
     $.ajax({
         url: "/estate/map",
         type:"GET",
         dataType:"json",
+        data:{
+            estateType: estateType
+        },
         success:function (data) {
             $('#trusted_broker').empty();
             $('#broker').empty();
@@ -313,7 +289,7 @@ $(document).ready(function(){
                 attr = attr+$('#c'+i).val() + ',';
             }
         }
-        searchByBusinessType(city,district,null,attr,"");
+        searchByBusinessType(city,district,null,attr,estateType);
 
         remember = 'businessZone';
     });
@@ -326,7 +302,7 @@ $(document).ready(function(){
                 attr = attr+$('#c'+i).val() + ',';
             }
         }
-        searchByBusinessType(null,null,subway,attr,"");
+        searchByBusinessType(null,null,subway,attr,estateType);
         remember = 'subway';
     });
 
@@ -341,11 +317,11 @@ $(document).ready(function(){
         if(remember == 'subway'){
             console.log(attr);
             var subway = $('.subwayInput').val();
-            searchByBusinessType(null,null,subway,attr,"");
+            searchByBusinessType(null,null,subway,attr,estateType);
         }else{
             var district = $(".districtSelect").val();
             var city = $(".citySelect").val();
-            searchByBusinessType(city,district,null,attr,"");
+            searchByBusinessType(city,district,null,attr,estateType);
         }
 
     });

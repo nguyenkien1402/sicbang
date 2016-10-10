@@ -19,8 +19,8 @@ public interface RepositoryEstate extends JpaRepository<Estate, Long>, JpaSpecif
     @Query(value = "SELECT * FROM estate e INNER JOIN city c ON e.city_id=c.id and c.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
     List<Estate> findEstateByCity(@Param("page") Integer page, @Param("search") String city,@Param("type") String type);
 
-    @Query(value = "SELECT * FROM estate e INNER JOIN user u ON e.user_id=u.id AND e.is_delete = 0 AND u.type = :type ORDER BY RAND() LIMIT 0,:pageSize", nativeQuery = true)
-    List<Estate> findEstateByType(@Param("pageSize") Integer pageSize,@Param("type") Integer type);
+    @Query(value = "SELECT * FROM estate e INNER JOIN user u ON e.user_id=u.id AND e.is_delete = 0 AND u.type = :userType AND e.estate_type like :type ORDER BY RAND() LIMIT 0,:pageSize", nativeQuery = true)
+    List<Estate> findEstateByType(@Param("pageSize") Integer pageSize,@Param("userType") Integer userType,@Param("type") String type);
 
     @Query(value = "SELECT * FROM estate e INNER JOIN district d ON e.district_id=d.id and d.name like :search AND e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
     List<Estate> findEstateByDistrict(@Param("page") Integer page, @Param("search") String district,@Param("type") String type);

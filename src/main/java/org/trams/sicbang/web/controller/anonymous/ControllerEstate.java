@@ -39,11 +39,18 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) {
+        initPage(map);
+        map.put("estateType","%%");
+        return BASE_TEMPLATE + "map-all";
+    }
+
+    // init all model in map page
+    private void initPage(ModelMap map){
+
         List<BusinessType> businessTypes = serviceBusinessType.findAll();
         List<BusinessType> eatery = new ArrayList<>();
         List<BusinessType> restaurants =new ArrayList<>();
         List<BusinessType> liquors = new ArrayList<>();
-
 
         for(BusinessType tmp : businessTypes){
             switch (tmp.getCategory().getId().toString()) {
@@ -56,9 +63,7 @@ public class ControllerEstate extends AbstractController {
         map.put("eatery",eatery);
         map.put("restaurants",restaurants);
         map.put("liquors",liquors);
-        return BASE_TEMPLATE + "map-all";
     }
-
     /**
      * Detail
      * @param estateId
@@ -206,7 +211,9 @@ public class ControllerEstate extends AbstractController {
             formEstate.setCity(null);
             formEstate.setDistrict(null);
         }
-
+        if(formEstate.getEstateType().equals("%%")){
+            formEstate.setEstateType("");
+        }
         List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
         System.out.println(formEstate.getCity() + " : " + formEstate.getBusinessType() + " : " + formEstate.getDistrict()+": " + formEstate.getEstateType());
         System.out.println("subway station : "+formEstate.getSubwayStation());
@@ -216,9 +223,9 @@ public class ControllerEstate extends AbstractController {
     @ResponseBody
     public ResponseEntity estateMap(@ModelAttribute FormEstate formEstate){
 
-        List<Estate> trusted = serviceEstate.filterEstateByType(10,1);
-        List<Estate> broker = serviceEstate.filterEstateByType(10,0);
-        List<Estate> member = serviceEstate.filterEstateByType(10,2);
+        List<Estate> trusted = serviceEstate.filterEstateByType(10,1,formEstate.getEstateType());
+        List<Estate> broker = serviceEstate.filterEstateByType(10,0,formEstate.getEstateType());
+        List<Estate> member = serviceEstate.filterEstateByType(10,2,formEstate.getEstateType());
 
         Map<String,List> estates = new HashMap<>();
         estates.put("trusted",trusted);
@@ -232,5 +239,30 @@ public class ControllerEstate extends AbstractController {
     public ResponseEntity getAllCity(){
         List<City> cities = serviceLocation.findAllCity();
         return new ResponseEntity(cities,HttpStatus.OK);
+    }
+
+
+    /**
+     * Filter
+     * @param map
+     * @return
+     */
+    @RequestMapping(value="/startup",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String estateStartup(ModelMap map) {
+        initPage(map);
+        map.put("estateType","STARTUP");
+        return BASE_TEMPLATE + "map-all";
+    }
+
+    /**
+     * Filter
+     * @param map
+     * @return
+     */
+    @RequestMapping(value="/vacant",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String estateVacant(ModelMap map) {
+        initPage(map);
+        map.put("estateType","VACANT");
+        return BASE_TEMPLATE + "map-all";
     }
 }
