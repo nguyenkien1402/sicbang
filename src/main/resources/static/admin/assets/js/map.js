@@ -39,7 +39,6 @@ $(document).ready(function(){
                    districtObject.id = vale.id;
                    district.push(districtObject);
                 });
-                console.log(district);
                 districts.push(district);
             });
         }
@@ -280,6 +279,52 @@ $(document).ready(function(){
 
     }
     var remember = 'businessZone';
+    var depositeCostFrom = 'all';
+    var depositeCostTo = 'all';
+    var rentCostFrom = 'all';
+    var rentCostTo = 'all';
+    var premiumCostFrom = 'all';
+    var premiumCostTo = 'all';
+
+    function getDepositeCost(){
+        var strDepositeCost = $("#depositeCost").val();
+        if(strDepositeCost != 'all'){
+        var arrDepositeCost = strDepositeCost.split("-");
+            depositeCostFrom = arrDepositeCost[0];
+            depositeCostTo = arrDepositeCost[1];
+        }else{
+            depositeCostFrom = 'all';
+            depositeCostTo = 'all';
+        }
+    }
+    function getRentCost() {
+        var strRentCost = $("#rentCost").val();
+        if(strRentCost != 'all'){
+            var arrRentCost = strRentCost.split("-");
+            rentCostFrom = arrRentCost[0];
+            rentCostTo = arrRentCost[1];
+        }else{
+            rentCostFrom = 'all';
+            rentCostTo = 'all';
+        }
+    }
+
+    function getPremiumCost() {
+        var strPremiumCost = $("#premiumCost").val();
+        if(strPremiumCost != 'all'){
+            if(strPremiumCost != 'none'){
+                var arrPremiumCost = strPremiumCost.split("-");
+                premiumCostFrom = arrPremiumCost[0];
+                premiumCostTo = arrPremiumCost[1];
+            }else{
+                premiumCostFrom = 0;
+                premiumCostTo = 0;
+            }
+        }else{
+            premiumCostFrom = 'all';
+            premiumCostTo = 'all';
+        }
+    }
     $("#searchByStore").click(function(){
         var district = $(".districtSelect").val();
         var city = $(".citySelect").val();
@@ -289,6 +334,9 @@ $(document).ready(function(){
                 attr = attr+$('#c'+i).val() + ',';
             }
         }
+        getDepositeCost();
+        getRentCost();
+        getPremiumCost();
         searchByBusinessType(city,district,null,attr,estateType);
 
         remember = 'businessZone';
@@ -302,6 +350,9 @@ $(document).ready(function(){
                 attr = attr+$('#c'+i).val() + ',';
             }
         }
+        getDepositeCost();
+        getRentCost();
+        getPremiumCost();
         searchByBusinessType(null,null,subway,attr,estateType);
         remember = 'subway';
     });
@@ -314,6 +365,9 @@ $(document).ready(function(){
                 attr = attr+$('#c'+i).val() + ',';
             }
         }
+        getDepositeCost();
+        getRentCost();
+        getPremiumCost();
         if(remember == 'subway'){
             console.log(attr);
             var subway = $('.subwayInput').val();
@@ -334,6 +388,12 @@ $(document).ready(function(){
             data:{
                 city: city,
                 district: district,
+                depositeCostFrom : depositeCostFrom,
+                depositeCostTo : depositeCostTo,
+                rentFrom : rentCostFrom,
+                rentTo : rentCostTo,
+                premiumCostFrom : premiumCostFrom,
+                premiumCostTo : premiumCostTo,
                 subwayStation:subway,
                 estateType: estateType,
                 businessType: businessType},

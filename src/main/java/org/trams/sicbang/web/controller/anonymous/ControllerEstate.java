@@ -215,8 +215,6 @@ public class ControllerEstate extends AbstractController {
             formEstate.setEstateType("");
         }
         List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
-        System.out.println(formEstate.getCity() + " : " + formEstate.getBusinessType() + " : " + formEstate.getDistrict()+": " + formEstate.getEstateType());
-        System.out.println("subway station : "+formEstate.getSubwayStation());
         return new ResponseEntity(estates,HttpStatus.OK);
     }
     @RequestMapping(value = "/map", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -84,6 +84,15 @@ public class FormEstate extends BaseFormSearch<Estate> {
     private String parking;
     // END VACANT FIELDS
 
+
+    //SEARCH FORM ON MAP
+    private String depositeCostFrom;
+    private String depositeCostTo;
+    private String rentFrom;
+    private String rentTo;
+    private String premiumCostFrom;
+    private String premiumCostTo;
+
     public static Specification<Estate> dongLike(final String keyword) {
         return (Root<Estate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.like(root.get(Estate_.all_addr), "%" + keyword);
@@ -271,9 +280,13 @@ public class FormEstate extends BaseFormSearch<Estate> {
             root.join(Estate_.district, JoinType.INNER);
 
              List<Predicate> predicates = new ArrayList<>();
-            Optional<Double> _depositeCost = ConvertUtils.toDoubleNumber(depositeCost);
-            Optional<Double> _rentCost = ConvertUtils.toDoubleNumber(rentCost);
-            Optional<Double> _premiumCost = ConvertUtils.toDoubleNumber(premiumCost);
+            Optional<Double> _depositeCostFrom = ConvertUtils.toDoubleNumber(depositeCostFrom);
+            Optional<Double> _depositeCostTo = ConvertUtils.toDoubleNumber(depositeCostTo);
+            Optional<Double> _rentCostFrom = ConvertUtils.toDoubleNumber(rentFrom);
+            Optional<Double> _rentCostTo = ConvertUtils.toDoubleNumber(rentTo);
+            Optional<Double> _premiumCostFrom = ConvertUtils.toDoubleNumber(premiumCostFrom);
+            Optional<Double> _premiumCostTo = ConvertUtils.toDoubleNumber(premiumCostTo);
+
             Optional<Boolean> _isAdvertised = ConvertUtils.toBoolean(isAdvertised);
 
             logger.info("depositeCost : "+depositeCost);
@@ -356,20 +369,20 @@ public class FormEstate extends BaseFormSearch<Estate> {
                 );
             }
 
-            if (_depositeCost.isPresent()) {
+            if (_depositeCostFrom.isPresent() && _depositeCostTo.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.depositeCost), _depositeCost.get())
+                        criteriaBuilder.between(root.get(Estate_.depositeCost),_depositeCostFrom.get(),_depositeCostTo.get())
                 );
             }
 
-            if (_rentCost.isPresent()) {
+            if (_rentCostFrom.isPresent() && _rentCostTo.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.rentCost), _rentCost.get())
+                        criteriaBuilder.between(root.get(Estate_.rentCost), _rentCostFrom.get(),_rentCostTo.get())
                 );
             }
-            if (_premiumCost.isPresent()) {
+            if (_premiumCostFrom.isPresent() && _premiumCostTo.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.premiumCost), _premiumCost.get())
+                        criteriaBuilder.between(root.get(Estate_.premiumCost), _premiumCostFrom.get(),_premiumCostTo.get())
                 );
             }
             if (_isAdvertised.isPresent()) {
@@ -717,6 +730,54 @@ public class FormEstate extends BaseFormSearch<Estate> {
 
     public void setAttach(MultipartFile attach) {
         this.attach = attach;
+    }
+
+    public String getDepositeCostFrom() {
+        return depositeCostFrom;
+    }
+
+    public void setDepositeCostFrom(String depositeCostFrom) {
+        this.depositeCostFrom = depositeCostFrom;
+    }
+
+    public String getDepositeCostTo() {
+        return depositeCostTo;
+    }
+
+    public void setDepositeCostTo(String depositeCostTo) {
+        this.depositeCostTo = depositeCostTo;
+    }
+
+    public String getRentFrom() {
+        return rentFrom;
+    }
+
+    public void setRentFrom(String rentFrom) {
+        this.rentFrom = rentFrom;
+    }
+
+    public String getRentTo() {
+        return rentTo;
+    }
+
+    public void setRentTo(String rentTo) {
+        this.rentTo = rentTo;
+    }
+
+    public String getPremiumCostFrom() {
+        return premiumCostFrom;
+    }
+
+    public void setPremiumCostFrom(String premiumCostFrom) {
+        this.premiumCostFrom = premiumCostFrom;
+    }
+
+    public String getPremiumCostTo() {
+        return premiumCostTo;
+    }
+
+    public void setPremiumCostTo(String premiumCostTo) {
+        this.premiumCostTo = premiumCostTo;
     }
 
     public static Estate convertEstateFormToEstate(FormEstate form, Estate estate){
