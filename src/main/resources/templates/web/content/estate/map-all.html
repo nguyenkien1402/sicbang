@@ -105,15 +105,15 @@
                 <div class="mapBox">
                     <div class="searchBox">
                         <div class="buttonArea clearFix">
-                            <button class="active" data-method="storeSearch">상권으로 찾기</button>
-                            <button class="" data-method="subwaySearch">지하철역으로 찾기</button>
+                            <button class="active"  data-method="storeSearch">상권으로 찾기</button>
+                            <button class="" id="subwaySearchButton" data-method="subwaySearch">지하철역으로 찾기</button>
                         </div>
                         <div class="storeSearch searchMethodArea active">
                             <select class="formControl citySelect">
-                                <option selected disabled>선택</option>
+                                <option selected value = "선택" disabled>선택</option>
                             </select>
                             <select class="formControl districtSelect">
-                                <option selected disabled>선택</option>
+                                <option selected value ="선택" disabled>선택</option>
                             </select>
                             <select class="formControl">
                                 <option selected disabled>선택</option>
@@ -125,8 +125,14 @@
                             <button class="btn primary" id ="searchBySubway" style="height:35px;">조회</button>
                         </div>
                     </div>
+
                     <input type="hidden" id="estateType" th:value="${estateType}"/>
+                    <input type="hidden" id="cityValue" th:value="${city}"/>
+                    <input type="hidden" id="districtValue" th:value="${district}"/>
+                    <input type="hidden" id="subwayStationValue" th:value="${subway}"/>
+                    <input type="hidden" id="redirect" th:value="${redirect}"/>
                     <div id="map" ></div>
+
                 </div>
                 
                 

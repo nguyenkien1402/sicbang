@@ -17,33 +17,45 @@ $(document).ready(function(){
 
     var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     //시, 도 Select
-    var city = [];
+    var citys = [];
     var districts = [];
 
-    // call ajax to get all city and district.
     $.ajax({
-        url : "/estate/getAllCity",
-        type: "GET",
-        dataType:"json",
-        success:function(data){
-            $.each(data,function (key,val) {
-                city.push(val.name);
-                var $option = $("<option value='"+val.id+"'></option>");
-                $option.data("index",key);
-                $option.text(val.name);
-                $option.appendTo($(".citySelect"));
-                var district = [];
-                 $.each(val.districts,function(key1,vale){
-                   var districtObject = {name:"John", id:1};;
-                   districtObject.name = vale.name;
-                   districtObject.id = vale.id;
-                   district.push(districtObject);
-                });
-                districts.push(district);
-            });
+        url:getAllCity(),
+        success:function(){
+            initPage();
         }
-    });
+    })
 
+    function getAllCity(){
+        $.ajax({
+            url: "/estate/getAllCity",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, val) {
+
+                    var cityObject = {name: "", id: 1};
+                    cityObject.name=val.name;
+                    cityObject.id=val.id;
+                    citys.push(cityObject);
+                    var $option = $("<option value='" + val.id + "'></option>");
+                    $option.data("index", key);
+                    $option.text(val.name);
+                    $option.appendTo($(".citySelect"));
+                    var district = [];
+                    $.each(val.districts, function (key1, vale) {
+                        var districtObject = {name: "John", id: 1};
+                        districtObject.name = vale.name;
+                        districtObject.id = vale.id;
+                        district.push(districtObject);
+                    });
+                    districts.push(district);
+                });
+            }
+        });
+      
+    }
 
 
     $(".citySelect").change(function(e){
@@ -73,8 +85,6 @@ $(document).ready(function(){
             }
         }
     };
-    //init map
-    search("서울",null,null,estateType);
     //
     $(".subwayInput").easyAutocomplete(subway);
 
@@ -443,7 +453,22 @@ $(document).ready(function(){
                         yAnchor: 1
                     });
                 });
-                var str = (city == null ? "" : $(".citySelect :selected").text()) + " " + (district == null ? "" : $(".districtSelect :selected").text());
+                var cityName = "서울";
+                var districtName = "";
+                console.log(city);
+                for(var i = 0 ; i< citys.length;i++){
+                    if(city == citys[i].id){
+                        cityName = citys[i].name;
+                    }
+                }
+                for(var i=0; i<districts.length;i++){
+                    for(var j=0;j<districts[i].length;j++){
+                        if(district == districts[i][j].id){
+                            districtName = districts[i][j].name;
+                        }
+                    }
+                }
+                var str = (city == null ? "" : cityName) + " " + (district == null ? "" : districtName);
                 map.setLevel(7);
                 if(subway != null) {
                     str = subway + "역";
@@ -464,6 +489,7 @@ $(document).ready(function(){
                             });
                             map.setCenter(coords);
                         }else{
+                            if(city != null || district != null)
                             alert("검색에 실패하였습니다. 주소를 다시 확인하여주세요.\n검색 주소 : "+str);
                         }
                     });
@@ -471,4 +497,35 @@ $(document).ready(function(){
             }
         });
     }
+
+    function initPage() {
+        var redirect = $("#redirect").val();
+        //init map
+        if (redirect != 'true') {
+            search("서울", null, null, estateType);
+        } else {
+            var cityValue = $("#cityValue").val();
+            var districtValue = $("#districtValue").val();
+            var subwayValue = $("#subwayStationValue").val();
+            var attr = '';
+            for (var i = 0; i <= 30; i++) {
+                if ($('#c' + i).prop('checked')) {
+                    attr = attr + $('#c' + i).val() + ',';
+                }
+            }
+            if (subwayValue == '') {
+                searchByBusinessType(cityValue, districtValue, null, attr, estateType);
+            } else {
+                $(".searchBox .searchMethodArea").removeClass("active");
+                $(".searchBox .buttonArea button").removeClass("active");
+                $(".searchBox .storeSearch").removeClass("active");
+                $(".searchBox .subwaySearch").addClass("active");
+                $("#subwaySearchButton").addClass("active");
+                $(".subwayInput").val(subwayValue);
+                searchByBusinessType(null, null, subwayValue, attr, estateType);
+            }
+
+        }
+    }
+    
 });

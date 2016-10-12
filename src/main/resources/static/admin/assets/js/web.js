@@ -6,6 +6,65 @@ $(document).ready(function(){
     var joinModal = $(".joinModal");
     var popup = $(".popup");
 
+    var subway = {
+        url: "/static/admin/include/js/subway.js",
+        list: {
+            maxNumberOfElements: 10,
+            match:{
+                enabled: true
+            }
+        }
+    };
+    $(".subwayInput").easyAutocomplete(subway);
+
+    //시, 도 Select
+    var city = [];
+    var districts = [];
+
+    // call ajax to get all city and district.
+    $.ajax({
+        url : "/estate/getAllCity",
+        type: "GET",
+        dataType:"json",
+        success:function(data){
+            $.each(data,function (key,val) {
+                city.push(val.name);
+                var $option = $("<option value='"+val.id+"'></option>");
+                $option.data("index",key);
+                $option.text(val.name);
+                $option.appendTo($(".citySelect"));
+                var district = [];
+                $.each(val.districts,function(key1,vale){
+                    var districtObject = {name:"John", id:1};;
+                    districtObject.name = vale.name;
+                    districtObject.id = vale.id;
+                    district.push(districtObject);
+                });
+                districts.push(district);
+            });
+        }
+    });
+
+
+
+    $(".citySelect").change(function(e){
+        var $parent = $(this).parent();
+        var index = parseInt($(this).find("option:selected").data("index"));
+
+        $parent.find(".districtSelect").text("");
+
+        var $selectOption = $("<option disabled selected></option>");
+        $selectOption.text("선택");
+        $selectOption.appendTo($parent.find(".districtSelect"));
+
+        districts[index].forEach(function(item,index){
+            var $option = $("<option value='"+item.id+"' ></option>");
+            $option.data("index",index);
+            $option.text(item.name);
+            $option.appendTo($parent.find(".districtSelect"));
+        });
+    });
+
     //시, 도 Select
 
     //처음에 팝업창 띄우기
@@ -89,6 +148,7 @@ $(document).ready(function(){
                         data: {
                             "username": email,
                             "password": password,
+
                         },
                         success: function(data){
                             if(data == 'login_success'){
@@ -109,6 +169,7 @@ $(document).ready(function(){
 
         });
     });
+    var findType = 'businessZone';
 
     //매물 찾기 방법 선택
     $("#findMethod").change(function(e){
@@ -118,14 +179,22 @@ $(document).ready(function(){
             case "1":         //상권으로 찾기
                 $(".searchMethodArea").removeClass("active");
                 $(".storeSearch").addClass("active");
+                $(".subwayInput").val("");
+                $("#registryNo").val("");
                 break;
             case "2":         //지하철역으로 찾기
                 $(".searchMethodArea").removeClass("active");
                 $(".subwaySearch").addClass("active");
+                $("#registryNo").val("");
+                $(".citySelect").val("선택");
+                $(".districtSelect").val("선택");
                 break;
             case "3":         //등록번호로 찾기
                 $(".searchMethodArea").removeClass("active");
                 $(".numberSearch").addClass("active");
+                $(".citySelect").val("선택");
+                $(".districtSelect").val("선택");
+                $(".subwayInput").val("");
                 break;
         }
     });
@@ -139,6 +208,8 @@ $(document).ready(function(){
         overlay.removeClass("active");
     });
 
+
+
     $("#loginConfirmButton").click(function(e){
         $.ajax({
             url:"/login",
@@ -146,6 +217,7 @@ $(document).ready(function(){
             data: {
                 "username": $("#username").val(),
                 "password": $("#password").val(),
+                "rememberme": $("#rememberme").val()
             },
             success: function(data){
                 if(data == 'login_success'){

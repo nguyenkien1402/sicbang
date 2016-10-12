@@ -44,6 +44,16 @@ public class ControllerEstate extends AbstractController {
         return BASE_TEMPLATE + "map-all";
     }
 
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
+    public String goEstatePage(ModelMap map,@ModelAttribute FormEstate formEstate) {
+        initPage(map);
+        map.put("estateType","%%");
+        map.put("redirect","true");
+        map.put("city",formEstate.getCity());
+        map.put("district",formEstate.getDistrict());
+        map.put("subway",formEstate.getSubwayStation());
+        return BASE_TEMPLATE + "map-all";
+    }
     // init all model in map page
     private void initPage(ModelMap map){
 
