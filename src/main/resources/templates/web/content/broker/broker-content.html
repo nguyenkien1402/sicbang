@@ -37,7 +37,8 @@
             </div>
             <div class="infoArea">
                 <h3>담당자 정보</h3>
-                <img class="basicImg" th:src="${estate.user.avatar.origin}"/>
+                <img class="basicImg" th:unless="${estate.user.avatar == null}" th:src="${estate.user.avatar.origin}"/>
+                <img class="basicImg" th:if="${estate.user.avatar == null}" th:src="@{/admin/assets/images/no_image.jpg}"/>
 
                 <div class="infoText">
                     <p><strong>담당자:</strong> <span th:text="${estate.user.companyName}"></span></p>

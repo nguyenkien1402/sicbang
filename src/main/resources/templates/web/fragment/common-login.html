@@ -24,12 +24,12 @@
             <a th:href="@{/broker-join}"><li class="primary">중개사무소 가입 및 광고문의</li></a>
         </div>
         <div th:if="${@serviceAuthorized.isAuthenticated()}">
-            <li><a th:href="@{/logout}"> 로그아웃</a></li>
-            <li id="setting"><a th:href="@{/member/user}">설정</a></li>
-            <li th:if="${session.type} == 'MEMBER'" id="lately"><a th:href="@{/member/lately}"> 최근 살펴본 매물</a></li>
-            <li th:if="${session.type} == 'MEMBER'" id="wishlist"><a th:href="@{/member/estate/wishlist}">찜목록</a></li>
-            <li th:if="${session.type == 'BROKER' || session.type == 'TRUSTED_BROKER'}"><a th:href="@{/member/estate}">매물 관리</a></li>
-            <li>매물 올리기</li>
+            <a th:href="@{/logout}"><li> 로그아웃</li></a>
+            <a th:href="@{/member/user}"><li id="setting">설정</li></a>
+            <a th:href="@{/member/lately}"><li th:if="${session.type} == 'MEMBER'" id="lately"> 최근 살펴본 매물</li></a>
+            <a th:if="${session.type} == 'MEMBER'" th:href="@{/member/estate/wishlist}"><li  id="wishlist">찜목록</li></a>
+            <a th:if="${session.type == 'BROKER' || session.type == 'TRUSTED_BROKER'}" th:href="@{/member/estate}"><li >매물 관리</li></a>
+            <a th:href="@{/member/estate/sell-upload}"> <li>매물 올리기</li></a>
         </div>
 
     </ul>

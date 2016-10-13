@@ -1,6 +1,7 @@
 package org.trams.sicbang.service;
 
 import org.trams.sicbang.model.entity.BusinessType;
+import org.trams.sicbang.model.entity.Category;
 
 import java.util.List;
 
@@ -9,4 +10,5 @@ import java.util.List;
  */
 public interface IServiceBusinessType {
     List<BusinessType> findAll();
+    List<Category> findAllCategory();
 }

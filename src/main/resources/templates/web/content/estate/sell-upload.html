@@ -1,0 +1,586 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="web/layout/base">
+<head>
+    <meta charset="utf-8"/>
+    <title>식방</title>
+</head>
+<body>
+<div layout:fragment="content" id="contents">
+
+        <div id="container">
+                <div class="containerTitle">
+                    <h2>중개사로 회원가입</h2>
+                </div>
+                
+                <div class="tabArea clearFix">
+                    <button class="btn active" data-index="first">창업인수</button>
+                    <button class="btn" data-index="second">공실매물</button>
+                </div>
+                
+                <div class="tabContents first active">
+                    <form th:action="@{/member/estate/create}" method="post" enctype="multipart/form-data">
+                    <table class="table full">
+                        <tr>
+                            <th class="paddingLeft" style="width:200px; text-align:left;">매물이름</th>
+                            <td>
+                                <input type="text" name="name" id="startupName" class="formControl wide" style="height:30px;" placeholder="매물 이름을 입력해주세요."/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">상권</th>
+                            <td>
+                                <label style="display:inline-block;width:80px;">시, 도</label>
+                                <select name="city" id="cityStartup" class="citySelect formControl wide" style="height:30px;font-size:12px;">
+                                    <option selected disabled>선택</option>
+                                </select>
+                                <br/><br/>
+                                <label style="display:inline-block;width:80px;">군, 구</label>
+                                <select name="district" id="districtStartup" class="districtSelect formControl wide" style="height:30px;font-size:12px;">
+                                    <option selected disabled>선택</option>
+                                </select>
+                                <br/><br/>
+                                <label style="display:inline-block;width:80px;">읍, 면, 동</label>
+                                <select  class="townSelect formControl wide" style="height:30px;font-size:12px;">
+                                    <option selected disabled>선택</option>
+                                </select>
+                                <br/><br/>
+                                <input type="text" name="all_addr" id="all_addStartup" class="detailAddress formControl wide" style="width:303px;height:30px;" placeholder="상세주소를 입력해주세요."/>
+                                <button class="searchAddress btn primary" style="height:30px;">검색</button>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">인근 전철역</th>
+                            <td>
+                                <input type="text" name="subwayStation" id="subwayStartup" class="subwayInput formControl wide" style="height:30px;" placeholder="보문역" />
+                            </td>
+                        </tr>
+                        <!--<tr>
+                            <th class="paddingLeft" style="text-align:left;">한줄평</th>
+                            <td>
+                                <input type="text" class="formControl wide  full" style="height:30px;" placeholder="보문역 8번출구 유동인구 최다" />
+                            </td>
+                        </tr>-->
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">사진업로드</th>
+                            <td>
+                                <input type="button" class="imageUploadButton btn littleWide" style="height:30px; " value="사진첨부"/>
+                                <label class="helpBlock"> * 업로드할 수 있는 사진은 5장까지 가능합니다.</label>
+                                <br/><br/>
+                                <input type="file" name="attachmentFiles" style="display:none;"/>
+                                <img src="" data-id="0" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" name="attachmentFiles" style="display:none;"/>
+                                <img src="" data-id="1" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" name="attachmentFiles" style="display:none;"/>
+                                <img src="" data-id="2" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" name="attachmentFiles" style="display:none;"/>
+                                <img src="" data-id="3" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" name="attachmentFiles" style="display:none;"/>
+                                <img src="" data-id="4" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">보증금</th>
+                            <td>
+                                <input type="text" name="depositeCost"id="depositeCostStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">월세</th>
+                            <td>
+                                <input type="text" name="rentCost" id="rentCostStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">관리비</th>
+                            <td>
+                                <input type="text" name="serviceCost" id="serviceCostStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">권리금</th>
+                            <td>
+                                <input type="text" name="premiumCost" id="premiumCostStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">기타경비</th>
+                            <td>
+                                <input type="text" name="otherCost" id="otherCostStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">월매출</th>
+                            <td>
+                                <input type="text" name="monthlyIncome" id="monthlyIncomeStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">세전월수입</th>
+                            <td>
+                                <input type="text" name="monthlyTax" id="monthlyTaxStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">실수익률</th>
+                            <td>
+                                <input type="text" name="gainRatio" id="gainRatioStartup" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(%)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">매물유형</th>
+                            <td>
+                                <input type="hidden" name="estateType" value="STARTUP"/>
+                                <label class="helpBlock primary">창업인수</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">카테고리</th>
+                            <td>
+                                <select  name="category" id="categoryStartup" class="formControl wide">
+                                    <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.id}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">업종</th>
+                            <td>
+                                <select name="businessType" id="businessTypeStartup" class="formControl wide">
+                                    <option th:each="businessType : ${businessTypes}" th:text="${businessType.name}" th:value="${businessType.id}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">층</th>
+                            <td>
+                                <input type="text" name="floor" id="layerStartup" class="formControl wide" style="height:30px;" placeholder="1층" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">면적</th>
+                            <td>
+                                <input type="text" name="area" id="areaStartup" class="formControl wide" style="height:30px;" placeholder="125m2 (38평)" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">주차여부</th>
+                            <td>
+                                <select name = "parking" id="parkingStartup" class="formControl wide" style="height:30px;font-size:12px;">
+                                    <option value="1">가능</option>
+                                    <option value="0">불가능</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">상세설명</th>
+                            <td>
+                                <textarea name="detail" id="detailStartup" class="formControl full" style="height:160px;"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="btnGroup">
+                        <button id="uploadButton" type="submit" class="btn primary wide">매물 올리기</button>
+                    </div>
+                    </form>
+                    </div>
+
+                <div class="tabContents second">
+                    <table class="table full">
+                        <tr>
+                            <th class="paddingLeft" style="width:200px; text-align:left;">매물이름</th>
+                            <td>
+                                <input type="text" id="vacantName" class="formControl wide" style="height:30px;" placeholder="매물 이름을 입력해주세요."/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">상권</th>
+                            <td>
+                                <label style="display:inline-block;width:80px;">시, 도</label>
+                                <select id="vacantCity" class="citySelect formControl wide" style="height:30px;font-size:12px;">
+                                    <option selected disabled>선택</option>
+                                </select>
+                                <br/><br/>
+                                <label style="display:inline-block;width:80px;">군, 구</label>
+                                <select id="vacantDistrict" class="districtSelect formControl wide" style="height:30px;font-size:12px;">
+                                    <option selected disabled>선택</option>
+                                </select>
+                                <br/><br/>
+                                <label style="display:inline-block;width:80px;">읍, 면, 동</label>
+                                <select class="townSelect formControl wide" style="height:30px;font-size:12px;">
+                                    <option selected disabled>선택</option>
+                                </select>
+                                <br/><br/>
+                                <input type="text" id="all_addVacant" class="detailAddress formControl wide" style="width:303px;height:30px;" placeholder="상세주소를 입력해주세요."/>
+                                <button class="searchAddress btn primary" style="height:30px;">검색</button>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">인근 전철역</th>
+                            <td>
+                                <input type="text" id="subwayVacant" class="subwayInput formControl wide" style="height:30px;" placeholder="보문역" />
+                            </td>
+                        </tr>
+                        <!--<tr>
+                            <th class="paddingLeft" style="text-align:left;">한줄평</th>
+                            <td>
+                                <input type="text" class="formControl wide  full" style="height:30px;" placeholder="보문역 8번출구 유동인구 최다" />
+                            </td>
+                        </tr>-->
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">사진업로드</th>
+                            <td>
+
+                                <button class="imageUploadButton btn littleWide" style="height:30px; ">사진첨부</button>
+                                <label class="helpBlock"> * 업로드할 수 있는 사진은 5장까지 가능합니다.</label>
+                                <br/><br/>
+                                <input type="file" style="display:none;"/>
+                                <img src="" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" style="display:none;"/>
+                                <img src="" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" style="display:none;"/>
+                                <img src="" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" style="display:none;"/>
+                                <img src="" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                                <input type="file" style="display:none;"/>
+                                <img src="" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">현재업종</th>
+                            <td>
+                                <input type="text" id="businessZoneVacant" class="formControl wide" style="height:30px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">층</th>
+                            <td>
+                                <input type="text" id="layerVacant" class="formControl wide" style="height:30px;" />
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">준공년월</th>
+                            <td>
+                                <input type="text" id="constructDate" class="formControl wide" style="height:30px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">입주가능일</th>
+                            <td>
+                                <input type="text"id="availableDate" class="formControl wide" style="height:30px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">융자금</th>
+                            <td>
+                                <input type="text" id="loan" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(만원)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">계약면적</th>
+                            <td>
+                                <input type="text" id="contractArea" class="formControl wide" style="height:30px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">전용면적</th>
+                            <td>
+                                <input type="text" id="exclusiveArea" class="formControl wide" style="height:30px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">전용률</th>
+                            <td>
+                                <input type="text" id="exclusiveRate" class="formControl wide" style="height:30px;" />
+                                <label class="helpBlock">(%)</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">주차여부</th>
+                            <td>
+                                <select id="parkingVacant" class="formControl wide" style="height:30px;font-size:12px;">
+                                    <option>가능</option>
+                                    <option>불가능</option>
+                                </select>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingLeft" style="text-align:left;">상세설명</th>
+                            <td>
+                                <textarea id="detailVacant" class="formControl full" style="height:160px;"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="btnGroup">
+                        <button id="uploadButton" type="submit" class="btn primary wide">매물 올리기</button>
+                    </div>
+                </div>
+
+        </div>
+
+    <div class="modal addressModal active">
+        <div class="title clearFix">
+            <p>위치정보 확인</p>
+            <span class="exitIcon"><i class="fa fa-times"></i></span>
+        </div>
+        <div class="contents">
+            <div id="map" style="width:100%;height:250px;margin-bottom:10px;">
+            </div>
+            <div class="btnGroup">
+                <p class="helpBlock" style="font-size:12px; color:#666;margin-bottom:10px;">* 입력하신 위치 정보가 맞는지 확인하세요.</p>
+                <button class="exitIcon btn warning littleWide">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            //초기 변수 설정
+            var overlay = $(".overlay");
+            var loginModal = $(".loginModal");
+            var joinModal = $(".joinModal");
+            var addressModal = $(".addressModal");
+
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                    mapOption = {
+                        center: new daum.maps.LatLng(37.563723, 126.903237), // 지도의 중심좌표
+                        level: 3 // 지도의 확대 레벨
+                    };
+
+            var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+            addressModal.removeClass("active");
+
+            //시, 도 Select
+
+            $(".searchAddress").click(function(e){
+                e.preventDefault();
+                var $parent = $(this).parent();
+                var city = $parent.find(".citySelect").find("option:selected").text();
+                var district = $parent.find(".districtSelect").find("option:selected").text();
+                var town = $parent.find(".townSelect").find("option:selected").text();
+                var detail = $parent.find(".detailAddress").val();
+
+                var str = (city == "선택" ? "" : city) + " " + (district == "선택" ? "" : district) + " " + (town == "선택" ? "" : town) + " " + detail;
+
+                // 주소-좌표 변환 객체를 생성합니다
+                var geocoder = new daum.maps.services.Geocoder();
+
+                // 주소로 좌표를 검색합니다
+                geocoder.addr2coord(str, function(status, result) {
+
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+
+                        // 결과값으로 받은 위치를 마커로 표시합니다
+                        var marker = new daum.maps.Marker({
+                            map: map,
+                            position: coords
+                        });
+
+                        // 인포윈도우로 장소에 대한 설명을 표시합니다
+                        //var infowindow = new daum.maps.InfoWindow({
+                        //    content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                        //});
+                        //infowindow.open(map, marker);
+
+                        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                        map.setCenter(coords);
+
+                        overlay.addClass("active");
+                        addressModal.addClass("active");
+                    }else{
+                        alert("검색에 실패하였습니다. 주소를 다시 확인하여주세요.\n검색 주소 : "+str);
+                    }
+                });
+            });
+
+            var tabType = 'first';
+
+            //탭의 버튼을 눌렀을 때
+            $(".tabArea button").click(function(e){
+                $(".tabContents").removeClass("active");
+                $(".tabArea button").removeClass("active");
+                var str = $(this).data("index");
+                tabType = $(this).data("index");
+                $(".tabContents."+str).addClass("active");
+                $(this).addClass("active");
+            });
+
+            //사진 첨부 버튼
+            $(".imageUploadButton").click(function(e){
+                var files = $(this).parent().find("input[type=file]");
+                var imgs = $(this).parent().find("img");
+
+                var fileClick = false;
+                files.each(function(index){
+                    //만약 파일이 비어있다면 그 곳에 이미지를 집어넣는다.
+                    if($(this).val() == "" && !fileClick){
+                        $(this).click();
+                        fileClick = true;
+                    }
+                });
+
+                if(!fileClick){
+                    alert("사진은 최대 5장까지 업로드할 수 있습니다.")
+                }
+            });
+            var fileString = ["","","","",""];
+            //파일이 업로드 되면
+            $("input[type=file]").change(function(e){
+                var img = $(this).parent().find("img").eq(
+                        $(this).parents(".tabContents").find("input[type=file]").index($(this))
+                );
+
+                var ext = $(this).val().split('.').pop().toLowerCase();
+                if(ext == ""){
+                    img.attr('src', "");
+                    $(this).val("");
+                    return false;
+                }
+
+                if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+                    alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
+                    $(this).val("");
+                    img.attr('src', "");
+                    return;
+                }
+
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        img.attr('src', e.target.result);
+                        for(var i = 0 ; i < 5 ; i++){
+                            if(fileString[i] == ''){
+                                fileString[i] = e.target.result;
+                                break;
+                            }
+                        }
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                    console.log(fileString);
+                }
+            });
+
+            //이미지 제거를 위해 사진을 클릭했을 때
+            $(".uploadImg").click(function(e){
+                var file = $(this).parent().find("input[type=file]").eq(
+                        $(this).parents(".tabContents").find("img").index($(this))
+                );
+
+         //       fileString[parseInt($(this).attr("data-id"))] = "";
+         //       console.log(fileString);
+                $(this).attr("src","");
+                file.val("");
+
+            });
+
+
+
+            //중개사 회원가입 버튼
+            $("#uploadButton").click(function(e){
+                var fill = true;
+                $("#joinTable input").each(function(){
+                    if($(this).val() == "")
+                        fill = false;
+                });
+
+                if(!fill){
+                    alert("모든 항목을 기입해주세요.");
+                    return false;
+                }
+                /*
+                for(var i = 0 ; i < 5;i++){
+                    if(fileString[i] == "")
+                    {
+                        fileString.splice(i,1);
+                    }
+                }
+
+
+                if(tabType == 'first'){
+                    var name = $("#startupName").val();
+                    var city = $("#cityStartup").val();
+                    var district = $("#districtStartup").val();
+                    var all_addr = $("#all_addStartup").val();
+                    var subwayStation = $("#subwayStartup").val();
+                    var depositeCost = $("#depositeCostStartup").val();
+                    var rentCost = $("#rentCostStartup").val();
+                    var serviceCost = $("#serviceCostStartup").val();
+                    var premiumCost = $("#premiumCostStartup").val();
+                    var otherCost = $("#otherCostStartup").val();
+                    var monthlyIncome = $("#monthlyIncomeStartup").val();
+                    var monthlyTax = $("#monthlyTaxStartup").val();
+                    var gainRatio = $("#gainRatioStartup").val();
+                    var estateType = "STARTUP";
+                    var category = $("#categoryStartup").val();
+                    var businessType = $("#businessTypeStartup").val();
+                    var floor = $("#layerStartup").val();
+                    var area = $("#areaStartup").val();
+                    var parking = $("#parkingStartup").val();
+                    var detail = $("#detailStartup").val();
+                    var attachments = fileString;
+
+                    $.ajax({
+                       url:"/member/estate/create",
+                        dataType:"json",
+                        type:"POST",
+                        data: {
+                            name: name,
+                            city: city,
+                            district : district,
+                            all_addr: all_addr,
+                            subwayStation: subwayStation,
+                            depositeCost: depositeCost,
+                            rentCost: rentCost,
+                            serviceCost: serviceCost,
+                            premiumCost: premiumCost,
+                            otherCost: otherCost,
+                            monthlyIncome: monthlyIncome,
+                            monthlyTax: monthlyTax,
+                            gainRatio: gainRatio,
+                            estateType: estateType,
+                            category:category,
+                            businessType: businessType,
+                            floor: floor,
+                            area: area,
+                            parking: parking,
+                            detail: detail,
+                            list: attachments
+                        }
+                        ,success:function(data){
+
+                        }
+                    });
+                }else{
+
+                }*/
+                alert("성공적으로 매물을 올렸습니다.");
+            });
+
+            //모달 창 닫기
+            $(".modal .exitIcon").click(function(e){
+                $(this).parents(".modal").removeClass("active");
+                overlay.removeClass("active");
+            });
+        });
+    </script>
+    </div>
+    </body>
+
+</html>

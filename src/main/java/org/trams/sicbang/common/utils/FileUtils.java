@@ -1,5 +1,6 @@
 package org.trams.sicbang.common.utils;
 
+import jdk.internal.util.xml.impl.Input;
 import org.apache.log4j.Logger;
 import org.springframework.util.FileCopyUtils;
 import org.trams.sicbang.model.enumerate.MessageResponse;
@@ -53,9 +54,13 @@ public class FileUtils {
             graphics2D.dispose();
             logger.info("basepath + directory, filename : " + basepath + directory + filename);
             System.out.println("basepath + directory, filename : " + basepath + directory + filename);
-            ImageIO.write(originalImage, "jpg", new FileOutputStream(new File(basepath + directory, filename)));
-            ImageIO.write(resizedImage, "jpg", new FileOutputStream(new File(basepath + directory, thumbname)));
-
+            FileOutputStream originalOutputStream = new FileOutputStream(new File(basepath + directory, filename));
+            FileOutputStream resizeOutputStream = new FileOutputStream(new File(basepath + directory, thumbname));
+            ImageIO.write(originalImage, "jpg",originalOutputStream);
+            ImageIO.write(resizedImage, "jpg", resizeOutputStream);
+            originalOutputStream.close();
+            resizeOutputStream.close();
+            is.close();
             // return path
             return new String[]{directory + filename, directory + thumbname};
         } catch (Exception e) {

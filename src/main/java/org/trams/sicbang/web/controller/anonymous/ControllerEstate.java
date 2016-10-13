@@ -92,7 +92,6 @@ public class ControllerEstate extends AbstractController {
 
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
-
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
@@ -124,7 +123,7 @@ public class ControllerEstate extends AbstractController {
             serviceRecent.create(formRecent);
             }
             if(user.getId() == estate.getUser().getId()){
-                if(estate.getAdvertised() == true){ // if estate is premium.
+                if(estate.getAdvertised() != null && estate.getAdvertised() == true){ // if estate is premium.
                     return BASE_TEMPLATE_BROKER +"/broker-content-premium";
                 }
                 // estate isn't premium.

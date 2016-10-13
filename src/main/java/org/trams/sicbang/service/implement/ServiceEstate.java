@@ -65,6 +65,10 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         estate.setDepositeCost(ConvertUtils.toDoubleNumber(form.getDepositeCost()).get());
         estate.setRentCost(ConvertUtils.toDoubleNumber(form.getRentCost()).get());
         estate.setPremiumCost(ConvertUtils.toDoubleNumber(form.getPremiumCost()).get());
+
+        //add city,district
+        estate.setCity(repositoryCity.findOne(ConvertUtils.toLongNumber(form.getCity()).get()));
+        estate.setDistrict(repositoryDistrict.findOne(ConvertUtils.toLongNumber(form.getDistrict()).get()));
         logger.info("estateType : " + estateType + "getEstateType : " + form.getEstateType());
 
 
