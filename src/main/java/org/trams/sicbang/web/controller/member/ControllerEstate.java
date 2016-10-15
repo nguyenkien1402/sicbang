@@ -10,10 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.trams.sicbang.model.entity.Estate;
-import org.trams.sicbang.model.entity.Recent;
-import org.trams.sicbang.model.entity.User;
-import org.trams.sicbang.model.entity.Wishlist;
+import org.springframework.web.multipart.MultipartFile;
+import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.model.form.FormRecent;
@@ -22,7 +20,13 @@ import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -110,22 +114,52 @@ public class ControllerEstate extends AbstractController {
      * @param form
      * @return
      */
-    @RequestMapping(value = "/create", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object create(
-            @ModelAttribute FormEstate form
-    ) {
-        switch (getRequestMethod()) {
-            case POST:
-                FormError error = validationEstate.validateCreate(form);
-                if (error != null) {
-                    return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Object create(@ModelAttribute FormEstate form) {
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        form.setUserId(user.getId().toString());
+        System.out.println("Name:"+form.getName());
+        System.out.println("City:"+form.getCity());
+        System.out.println("District:"+form.getDistrict());
+        System.out.println("All:"+form.getAll_addr());
+        System.out.println("EstateType:"+form.getEstateType());
+        System.out.println("Area:"+form.getArea());
+        System.out.println("BusinesSType:"+form.getBusinessType());
+        System.out.println("Subway:"+form.getSubwayStation());
+        System.out.println("Deposite: "+form.getDepositeCost());
+        System.out.println("Detail"+form.getDetail());
+        System.out.println("rent:"+form.getRentCost());
+        System.out.println("Service:"+form.getServiceCost());
+        System.out.println("other:"+form.getOtherCost());
+        System.out.println("premium:"+form.getPremiumCost());
+        System.out.println("gain:"+form.getGainRatio());
+        System.out.println("floor:"+form.getFloor());
+        System.out.println("monthly"+form.getMonthlyIncome());
+        System.out.println("tax:"+form.getMonthlyTax());
+        form.setIsAdvertised("0");
+        List<String> attachments = new ArrayList<>();
+        for(MultipartFile multipartFile: form.getAttachmentFiles()){
+            if(!multipartFile.getOriginalFilename().equals("")) {
+                String file = "";
+                try {
+                    file = javax.xml.bind.DatatypeConverter.printBase64Binary(multipartFile.getBytes());
+                    attachments.add(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                serviceEstate.create(form);
-                return new ResponseEntity(HttpStatus.OK);
-            case GET:
-            default:
-                return BASE_TEMPLATE + "create";
+            }
         }
+        form.setAttachments(attachments);
+        FormError error = validationEstate.validateCreate(form);
+            if (error != null) {
+                return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+            }
+            serviceEstate.create(form);
+            return new ResponseEntity(HttpStatus.OK);
+
+
     }
 
     @RequestMapping(value="/addWishList",method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
@@ -152,5 +186,16 @@ public class ControllerEstate extends AbstractController {
         Page<Wishlist> wishlists = serviceWishlist.filter(form);
         map.put("wishlists",wishlists);
         return "web/content/" + "optional/wishlist";
+    }
+
+    @RequestMapping(value="/sell-upload",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String sellUpload(@ModelAttribute FormEstate formEstate, ModelMap map) {
+        List<Category> categories = serviceBusinessType.findAllCategory();
+        List<BusinessType> businessTypes = serviceBusinessType.findAll();
+
+        map.put("categories",categories);
+        map.put("businessTypes",businessTypes);
+
+        return "web/content/estate/" + "sell-upload";
     }
 }

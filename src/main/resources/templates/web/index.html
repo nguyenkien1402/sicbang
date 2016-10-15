@@ -10,6 +10,7 @@
 <body>
     <div layout:fragment="content"  id="contents">
         <div class="mainVisual" style="background: transparent url(/static/admin/include/images/main/back.png) no-repeat center;">
+            <form th:action="@{/estate}" method="POST">
             <div class="searchArea">
                 <select id="findMethod" class="formControl primary">
                     <option value="1">상권으로 찾기</option>
@@ -17,24 +18,27 @@
                     <option value="3">등록번호로 찾기</option>
                 </select>
                 <div class="storeSearch searchMethodArea active">
-                    <select class="formControl citySelect">
-                        <option selected disabled>선택</option>
+                    <select class="formControl citySelect" name="city">
+                        <option selected value = "선택" disabled>선택</option>
                     </select>
-                    <select class="formControl districtSelect">
-                        <option selected disabled>선택</option>
+                    <select class="formControl districtSelect" name="district">
+                        <option selected value = "선택" disabled>선택</option>
                     </select>
                     <select class="formControl">
                         <option selected disabled>선택</option>
                     </select>
                 </div>
                 <div class="subwaySearch searchMethodArea" style="margin-right:20px;">
-                    <input type="text" class="subwayInput formControl" style="width:498px;" placeholder="지하철역"/>
+                    <input type="text" name="subwayStation" class="subwayInput formControl" style="width:498px;" placeholder="지하철역"/>
                 </div>
                 <div class="numberSearch searchMethodArea">
-                    <input type="text" class="formControl" style="width:498px;" placeholder="등록번호"/>
+                    <input type="text" name="estateCode" class="formControl" id="registryNo" style="width:498px;" placeholder="등록번호"/>
                 </div>
-                <button class="btn primary">매물 검색 <i class="fa fa-search"></i></button>
+                <button class="btn primary" id="searchButton" type="submit">매물 검색 <i class="fa fa-search"></i></button>
+
             </div>
+            </form>
+
         </div>
         <div id="container">
             <div class="row">
@@ -57,7 +61,7 @@
                     </div>
                     <table class="boardContents">
                         <tr th:each="notice : ${notices}">
-                            <td><a th:href="@{'http://'+@{notice.content}}" th:text="${notice.title}"></a></td>
+                            <td><a th:href="@{'http://'+${notice.content}}" th:text="${notice.title}"></a></td>
                             <td ><span th:if="${notice.createdDate != null}" th:text="${#dates.format(notice.createdDate, 'dd/MM/YYYY')}"></span></td>
                         </tr>
                     </table>

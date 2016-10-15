@@ -12,147 +12,63 @@
                         <div class="priceBox">
                             <div class="formControlGroup">
                                 <label>보증금</label>
-                                <select class="formControl" style="font-size:11px;">
-                                    <option>전체</option>
-                                    <option>3천만원 이하</option>
-                                    <option>3천~5천만원</option>
-                                    <option>5천만원 ~ 1억원</option>
-                                    <option>1억원 ~ 2억원</option>
-                                    <option>2억원 이상</option>
+                                <select class="formControl" id="depositeCost" style="font-size:11px;">
+                                    <option value="all">전체</option>
+                                    <option value="0-30">3천만원 이하</option>
+                                    <option value="30-50">3천~5천만원</option>
+                                    <option value="50-100">5천만원 ~ 1억원</option>
+                                    <option value="100-200">1억원 ~ 2억원</option>
+                                    <option value=">200">2억원 이상</option>
                                 </select>
                             </div>
                             <div class="formControlGroup">
                                 <label>월세</label>
-                                <select class="formControl" style="font-size:11px;">
-                                    <option>전체</option>
-                                    <option>100만원 이하</option>
-                                    <option>100~300만원</option>
-                                    <option>300만원~500만원</option>
-                                    <option>500만원~1000만원</option>
-                                    <option>1000만원이상</option>
+                                <select class="formControl" id="rentCost" style="font-size:11px;">
+                                    <option value="all">전체</option>
+                                    <option value="0-1">100만원 이하</option>
+                                    <option value="1-3">100~300만원</option>
+                                    <option value="3-5">300만원~500만원</option>
+                                    <option value="5-10">500만원~1000만원</option>
+                                    <option value=">10">1000만원이상</option>
                                 </select>
                             </div>
                             <div class="formControlGroup">
                                 <label>권리금</label>
-                                <select class="formControl" style="font-size:11px;">
-                                    <option>전체</option>
-                                    <option>없음</option>
-                                    <option>1천만원 이하</option>
-                                    <option>1천~3천만원</option>
-                                    <option>3천~5천만원</option>
-                                    <option>5천~1억</option>
-                                    <option>1억 이상</option>
+                                <select class="formControl" id="premiumCost" style="font-size:11px;">
+                                    <option value="all">전체</option>
+                                    <option value="none">없음</option>
+                                    <option value="0-10">1천만원 이하</option>
+                                    <option value="10-30">1천~3천만원</option>
+                                    <option value="30-50">3천~5천만원</option>
+                                    <option value="50-100">5천~1억</option>
+                                    <option value=">100">1억 이상</option>
                                 </select>
                             </div>
                         </div>
                         <div class="storeBox">
                             <div class="storeArea">
                                 <h5>휴게음식점</h5>
-                                <div class="store">
-                                    <input id="c1" type="checkbox" checked = "checked" >
-                                     <span>커피</span>
+                                <div class="store" th:each="eatery,eateryStat : ${eatery}">
+                                     <input th:id="'c'+${eateryStat.index}" type="checkbox" th:value="${eatery.id}" checked  >
+                                     <span th:text="${eatery.name}"></span>
                                 </div>
-                                <div class="store">
-                                    <input id="c2" type="checkbox" checked = "checked" >
-                                    <span>치킨점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c3" type="checkbox" checked = "checked"  >
-                                    <span>카페</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c4" type="checkbox" checked = "checked"  >
-                                    <span>제과점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c5" type="checkbox" checked = "checked"  >
-                                    <span>피자점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c6" type="checkbox" checked = "checked"  >
-                                    <span>떡볶이</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c7" type="checkbox" checked = "checked"  >
-                                    <span>튀김</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c8" type="checkbox" checked = "checked"  >
-                                    <span>아이스크림</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c9" type="checkbox" checked = "checked"  >
-                                    <span>기타</span>
-                                </div>
+
                             </div>
-                            
+
                             <div class="storeArea">
                                 <h5>일반음식점</h5>
-                                <div class="store">
-                                    <input id="c21" type="checkbox" checked = "checked"  >
-                                    <span>한식점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c22" type="checkbox" checked = "checked"  >
-                                    <span>고깃집</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c23" type="checkbox" checked = "checked"  >
-                                    <span>분식점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c24" type="checkbox" checked = "checked" >
-                                    <span>생선회/해물</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c25" type="checkbox" checked = "checked" >
-                                    <span>중국집</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c26" type="checkbox" checked = "checked" >
-                                    <span>레스토랑</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c27" type="checkbox" checked = "checked" >
-                                    <span>일식점</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c28" type="checkbox" checked = "checked" >
-                                    <span>돈까스/우동</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c29" type="checkbox" checked = "checked" >
-                                     <span>기타</span>
+                                <div class="store" th:each="restaurant,restaurantStat : ${restaurants}">
+                                    <input th:id="'c1'+${restaurantStat.index}" type="checkbox" th:value="${restaurant.id}" checked  >
+                                    <span th:text="${restaurant.name}"></span>
                                 </div>
                             </div>
-                            
+
                             <div class="storeArea">
                                 <h5>주류</h5>
-                                <div class="store">
-                                    <input id="c41" type="checkbox" checked = "checked" >
-                                    <span>맥주호프집</span>
+                                <div class="store" th:each="liquor,liquorStat : ${liquors}">
+                                    <input th:id="'c2'+${liquorStat.index}" type="checkbox" th:value="${liquor.id}" checked >
+                                    <span th:text="${liquor.name}"></span>
                                 </div>
-                                <div class="store">
-                                    <input id="c42" type="checkbox" checked = "checked" >
-                                    <span>이자카야</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c43" type="checkbox" checked = "checked" >
-                                    <span>바</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c44" type="checkbox" checked = "checked" >
-                                    <span>실내포차</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c45" type="checkbox" checked = "checked" >
-                                    <span>꼬치구이</span>
-                                </div>
-                                <div class="store">
-                                    <input id="c46" type="checkbox" checked = "checked" >
-                                    <span>기타</span>
-                                </div>
-                                
                             </div>
                             
                             <div class="btnGroup">
@@ -189,15 +105,15 @@
                 <div class="mapBox">
                     <div class="searchBox">
                         <div class="buttonArea clearFix">
-                            <button class="active" data-method="storeSearch">상권으로 찾기</button>
-                            <button class="" data-method="subwaySearch">지하철역으로 찾기</button>
+                            <button class="active"  data-method="storeSearch">상권으로 찾기</button>
+                            <button class="" id="subwaySearchButton" data-method="subwaySearch">지하철역으로 찾기</button>
                         </div>
                         <div class="storeSearch searchMethodArea active">
                             <select class="formControl citySelect">
-                                <option selected disabled>선택</option>
+                                <option selected value = "선택" disabled>선택</option>
                             </select>
                             <select class="formControl districtSelect">
-                                <option selected disabled>선택</option>
+                                <option selected value ="선택" disabled>선택</option>
                             </select>
                             <select class="formControl">
                                 <option selected disabled>선택</option>
@@ -209,7 +125,14 @@
                             <button class="btn primary" id ="searchBySubway" style="height:35px;">조회</button>
                         </div>
                     </div>
+
+                    <input type="hidden" id="estateType" th:value="${estateType}"/>
+                    <input type="hidden" id="cityValue" th:value="${city}"/>
+                    <input type="hidden" id="districtValue" th:value="${district}"/>
+                    <input type="hidden" id="subwayStationValue" th:value="${subway}"/>
+                    <input type="hidden" id="redirect" th:value="${redirect}"/>
                     <div id="map" ></div>
+
                 </div>
                 
                 

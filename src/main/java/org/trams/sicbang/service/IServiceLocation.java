@@ -2,6 +2,7 @@ package org.trams.sicbang.service;
 
 import org.trams.sicbang.model.entity.Category;
 import org.trams.sicbang.model.entity.City;
+import org.trams.sicbang.model.entity.District;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface IServiceLocation {
      */
     List<City> findAllCity();
 
+    List<District> findAllDistrict();
     /**
      * Find all category with business type
      * @return

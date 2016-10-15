@@ -98,7 +98,7 @@ public class ValidationEstate {
                         error.rejectValue("category", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
                     }
                     if (!_businessTypeId.isPresent()) {
-                        error.rejectValue("businessType", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+                          error.rejectValue("businessType", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
                     }
 
                     // Validate Category
@@ -115,6 +115,7 @@ public class ValidationEstate {
                                 }
                             }
                             if (bType == null) {
+
                                 error.rejectValue("businessType", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
                             }
                         }

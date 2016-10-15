@@ -17,6 +17,7 @@ public class City extends BaseEntity {
     private String name;
     @JsonManagedReference
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    @OrderBy
     private Set<District> districts;
 
 

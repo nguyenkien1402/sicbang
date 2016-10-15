@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.common.utils.FileUtils;
@@ -64,6 +65,10 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         estate.setDepositeCost(ConvertUtils.toDoubleNumber(form.getDepositeCost()).get());
         estate.setRentCost(ConvertUtils.toDoubleNumber(form.getRentCost()).get());
         estate.setPremiumCost(ConvertUtils.toDoubleNumber(form.getPremiumCost()).get());
+
+        //add city,district
+        estate.setCity(repositoryCity.findOne(ConvertUtils.toLongNumber(form.getCity()).get()));
+        estate.setDistrict(repositoryDistrict.findOne(ConvertUtils.toLongNumber(form.getDistrict()).get()));
         logger.info("estateType : " + estateType + "getEstateType : " + form.getEstateType());
 
 
@@ -344,13 +349,23 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         return count;
     }
     @Override
-    public List<Estate> filterEstateByType(int pageSize,int type) {
-        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,type);
+    public List<Estate> filterEstateByType(int pageSize,int userType,String type) {
+        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,userType,type);
         Iterator<Estate> iterator = estates.iterator();
-        FormWishlist formWishlist = new FormWishlist();
         while (iterator.hasNext()) {
             Estate estate = iterator.next();
-            //set iswished
+             Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", estate.getId());
+            estate.setAttachments(attachments);
+        }
+        return estates;
+    }
+
+    @Override
+    public List<Estate> filterEstateOnMap(FormEstate formEstate) {
+        List<Estate> estates = repositoryEstate.findAll(formEstate.searchOnMap());
+        Iterator<Estate> iterator = estates.iterator();
+        while (iterator.hasNext()) {
+            Estate estate = iterator.next();
             Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", estate.getId());
             estate.setAttachments(attachments);
         }
