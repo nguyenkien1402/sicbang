@@ -16,7 +16,7 @@ public interface IServiceMail {
      * @param mail
      * @return
      */
-    void send(FormMail mail);
+    Integer send(FormMail mail);
 
     /**
      * Filter

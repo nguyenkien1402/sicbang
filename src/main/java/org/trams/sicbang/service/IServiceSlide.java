@@ -24,8 +24,9 @@ public interface IServiceSlide {
 
     List<Slide> filterPopup(FormSlide form);
 
-    void delete(FormSlide formSlide);
+    Integer delete(FormSlide formSlide);
 
     Integer uploadMainImg(FormSlide form, String username);
 
+    Slide findOne(FormSlide form);
 }

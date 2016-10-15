@@ -55,8 +55,23 @@ public class ControllerMain extends AbstractController {
         Page<Board> boards = serviceBoard.filter(form);
         map.put("items", boards);
         FormSlide formSlide = new FormSlide();
+        formSlide.setIsDelete(0);
         Page<Slide> slides = serviceSlide.filter(formSlide);
         map.put("slides",slides);
+        int totalOfSlideWeb  = 0;
+        int totalOfSlideApp  = 0;
+        for(Slide s : slides){
+            if(s.getType().equals("APP"))
+                totalOfSlideApp++;
+            if(s.getType().equals("WEB"))
+                totalOfSlideWeb++;
+        }
+        formSlide.setType("MAIN");
+        formSlide.setIsDelete(0);
+        Slide main = serviceSlide.findOne(formSlide);
+        map.put("main",main);
+        map.put("web",totalOfSlideWeb);
+        map.put("app",totalOfSlideApp);
         return BASE_TEMPLATE + "main";
     }
 
@@ -381,33 +396,38 @@ public class ControllerMain extends AbstractController {
             ModelMap map) {
         logger.info("mailCreatePost form  : "+form.toString());
         System.out.println("type mail: "+form.getType());
-        if(Strings.isNullOrEmpty(form.getType())){
+//        if(Strings.isNullOrEmpty(form.getType())){
             switch (getRequestMethod()) {
                 case POST:
                     FormError error = validationEmail.validateCreate(form);
                     if (error != null) {
                         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
                     }
-                    serviceMail.send(form);
-                    return new ResponseEntity(HttpStatus.OK);
-                case GET:
-                default:
-                    return new ResponseEntity(HttpStatus.OK);
-            }
-        }else{
-            switch (getRequestMethod()) {
-                case POST:
-                    FormError error = validationEmail.validateCreate(form);
-                    if (error != null) {
-                        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+                    int check = serviceMail.send(form);
+                    if(check == 1) {
+                        return new ResponseEntity(HttpStatus.OK);
+                    }else{
+                        return new ResponseEntity(HttpStatus.BAD_REQUEST);
                     }
-                    serviceMail.sendMulti(form);
-                    return new ResponseEntity(HttpStatus.OK);
                 case GET:
                 default:
                     return new ResponseEntity(HttpStatus.OK);
             }
-        }
+
+//        }else{
+//            switch (getRequestMethod()) {
+//                case POST:
+//                    FormError error = validationEmail.validateCreate(form);
+//                    if (error != null) {
+//                        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+//                    }
+//                    serviceMail.sendMulti(form);
+//                    return new ResponseEntity(HttpStatus.OK);
+//                case GET:
+//                default:
+//                    return new ResponseEntity(HttpStatus.OK);
+//            }
+//        }
 
     }
 
@@ -439,35 +459,33 @@ public class ControllerMain extends AbstractController {
     // --------------------- End Mail -------------------------
     // --------------------------------------------------------
 
-    @RequestMapping(value="/delete/web", method = RequestMethod.DELETE)
+    @RequestMapping(value="/delete/slide/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity deleteSlideWeb(ModelMap map){
-        System.out.println("Delete slide web");
+    public ResponseEntity deleteSlideWeb(ModelMap map,
+                                         @PathVariable(value="id") String id){
+        System.out.println("Delete slide web: "+id);
         FormSlide formSlide = new FormSlide();
-        formSlide.setType("WEB");
-        List<Slide> list = serviceSlide.filterPopup(formSlide);
-        if(list != null && list.size() > 1) {
-            FormSlide delete = new FormSlide();
-            delete.setId(list.get(list.size()- 1).getId()+"");
-            serviceSlide.delete(delete);
+        formSlide.setId(id);
+        if(serviceSlide.delete(formSlide) == 1) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value="/delete/app", method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseEntity deleteSlideApp(ModelMap map){
-        System.out.println("Delete slide app");
-        FormSlide formSlide = new FormSlide();
-        formSlide.setType("APP");
-        List<Slide> list = serviceSlide.filterPopup(formSlide);
-        if(list != null && list.size() > 1) {
-            FormSlide delete = new FormSlide();
-            delete.setId(list.get(list.size()- 1).getId()+"");
-            serviceSlide.delete(delete);
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
+//    @RequestMapping(value="/delete/app/{id}", method = RequestMethod.DELETE)
+//    @ResponseBody
+//    public ResponseEntity deleteSlideApp(ModelMap map,
+//                                         @PathVariable(value = "id") String id){
+//        System.out.println("Delete slide app: "+id);
+//        FormSlide formSlide = new FormSlide();
+//        formSlide.setId(id);
+//        List<Slide> list = serviceSlide.filterPopup(formSlide);
+//        if(list != null && list.size() > 1) {
+//            FormSlide delete = new FormSlide();
+//            delete.setId(list.get(list.size()- 1).getId()+"");
+//            serviceSlide.delete(delete);
+//            return new ResponseEntity(HttpStatus.OK);
+//        }
+//        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//    }
 }

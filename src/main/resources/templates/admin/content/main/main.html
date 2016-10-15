@@ -23,7 +23,7 @@
                 <div class="tab-content">
                   <div id="tab-1" class="tab-estates-registered tab-pane sb-pt-15 active">
                     <div class="block-body">
-                      <form id="form-ajax-main-img" method="post" th:action="@{/admin/main/create/mainImg}" enctype="multipart/form-data">
+                      <form id="form-ajax-main-img" method="post" th:action="@{/admin/main/create/slide/{type}(type='MAIN')}" enctype="multipart/form-data">
                         <div class="form-horizontal">
                           <div class="form-body">
                             <div class="form-group"> 
@@ -32,13 +32,15 @@
                                 <div class="sb-file-upload image-upload">
                                   <div class="input-icon input-large input-inline right">
                                     <i class="fa fa-close btn-delete"></i>
-                                    <span class="form-control show-file-info border-box"></span>
+                                    <span class="form-control show-file-info border-box" readonly="true"></span>
                                   </div>
                                   <label class="btn default btn-select-file">이미지 올리기
                                     <input type="file" name="attachments" class="hidden input-file"/>
                                   </label>
                                   <span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
-                                  <div class="preview-image"><img src="" alt="thumbnail"/></div>
+                                  <div class="preview-image">
+                                    <img th:src="${main == null ? '/admin/assets/images/no_image.jpg' : main.imgUrl}" alt="thumbnail"/>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -55,96 +57,173 @@
                           </div>
                         </div>
                       </form>
-                      <form id="form-ajax-slide-web" class="form" th:action="@{/admin/main/create/slide/{type}(type='WEB')}" method="post" enctype="multipart/form-data">
+                      <div>
                         <div class="form-horizontal">
                           <div class="form-body">         
                             <div class="form-group"> 
                               <div class="col-md-3 control-label sb-overflow-ellipsis">웹 슬라이딩 배너 이미지 관리 </div>
-                              <div class="col-md-7"> <a href="#" class="btn default">배너 추가</a></div>
-                            </div>
-                            <div class="form-group"> 
-                              <label class="control-label col-md-3">첨부파일</label>
-                              <div class="col-md-7"> 
-                                <div class="sb-file-upload image-upload">
-                                  <div class="input-icon input-large input-inline right">
-                                    <i class="fa fa-close btn-delete"></i>
-                                    <span class="form-control show-file-info border-box"></span>
-                                  </div>
-                                  <label class="btn default btn-select-file">이미지 올리기
-                                    <input type="file" class="hidden input-file" name="attachments"/>
-                                  </label><span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
-                                </div>
-                              </div>
-                              <div class="col-md-2">
-                                <a href="javascript:;" th:attr="data-url=@{'/admin/main/delete/web'}" class="btn default btn-action-delete">삭제</a>
-                              </div>
-                            </div>
-                            <div class="form-group"> 
-                              <div class="col-md-12">
-                                <div id="owl-demo" class="owl-carousel" >
-                                  <div class="item" th:each="slide : ${slides}" th:if="${slide.type == 'WEB'}">
-                                    <img th:src="${slide.webUrl}" alt="Lazy Owl Image" class="lazyOwl"/>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group"> 
-                              <div style="text-align: right;" class="col-md-3">
-                                <a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
                               <div class="col-md-7">
-                                <input type="text" name="link" class="form-control"/>
-                              </div>
-                              <div class="col-md-2">
-                                <input type="submit" class="btn default" value="변경된 내용 저장  "/>
+                                <a id="add-slide-web" class="btn default">배너 추가</a>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </form>
-                      <form id="form-ajax-slide-app" class="form" th:action="@{/admin/main/create/slide/{type}(type='APP')}" method="post" enctype="multipart/form-data">
-                        <div class="form-horizontal">
-                          <div class="form-body">
-                            <div class="form-group">
-                              <div class="col-md-3 control-label sb-overflow-ellipsis">앱 슬라이딩 배너 이미지 관리 </div>
-                              <div class="col-md-7"> <a href="#" class="btn default">배너 추가</a></div>
-                            </div>
-                            <div class="form-group">
-                              <label class="control-label col-md-3">첨부파일</label>
-                              <div class="col-md-7">
-                                <div class=" sb-file-upload image-upload">
-                                  <div class="input-icon input-large input-inline right"><i class="fa fa-close btn-delete"></i><span class="form-control show-file-info border-box"></span></div>
-                                  <label class="btn default btn-select-file">이미지 올리기
-                                    <input type="file" class="hidden input-file" name="attachments"/>
-                                  </label>
-                                  <span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
-                                </div>
-                              </div>
-                              <div class="col-md-2">
-                                <a href="javascript:;" th:attr="data-url=@{'/admin/main/delete/app'}" class="btn default btn-action-delete">삭제</a>
-                              </div>
+                            <div th:each="slide : ${slides}" th:if="${slide.type == 'WEB'}">
                               <div class="form-group">
-                                <div class="col-md-12">
-                                  <div id="owl-demo2" class="owl-carousel" >
-                                    <div class="item" th:each="slide : ${slides}" th:if="${slide.type == 'APP'}">
-                                      <img th:src="${slide.appUrl}" alt="Lazy Owl Image" class="lazyOwl"/>
+                                <form id="form-ajax-slide-web" class="form" th:action="@{/admin/main/create/slide/{type}(type='WEB')}" method="post" enctype="multipart/form-data">
+                                    <label class="control-label col-md-3">첨부파일</label>
+                                    <div class="col-md-7">
+                                      <div class="sb-file-upload image-upload">
+                                        <div class="input-icon input-large input-inline right">
+                                          <!--<i class="fa fa-close btn-delete"></i>-->
+                                          <span class="form-control show-file-info border-box" readonly="true" th:text="${slide.name == null ? '' : slide.name}"></span>
+                                        </div>
+                                        <!--<label class="btn default btn-select-file">이미지 올리기-->
+                                          <!--<input type="file" class="hidden input-file"  disabled name="attachments"/>-->
+                                        <!--</label><span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>-->
+                                        <div class="preview-image">
+                                          <img th:src="${slide.imgUrl == null ? '/admin/assets/images/no_image.jpg' : slide.imgUrl}" alt="slide web" class="lazyOwl"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <a href="javascript:;" th:attr="data-url=@{'/admin/main/delete/slide/{id}'(id=${slide.id})}" class="btn default btn-action-delete">삭제</a>
+                                    </div>
+                                    <div style="text-align: right;" class="col-md-3">
+                                      <a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                                    <div class="col-md-7">
+                                      <input type="text" name="link" th:value="${slide.link}" readonly="true" class="form-control"/>
+                                    </div>
+                                    <!--<div class="col-md-2">-->
+                                      <!--<input type="submit" class="btn default" value="변경된 내용 저장  "/>-->
+                                    <!--</div>-->
+                                </form>
+                              </div>
+                            </div>
+
+                            <div class="form-group hide" id="slide-web-template">
+                              <form id="slide-web" th:action="@{/admin/main/create/slide/{type}(type='WEB')}" method="post" enctype="multipart/form-data">
+                                <!--<div class="form-horizontal">-->
+                                <!--<div class="form-body">-->
+                                <!--<div class="form-group">-->
+                                <label class="control-label col-md-3">첨부파일</label>
+                                <div class="col-md-7">
+                                  <div class="sb-file-upload image-upload">
+                                    <div class="input-icon input-large input-inline right">
+                                      <i class="fa fa-close btn-delete"></i>
+                                      <span class="form-control show-file-info border-box" readonly="true"></span>
+                                    </div>
+                                    <label class="btn default btn-select-file">이미지 올리기
+                                      <input type="file" class="hidden input-file" name="attachments"/>
+                                    </label>
+                                    <span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
+                                    <div style="width: 600px; height: 310px;" class="preview-image border-box no-image">
+                                      <!--<img class="lazyOwl"/>-->
+                                      <span class="image-bg"></span>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <div style="text-align: right;" class="col-md-3"><a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                                <!--</div>-->
+                                <div class="col-md-2">
+                                  <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+                                </div>
+                                <div style="text-align: right;" class="col-md-3">
+                                  <a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
                                 <div class="col-md-7">
                                   <input type="text" name="link" class="form-control"/>
                                 </div>
                                 <div class="col-md-2">
                                   <input type="submit" class="btn default" value="변경된 내용 저장  "/>
                                 </div>
-                              </div>
+                                <!--</div>-->
+                                <!--</div>-->
+                              </form>
                             </div>
                           </div>
                         </div>
-                      </form>
-                    </div>
+
+                        <!-- the next is hide element for click and show -->
+                        <!--<div>-->
+
+                        <!--</div>-->
+                        <!-- end of next element slide -->
+                      </div>
+                      <div>
+                        <div class="form-horizontal">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <div class="col-md-3 control-label sb-overflow-ellipsis">앱 슬라이딩 배너 이미지 관리 </div>
+                              <div class="col-md-7">
+                                <a id="add-slide-app" class="btn default">배너 추가</a>
+                              </div>
+                            </div>
+                            <div th:each="slide : ${slides}" th:if="${slide.type == 'APP'}">
+                              <div class="form-group">
+                                <form class="form" th:action="@{/admin/main/create/slide/{type}(type='APP')}" method="post" enctype="multipart/form-data">
+                                  <label class="control-label col-md-3">첨부파일</label>
+                                  <div class="col-md-7">
+                                    <div class=" sb-file-upload image-upload">
+                                      <div class="input-icon input-large input-inline right">
+                                        <span class="form-control show-file-info border-box" readonly="true" th:text="${slide.name == null ? '' : slide.name}"></span>
+                                      </div>
+                                      <div class="preview-image">
+                                        <img th:src="${slide.imgUrl == null ? '/admin/assets/images/no_image.jpg' : slide.imgUrl}" alt="slide web" class="lazyOwl"/>
+                                      </div>
+                                      <!--<label class="btn default btn-select-file">이미지 올리기-->
+                                      <!--<input type="file" class="hidden input-file" name="attachments"/>-->
+                                      <!--</label>-->
+                                      <!--<span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>-->
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                    <a href="javascript:;" th:attr="data-url=@{'/admin/main/delete/slide/{id}'(id=${slide.id})}" class="btn default btn-action-delete">삭제</a>
+                                  </div>
+                                  <div style="text-align: right;" class="col-md-3">
+                                    <a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                                  <div class="col-md-7">
+                                    <input type="text" name="link" th:value="${slide.link}" readonly="true" class="form-control"/>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+
+                            <!-- the next is hide element for click and show -->
+                            <div>
+                              <div class="form-group hide" id="slide-app-template">
+                                <form id="slide-app" class="form" th:action="@{/admin/main/create/slide/{type}(type='APP')}" method="post" enctype="multipart/form-data">
+                                  <label class="control-label col-md-3">첨부파일</label>
+                                  <div class="col-md-7">
+                                    <div class="sb-file-upload image-upload">
+                                      <div class="input-icon input-large input-inline right">
+                                        <i class="fa fa-close btn-delete"></i>
+                                        <span class="form-control show-file-info border-box" readonly="true"></span>
+                                      </div>
+                                      <label class="btn default btn-select-file">이미지 올리기
+                                        <input type="file" class="hidden input-file" name="attachments"/>
+                                      </label>
+                                      <span class="help-inline"><strong class="text-danger">21MB</strong>미만까지 가능합니다.</span>
+                                      <div class="preview-image">
+                                        <img class="lazyOwl"/>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                    <button type="button" class="btn btn-default removeButtonApp"><i class="fa fa-minus"></i></button>
+                                  </div>
+                                  <div style="text-align: right;" class="col-md-3">
+                                    <a href="#" data-toggle="modal" data-target="#popupUrlInputFrom" class="btn default">URL</a></div>
+                                  <div class="col-md-7">
+                                    <input type="text" name="link" class="form-control"/>
+                                  </div>
+                                  <div class="col-md-2">
+                                    <input type="submit" class="btn default" value="변경된 내용 저장  "/>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                            <!-- end of next element slide -->
+
+                          </div>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </div>
@@ -162,28 +241,110 @@
             lazyLoad : true,
             navigation : true
           });
-
+          var countWeb = [[${web}]];
+          var countApp = [[${app}]];
           $(document).ready(function() {
-            console.log("function");
             var _this = this;
             var admin = new Admin();
-            $('#form-ajax-slide-web').on('submit', function (evt) {
-              console.log("form ajax slide web 1");
-              evt.preventDefault();
-              admin.submitFormImage($(this));
-            });
+//            $("#form-ajax-slide-web").on('submit', function (evt) {
+//              console.log("form ajax slide web 1");
+//              evt.preventDefault();
+//              admin.submitFormImage($(this));
+//            });
 
-            $('#form-ajax-slide-app').on('submit', function (evt) {
-              console.log("form ajax slide app");
-              evt.preventDefault();
-              admin.submitFormImage($(this));
-            });
 
+//            $('#form-ajax-slide-app").on('submit', function (evt) {
+//              console.log("form ajax slide app");
+//              evt.preventDefault();
+//              admin.submitFormImage($(this));
+//            });
+
+//            $('#btn-submit-main').on('submit', function (evt) {
+//              console.log("form ajax main img");
+//              evt.preventDefault();
+//              admin.submitFormImage($(this));
+//            });
             $('#form-ajax-main-img').on('submit', function (evt) {
               console.log("form ajax main img");
               evt.preventDefault();
               admin.submitFormImage($(this));
             });
+
+            $('#add-slide-web').on('click',function () {
+              countWeb++;
+              if(countWeb >=4){
+                alert('only three slide for web');
+              }else{
+                var newIDForm = "slide-web-"+countWeb;
+                var $template = $('#slide-web-template'),
+                    $clone    = $template
+                            .clone()
+                            .removeClass('hide')
+                            .removeAttr('id')
+                            .attr('data-slide-web-index',countWeb);
+                    $clone.find('[id="slide-web"]').attr('id',newIDForm).end();
+                    $clone.insertBefore($template);
+
+                  $('#slide-web-1').on('submit', function (evt) {
+                    evt.preventDefault();
+                    admin.submitFormImage($(this));
+                  });
+                  $('#slide-web-2').on('submit', function (evt) {
+                    evt.preventDefault();
+                    admin.submitFormImage($(this));
+                  });
+                  $('#slide-web-3').on('submit', function (evt) {
+                    evt.preventDefault();
+                    admin.submitFormImage($(this));
+                  });
+
+                $('.removeButton').on('click',function () {
+                  countWeb--;
+                  var $row = $(this).parents('.form-group'),
+                          index = $row.attr('data-slide-web-index');
+                  $row.remove();
+                });
+              }
+            });
+
+            $('#add-slide-app').on('click',function () {
+              countApp++;
+              if(countApp >=4){
+                alert('only three slide for app');
+              }else{
+                var newIDFormApp = "slide-app-"+countApp;
+                var $templateApp = $('#slide-app-template'),
+                        $cloneApp    = $templateApp
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .attr('data-slide-app-index',countWeb);
+                $cloneApp.find('[id="slide-app"]').attr('id',newIDFormApp).end();
+                $cloneApp.insertBefore($templateApp);
+
+                $('#slide-app-1').on('submit', function (evt) {
+                  evt.preventDefault();
+                  admin.submitFormImage($(this));
+                });
+                $('#slide-app-2').on('submit', function (evt) {
+                  evt.preventDefault();
+                  admin.submitFormImage($(this));
+                });
+                $('#slide-app-3').on('submit', function (evt) {
+                  evt.preventDefault();
+                  admin.submitFormImage($(this));
+                });
+
+                $('.removeButtonApp').on('click',function () {
+                  countApp--;
+                  var $rowApp = $(this).parents('.form-group'),
+                          index = $rowApp.attr('data-slide-app-index');
+                  $rowApp.remove();
+                });
+              }
+            });
+
+
           });
         </script>
       </div>

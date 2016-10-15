@@ -14,8 +14,8 @@ import java.util.Set;
 public class Slide extends BaseTimestampEntity{
 
     private String type;
-    private String webUrl;
-    private String appUrl;
+    private String imgUrl;
+    private String link;
     private String name;
 
     @Transient
@@ -32,20 +32,20 @@ public class Slide extends BaseTimestampEntity{
         this.type = type;
     }
 
-    public String getWebUrl() {
-        return webUrl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setWebUrl(String webUrl) {
-        this.webUrl = webUrl;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public String getAppUrl() {
-        return appUrl;
+    public String getLink() {
+        return link;
     }
 
-    public void setAppUrl(String appUrl) {
-        this.appUrl = appUrl;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public User getUser() {

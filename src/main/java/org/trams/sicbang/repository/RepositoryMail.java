@@ -39,8 +39,8 @@ public interface RepositoryMail extends JpaRepository<Mail, Long>, JpaSpecificat
     /*
      * find all email in month
      */
-    @Query(value = "SELECT * FROM mail m WHERE MONTH(m.created_date) >= MONTH(NOW())- :sub AND YEAR(u.created_date) = YEAR(NOW()) " +
-            "AND u.is_delete = 0  AND m.mail_subject like :subject AND m.mail_content like :content LIMIT :page,10", nativeQuery = true)
+    @Query(value = "SELECT * FROM mail m WHERE MONTH(m.created_date) >= MONTH(NOW())- :sub AND YEAR(m.created_date) = YEAR(NOW()) " +
+            "AND m.is_delete = 0  AND m.mail_subject like :subject AND m.mail_content like :content LIMIT :page,10", nativeQuery = true)
     List<Mail> findByMonth(@Param("sub") Integer sub,@Param("page") Integer page,@Param("subject") String mailSubject, @Param("content") String mailContent);
 
 

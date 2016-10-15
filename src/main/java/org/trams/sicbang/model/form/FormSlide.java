@@ -21,12 +21,10 @@ import java.util.*;
 public class FormSlide extends BaseFormSearch<Slide>{
 
     private String id;
-    private String webUrl;
-    private String appUrl;
+    private String imgUrl;
     private String name;
     private String link;
     private String userId;
-    @ApiModelProperty(value = "APP | WEB")
     private String type;
 
     private MultipartFile attachments;
@@ -39,20 +37,20 @@ public class FormSlide extends BaseFormSearch<Slide>{
         this.id = id;
     }
 
-    public String getWebUrl() {
-        return webUrl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setWebUrl(String webUrl) {
-        this.webUrl = webUrl;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public String getAppUrl() {
-        return appUrl;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAppUrl(String appUrl) {
-        this.appUrl = appUrl;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getType() {

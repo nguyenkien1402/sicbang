@@ -1,5 +1,6 @@
 package org.trams.sicbang.service.implement;
 
+import com.google.common.base.Strings;
 import javafx.application.Application;
 import org.apache.commons.io.IOExceptionWithCause;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class ServiceSlide implements IServiceSlide {
     private IServiceUser serviceUser;
 
 
+
+
     @Override
     public Integer uploadSlide(FormSlide form, String username) {
         System.out.println("Upload image");
@@ -50,28 +53,9 @@ public class ServiceSlide implements IServiceSlide {
         formUser.setEmailAbsolute(username);
         User user = serviceUser.findOne(formUser);
         System.out.println("id: "+user.getId());
-        Slide file = new Slide();
+        Slide file ;
         int check = 0;
-        if(form.getLink()!= null && !form.getLink().trim().isEmpty()){
-            if(form.getType().equals("APP")){
-                file.setAppUrl(form.getLink());
-                file.setType("APP");
-                file.setIsDelete(0);
-                file.setUser(user);
-            }else if(form.getType().equals("WEB")){
-                file.setWebUrl(form.getLink());
-                file.setType("WEB");
-                file.setIsDelete(0);
-                file.setUser(user);
-            }else{
-                file.setWebUrl(form.getLink());
-                file.setType("POPUP");
-                file.setIsDelete(0);
-                file.setUser(user);
-            }
-            repositorySlide.save(file);
-            check = 1;
-        }
+        String link = Strings.isNullOrEmpty(form.getLink()) ? "" : form.getLink();
         if(slide != null && !slide.isEmpty()){
             try {
                 String fileRelativePath[], fileUrl, thumbUrl;
@@ -85,19 +69,39 @@ public class ServiceSlide implements IServiceSlide {
                 System.out.println("file url: "+fileUrl);
                 file = new Slide();
                 if(form.getType().equals("APP")){
-                    file.setAppUrl(fileUrl);
+                    file.setImgUrl(fileUrl);
                     file.setName(form.getAttachments().getOriginalFilename());
                     file.setType("APP");
+                    file.setLink(link);
                     file.setIsDelete(0);
                     file.setUser(user);
                 }else if(form.getType().equals("WEB")){
-                    file.setWebUrl(fileUrl);
+                    file.setImgUrl(fileUrl);
                     file.setName(form.getAttachments().getOriginalFilename());
                     file.setType("WEB");
+                    file.setLink(link);
                     file.setIsDelete(0);
                     file.setUser(user);
+                }else if(form.getType().equals("MAIN")){
+                    FormSlide search = new FormSlide();
+                    search.setType("MAIN");
+                    Slide s = findOne(search);
+                    if(s==null) {
+                        file.setImgUrl(fileUrl);
+                        file.setName(form.getAttachments().getOriginalFilename());
+                        file.setType("MAIN");
+                        file.setLink(link);
+                        file.setIsDelete(0);
+                        file.setUser(user);
+                    }else{
+                        s.setImgUrl(fileUrl);
+                        s.setName(form.getAttachments().getOriginalFilename());
+                        s.setLink(link);
+                        repositorySlide.save(s);
+                        return 1;
+                    }
                 }else{
-                    file.setWebUrl(fileUrl);
+                    file.setImgUrl(fileUrl);
                     file.setName(form.getAttachments().getOriginalFilename());
                     file.setType("POPUP");
                     file.setIsDelete(0);
@@ -123,14 +127,7 @@ public class ServiceSlide implements IServiceSlide {
         System.out.println("id: "+user.getId());
         Slide file = new Slide();
         int check = 0;
-        if(form.getLink()!= null && !form.getLink().trim().isEmpty()){
-            file.setWebUrl(form.getLink());
-            file.setType("MAIN");
-            file.setIsDelete(0);
-            file.setUser(user);
-            repositorySlide.save(file);
-            check = 1;
-        }
+
         if(slide != null && !slide.isEmpty()){
             try {
                 String fileRelativePath[], fileUrl, thumbUrl;
@@ -140,7 +137,7 @@ public class ServiceSlide implements IServiceSlide {
                 thumbUrl = configParams.BASE_URL + "/public" + fileRelativePath[1];
                 System.out.println("file url: "+fileUrl);
                 file = new Slide();
-                file.setWebUrl(fileUrl);
+//                file.setWebUrl(fileUrl);
                 file.setName(form.getAttachments().getOriginalFilename());
                 file.setType("MAIN");
                 file.setIsDelete(0);
@@ -176,11 +173,21 @@ public class ServiceSlide implements IServiceSlide {
 
     @Transactional
     @Override
-    public void delete(FormSlide formSlide) {
+    public Integer delete(FormSlide formSlide) {
         Slide slide = repositorySlide.findOne(Long.parseLong(formSlide.getId()));
         if(slide == null){
-            throw new ApplicationException(MessageResponse.EXCEPTION_NOT_FOUND);
+            return 0;
         }
         slide.setIsDelete(1);
+        return 1;
+    }
+
+    @Override
+    public Slide findOne(FormSlide form) {
+        Slide s = null;
+        if(repositorySlide.findOne(form.getSpecification())!=null){
+            s = repositorySlide.findOne(form.getSpecification());
+        }
+        return s;
     }
 }

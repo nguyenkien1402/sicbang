@@ -64,6 +64,7 @@ public class ServiceMail extends BaseService implements IServiceMail{
                 case "0":
                     System.out.println("find all");
                     list = repositoryMail.findAllMail(pageIndex, mailSubject, mailContent);
+                    break;
                 case "1": { // email today
                     System.out.println("Email today");
                     list = repositoryMail.findByToDay(day, month, year, pageIndex, mailSubject, mailContent);
@@ -156,7 +157,7 @@ public class ServiceMail extends BaseService implements IServiceMail{
     }
 
     @Override
-    public void send(FormMail form) {
+    public Integer send(FormMail form) {
         if(form.getEmailsTo().size() > 0) {
             List<String> emails = form.getEmailsTo();
                 try {
@@ -194,12 +195,16 @@ public class ServiceMail extends BaseService implements IServiceMail{
                         System.out.println("Encode 1: " + mail.getMailContent());
                         repositoryMail.save(mail);
                         mailSender.send(mimeMessage); // sau nay de cai nay len tren save mail
+                        return 1;
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
+                    e.printStackTrace();
+                    return 0;
                 }
 
         }
+        return 0;
     }
 
     @Override
