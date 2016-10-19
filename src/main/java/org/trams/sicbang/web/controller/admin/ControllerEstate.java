@@ -15,16 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.trams.sicbang.common.utils.ConvertUtils;
-import org.trams.sicbang.model.entity.Attachment;
-import org.trams.sicbang.model.entity.Estate;
-import org.trams.sicbang.model.entity.Mail;
+import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.web.controller.AbstractController;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.concurrent.SynchronousQueue;
 
 /**
@@ -47,14 +45,19 @@ public class ControllerEstate extends AbstractController {
     ) {
         System.out.println("========================");
         System.out.println("all estate from start");
-//        List<Estate> estates = null;
-//        Long count = null;
-//        estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"VACANT");
-//        count = serviceEstate.totalEstateFilter(city,district,town,"VACANT");
-//        Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
-//        Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
-//        map.put("items", pageConvert);
+        List<City> cities = serviceCity.findAll();
+        List<District> districts = serviceDistrict.findAll();
+        List<Town> towns = serviceTown.findAll();
+
+        map.put("cities",cities);
+        map.put("districts",districts);
+        map.put("towns",towns);
+        map.put("soa",9);
+        System.out.println("cityt lenght: "+cities.size());
+//        map.put("districts",districts);
+//        map.put("towns",towns);
         System.out.println("========================");
+
         return BASE_TEMPLATE + "list";
 
     }
@@ -73,36 +76,21 @@ public class ControllerEstate extends AbstractController {
             @RequestParam(value = "district", defaultValue = "") String district,
             @RequestParam(value = "town", defaultValue = "") String town,
             @RequestParam(value = "subway", defaultValue = "") String subway,
+            @RequestParam(value = "approved", defaultValue = "1") String approved,
             ModelMap map) {
         System.out.println("===================================");
         Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);
         System.out.println("Load estate type");
+        System.out.println("check: "+approved);
         List<Estate> estates = null;
         Long count = null;
-        if(!Strings.isNullOrEmpty(city)){
-            city = "%"+city+"%";
-            System.out.println("city: "+city);
-        }
-        if(!Strings.isNullOrEmpty(district)){
-            district = "%"+district+"%";
-            System.out.println("district: "+district);
-        }
-        if(!Strings.isNullOrEmpty(town)){
-            town = "%"+town+"%";
-            System.out.println("town: "+town);
-        }
-
-        if(!Strings.isNullOrEmpty(subway)){
-            subway = "%"+subway+"%";
-            System.out.println("subway: "+subway);
-        }
-
+        String type ="";
         switch (dataType) {
-
             case "tab-start-list": {
+                type = "STARTUP";
                 System.out.println("startup estate");
-                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"STARTUP",subway);
-                count = serviceEstate.totalEstateFilter(city,district,town,"STARTUP",subway);
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,type,subway,approved);
+                count = serviceEstate.totalEstateFilter(city,district,town,type,subway,approved);
                 Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
                 Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
                 map.put("items", pageConvert);
@@ -111,9 +99,10 @@ public class ControllerEstate extends AbstractController {
                 return BASE_TEMPLATE + "ajax/tab-start-list";
             }
             case "tab-vacant-list": {
+                type = "VACANT";
                 System.out.println("vacant estate");
-                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"VACANT",subway);
-                count = serviceEstate.totalEstateFilter(city,district,town,"VACANT",subway);
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,type,subway,approved);
+                count = serviceEstate.totalEstateFilter(city,district,town,type,subway,approved);
                 Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
                 Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
                 map.put("items", pageConvert);
@@ -122,8 +111,8 @@ public class ControllerEstate extends AbstractController {
             }
             case "tab-all-estates": {
                 System.out.println("all estate");
-                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,"",subway);
-                count = serviceEstate.totalEstateFilter(city,district,town,"",subway);
+                estates = serviceEstate.filterBy(Integer.parseInt(pageIndex),city,district,town,type,subway,approved);
+                count = serviceEstate.totalEstateFilter(city,district,town,type,subway,approved);
                 Pageable pageable = new PageRequest(Integer.parseInt(pageIndex),10);
                 Page<Estate> pageConvert = new PageImpl<Estate>(estates,pageable,count);
                 map.put("items", pageConvert);
@@ -137,6 +126,32 @@ public class ControllerEstate extends AbstractController {
 
     }
 
+
+    /**
+     * Filter
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/status/",method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public ResponseEntity changeStatusAjax(
+            @RequestParam(value = "dataType", defaultValue = "tab-all-estates") String dataType,
+            @RequestParam(value = "id", defaultValue = "") String id,
+            @RequestParam(value = "status", defaultValue = "0") String status,
+            ModelMap map) {
+        System.out.println("===================================");
+        System.out.println("id: "+id);
+        System.out.println("status: "+status);
+        int check = serviceEstate.changeStatus(id,status);
+        if(check == 1){
+            return new ResponseEntity(HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
     @RequestMapping(value = "/detail/{estateId}", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE)
     public String detailEstateAjax(
             @PathVariable(value = "estateId") String estateId,
@@ -145,12 +160,15 @@ public class ControllerEstate extends AbstractController {
         System.out.println("estate id: "+estateId);
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
+
         Estate estate = serviceEstate.findOne(estateForm);
+        User user = estate.getUser();
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
+        map.put("user",user);
         if(estate.getEstateType().equals("STARTUP")){
             System.out.println("go for startup");
             return BASE_TEMPLATE +"ajax/detail-startup";

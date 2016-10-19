@@ -86,8 +86,14 @@ public interface IServiceEstate {
 
     List<Estate> filterEstateOnMap(FormEstate form);
 
+    List<Estate> filterBy(int pageIndex, String city, String district, String town, String type,String subway, String approved);
+
+    Long totalEstateFilter(String city, String district, String town, String type, String subway, String approved);
+
 //    Long totalEstateFilterByCity(String name);
 //    Long totalEstateFilterByDistrict(String name);
 //    Long totalEstateFilterByTown(String name);
 //    Long totalEstateFilterBySubway(String name);
+
+    Integer changeStatus(String id, String status);
 }

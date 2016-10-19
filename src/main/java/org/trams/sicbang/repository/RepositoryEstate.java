@@ -13,6 +13,15 @@ import java.util.List;
  */
 public interface RepositoryEstate extends JpaRepository<Estate, Long>, JpaSpecificationExecutor<Estate> {
 
+
+    @Query(value = "SELECT * FROM estate e where e.city_id like :city and e.district_id like :district" +
+            " and e.town_id like :town and e.subway_station like :subway " +
+            "and e.estate_type like :type and e.is_approved <= :approved AND e.is_delete = 0 LIMIT :page,10", nativeQuery = true)
+    List<Estate> findEstates(@Param("page") Integer page,@Param("city") String city,
+                             @Param("district") String district,@Param("town") String town,
+                             @Param("type") String type,@Param("subway") String subway,
+                             @Param("approved") String approved);
+
     @Query(value = "SELECT * FROM estate e WHERE e.is_delete = 0 AND e.estate_type LIKE :type LIMIT :page, 10", nativeQuery = true)
     List<Estate> findAllEstate(@Param("page") Integer page,@Param("type") String type);
 
@@ -45,5 +54,14 @@ public interface RepositoryEstate extends JpaRepository<Estate, Long>, JpaSpecif
 
     @Query(value = "SELECT count(e.id) as count FROM estate e WHERE e.is_delete = 0 AND e.estate_type LIKE :type", nativeQuery = true)
     Long totalAllEstate(@Param("type") String type);
+
+    @Query(value = "SELECT count(e.id) as count FROM estate e where e.city_id like :city and e.district_id like :district" +
+            " and e.town_id like :town and e.subway_station like :subway " +
+            "and e.estate_type like :type and e.is_approved <= :approved and e.is_delete = 0", nativeQuery = true)
+    Long totalEstates(@Param("city") String city,
+                             @Param("district") String district,@Param("town") String town,
+                             @Param("type") String type,@Param("subway") String subway,
+                             @Param("approved") String approved);
+
 
 }

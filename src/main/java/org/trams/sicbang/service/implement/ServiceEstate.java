@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.common.utils.FileUtils;
 import org.trams.sicbang.model.dto.CustomUserDetail;
@@ -288,8 +289,13 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     public List<Estate> filterBy(int pageIndex, String city, String district, String town, String type, String subway) {
         List<Estate> estates = null;
         pageIndex = pageIndex * 10;
-        type = "%"+type+"%";
         // if 3 field is null, then search all
+        city = "%"+city+"%";
+        district = "%"+district+"%";
+        town = "%"+town+"%";
+        subway = "%"+subway+"%";
+        type = "%"+type+"%";
+
         if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town) && Strings.isNullOrEmpty(subway)){
             System.out.println("three field null");
             estates = repositoryEstate.findAllEstate(pageIndex,type);
@@ -323,9 +329,13 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
 
     @Override
     public Long totalEstateFilter(String city, String district, String town, String type, String subway) {
-        // if 3 field is null, then search all
-        Long count = null;
         type = "%"+type+"%";
+        city = "%"+city+"%";
+        district = "%"+district+"%";
+        town = "%"+town+"%";
+        subway = "%"+subway+"%";
+
+        Long count = null;
         if(Strings.isNullOrEmpty(city) && Strings.isNullOrEmpty(district) && Strings.isNullOrEmpty(town) && Strings.isNullOrEmpty(subway)){
             count = repositoryEstate.totalAllEstate(type);
             return count;
@@ -346,6 +356,55 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
             count = repositoryEstate.totalEstateBySubway(subway,type);
             return count;
         }
+        return count;
+    }
+
+    @Override
+    public List<Estate> filterBy(int pageIndex, String city, String district, String town, String type, String subway, String approved) {
+        if(city.equals("0"))
+            city="";
+        if(district.equals("0"))
+            district="";
+        if(town.equals("0"))
+            town ="";
+        subway = "%"+subway+"%";
+        List<Estate> estates = null;
+        pageIndex = pageIndex * 10;
+        type = "%"+type+"%";
+        city = "%"+city+"%";
+        district = "%"+district+"%";
+        town = "%"+town+"%";
+        // if 3 field is null, then search all
+        estates = repositoryEstate.findEstates(pageIndex,city,district,town,type,subway,approved);
+        System.out.println("total size: "+estates.size());
+        Iterator<Estate> iterator = estates.iterator();
+        while(iterator.hasNext()){
+            Estate estate = iterator.next();
+            Collection<Attachment> attachments = repositoryAttachment.findByReference("estate",estate.getId());
+            estate.setAttachments(attachments);
+        }
+        return estates;
+    }
+
+    @Override
+    public Long totalEstateFilter(String city, String district, String town, String type, String subway,String approved) {
+        // if 3 field is null, then search all
+        if(city.equals("0"))
+            city="";
+        if(district.equals("0"))
+            district="";
+        if(town.equals("0"))
+            town ="";
+        subway = "%"+subway+"%";
+
+        List<Estate> estates = null;
+        type = "%"+type+"%";
+        city = "%"+city+"%";
+        district = "%"+district+"%";
+        town = "%"+town+"%";
+
+        Long count = null;
+        count = repositoryEstate.totalEstates(city,district,town,type,subway,approved);
         return count;
     }
     @Override
@@ -372,6 +431,16 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         return estates;
     }
 
+    @Override
+    public Integer changeStatus(String id, String status) {
+        Estate estate = repositoryEstate.findOne(Long.parseLong(id));
+        estate.setIsApproved(Integer.parseInt(status));
+        Estate estate_save = repositoryEstate.save(estate);
+        if(estate_save != null){
+            return 1;
+        }
+        return 0;
+    }
 }
 
 

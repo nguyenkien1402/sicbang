@@ -285,10 +285,29 @@ function Admin() {
             _this.showPopupNotice('변경하지 못 했습니다.');
         });
     };
+
+    this.updateStatus = function(url, callback) {
+        console.log("url put: "+url);
+        $.ajax({
+            url: url,
+            method: 'put'
+        }).then(function(data) {
+            // reload
+            _this.showPopupNotice('변경 되었습니다.', function() {
+                if (callback) callback();
+                else location.reload();
+            });
+        }, function(jqXHR) {
+            // show popup failed
+            _this.showPopupNotice('변경하지 못 했습니다.');
+        });
+    };
+
     this.showPopupConfirm = function(message, callback) {
         var $popupConfirm = $('#popup-confirm');
         if (message != null) {
             $popupConfirm.find('.popup-msg').html(message);
+
         }
         $popupConfirm.modal('toggle');
         if (callback) {

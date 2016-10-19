@@ -93,6 +93,8 @@ public class Estate extends BaseTimestampEntity {
     @Transient
     private Boolean isWishlist = Boolean.FALSE;
 
+    private int isApproved;
+
     public String getEstateCode() {
         return estateCode;
     }
@@ -373,5 +375,13 @@ public class Estate extends BaseTimestampEntity {
 
     public void setDistrict(District district) {
         this.district = district;
+    }
+
+    public int getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(int isApproved) {
+        this.isApproved = isApproved;
     }
 }

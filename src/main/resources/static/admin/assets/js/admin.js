@@ -490,16 +490,16 @@ $(document).ready(function() {
  /* --------------------------------------------------------------------- */
   /* validation form_sample_3
   /* --------------------------------------------------------------------- */
-  $("#owl-demo").owlCarousel({
-    items : 8,
-    lazyLoad : true,
-    navigation : true
-  });
-  $("#owl-demo2").owlCarousel({
-    items : 8,
-    lazyLoad : true,
-    navigation : true
-  });
+  // $("#owl-demo").owlCarousel({
+  //   items : 8,
+  //   lazyLoad : true,
+  //   navigation : true
+  // });
+  // $("#owl-demo2").owlCarousel({
+  //   items : 8,
+  //   lazyLoad : true,
+  //   navigation : true
+  // });
 
   $(function() {
 

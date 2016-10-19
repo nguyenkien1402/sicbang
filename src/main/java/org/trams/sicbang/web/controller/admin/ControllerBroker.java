@@ -149,6 +149,7 @@ public class ControllerBroker extends AbstractController {
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
         Estate estate = serviceEstate.findOne(estateForm);
+        User user = estate.getUser();
         Collection<Attachment> listAttach = new ArrayList<Attachment>();
         listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
@@ -156,6 +157,7 @@ public class ControllerBroker extends AbstractController {
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
+        map.put("user",user);
 
         if(estate.getEstateType().equals("STARTUP")){
             System.out.println("go for startup");

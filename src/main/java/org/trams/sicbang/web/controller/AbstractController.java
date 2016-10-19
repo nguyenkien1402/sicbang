@@ -64,6 +64,13 @@ public class AbstractController {
     protected ValidationEmail validationEmail;
     @Autowired
     protected ValidationNotice validationNotice;
+    @Autowired
+    protected IServiceCity serviceCity;
+    @Autowired
+    protected IServiceDistrict serviceDistrict;
+    @Autowired
+    protected IServiceTown serviceTown;
+
 
     protected final Logger logger = Logger.getLogger(this.getClass());
 

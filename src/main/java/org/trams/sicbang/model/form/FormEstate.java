@@ -92,6 +92,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
     private String rentTo;
     private String premiumCostFrom;
     private String premiumCostTo;
+    private String isApproved;
 
     public static Specification<Estate> dongLike(final String keyword) {
         return (Root<Estate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
@@ -778,6 +779,14 @@ public class FormEstate extends BaseFormSearch<Estate> {
 
     public void setPremiumCostTo(String premiumCostTo) {
         this.premiumCostTo = premiumCostTo;
+    }
+
+    public String getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(String isApproved) {
+        this.isApproved = isApproved;
     }
 
     public static Estate convertEstateFormToEstate(FormEstate form, Estate estate){

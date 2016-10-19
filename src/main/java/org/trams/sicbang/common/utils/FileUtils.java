@@ -1,6 +1,5 @@
 package org.trams.sicbang.common.utils;
 
-import jdk.internal.util.xml.impl.Input;
 import org.apache.log4j.Logger;
 import org.springframework.util.FileCopyUtils;
 import org.trams.sicbang.model.enumerate.MessageResponse;

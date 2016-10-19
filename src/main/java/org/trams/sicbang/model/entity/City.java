@@ -3,6 +3,8 @@ package org.trams.sicbang.model.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +20,7 @@ public class City extends BaseEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     @OrderBy
-    private Set<District> districts;
+    private Collection<District> districts;
 
 
     public String getName() {
@@ -29,11 +31,11 @@ public class City extends BaseEntity {
         this.name = name;
     }
 
-    public Set<District> getDistricts() {
+    public Collection<District> getDistricts() {
         return districts;
     }
 
-    public void setDistricts(Set<District> districts) {
+    public void setDistricts(List<District> districts) {
         this.districts = districts;
     }
 

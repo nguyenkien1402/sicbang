@@ -2,6 +2,7 @@ package org.trams.sicbang.repository;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.trams.sicbang.model.entity.City;
 
 import java.util.List;
@@ -13,4 +14,7 @@ public interface RepositoryCity extends JpaRepository<City, Long> {
 
     @Cacheable(value = "cities")
     List<City> findAll();
+
+    @Query(value = "SELECT * FROM city",nativeQuery = true)
+    List<City> getAll();
 }

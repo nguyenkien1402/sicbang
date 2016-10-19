@@ -12,14 +12,16 @@
         <div class="form-body">
 
           <div data-sb-href="content.html" class="item sb-mb-30 sb-bg-gray" th:each="item : ${items}">
-            <a class="tab-detail-vacant" th:href="@{/admin/estate/detail/{id}(id=${item.id})}">
-              <div class="row item-inner">
-                <div class="col-xs-2">
+            <div class="row item-inner">
+              <div class="col-xs-2">
+                <a th:href="@{/admin/estate/detail/{id}(id=${item.id})}">
                   <img th:src="${not #lists.isEmpty(item.attachments) ? item.attachments[0].thumbnail : '/admin/assets/images/no_image.jpg'}"/>
-                </div>
+                </a>
+              </div>
 
-                <div class="col-md-10">
-                  <div class="form-group sb-mb-0">
+              <div class="col-md-8" style="padding: 16px 0;">
+                <a class="tab-detail-vacant" th:href="@{/admin/estate/detail/{id}(id=${item.id})}">
+                  <div class="form-group sb-mb-0 mg-left-right">
                     <div class="col-md-2">
                       <div class="form-control-static">
                         <strong>보</strong>
@@ -34,9 +36,10 @@
                     <div class="col-md-3">
                       <div class="form-control-static" th:inline="text">[[${item.businessType.name}]]</div>
                     </div>
+
                   </div>
 
-                  <div class="form-group sb-mb-0">
+                  <div class="form-group sb-mb-0 mg-left-right">
                     <div class="col-md-2">
                       <div class="form-control-static">
                         <strong>임</strong>
@@ -51,41 +54,193 @@
                     </div>
                   </div>
 
-                  <div class="form-group sb-mb-0">
+                  <div class="form-group sb-mb-0 mg-left-right">
                     <div class="col-md-2">
                       <div class="form-control-static">
                         <strong>권</strong>
                         <strong th:text="${item.premiumCost}"></strong>
                       </div>
                     </div>
-                          <div class="col-md-7">
-                            <div class="form-control-static">
-                              <span th:text="${item.onelineComment}">월수입 600만!</span>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-control-static">
-                              <span th:text="${item.monthlyIncome}">신대방사거리 좋은 목에 위치!</span>
-                            </div>
-                          </div>
-                  </div>
+                    <div class="col-md-7">
+                      <div class="form-control-static">
+                        <span th:text="${item.onelineComment}">월수입 600만!</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-control-static">
+                        <span th:text="${item.monthlyIncome}">신대방사거리 좋은 목에 위치!</span>
+                      </div>
+                    </div>
 
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group mg-left-right style_select_box">
+                  <select clas="form-control select_box" name="select_box_status" onchange="changeStatus(this);">
+                    <option th:value="${item.id}" th:text="--승인요청--" selected>--승인요청--</option>
+                    <option th:value="${item.id}" th:text="승인완료">승인완료</option>
+                    <option th:value="${item.id}" th:text="승인거절">승인거절</option>
+                  </select>
                 </div>
               </div>
-            </a>
+            </div>
           </div>
+          <script type="text/javascript">
+            console.log("goi vao tab all estate");
+            var admin = new Admin();
+            var SELECTED_TAB = 'tab-vacant-list';
+            var URL = '/admin/estate/status/';
+            function changeStatus(sel) {
+              console.log("call change");
+              var id = sel.value;
+              var value = sel.options[sel.selectedIndex].text;
+              if(value == '승인완료'){
+                console.log("chap thuan");
+                URL = URL+"?id="+id+"&status=1";
+              }else{
+                URL = URL+"?id="+id+"&status=0";
+                console.log("not");
+              }
+              admin.showPopupConfirm(null, function() {
+                admin.updateStatus(URL);
+                requestDetail(URL,SELECTED_TAB);
+              });
+              function requestDetail(url, selected_tab) {
+                $.ajax({
+                  url: url,
+                  method: 'put',
+                  data: {
+                    'dataType': selected_tab
+                  }
+                })
+                        .then(
+
+                                function(response) {
+                                  // get html by id
+                                  admin.showPopupNotice('변경 되었습니다.',function(){
+                                    if (callback) callback();
+//                                    else location.reload();
+                                  });
+                                  var html = $('#' + selected_tab, response).html();
+
+                                  // replace html
+                                  render('#' + selected_tab, html);
+                                },
+                                function(jqXHR) {
+                                  _this.showPopupNotice('변경하지 못 했습니다.');
+//                                  location.reload();
+                                });
+              };
+
+              function render(selector, html) {
+                $(selector).html(html);
+              };
+            }
+          </script>
           <!-- .item-->
 
         </div>
       </div>
     </div>
-
     <div class="pagination-wrapper sb-pb-30">
       <div th:replace="admin/fragment/common :: pagination(items=${items})"></div>
       <!-- .sb-pagination-->
     </div>
-    <!-- .pagination-wrapper-->
   </div>
 </div>
+
 </body>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+  <!--<meta charset="UTF-8"/>-->
+  <!--<title>Estate list</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="tab-content">-->
+  <!--<div id="tab-vacant-list" class="tab-vacant-list tab-pane sb-pt-15 active">-->
+    <!--<div class="form">-->
+      <!--<div class="form-horizontal">-->
+        <!--<div class="form-body">-->
+
+          <!--<div data-sb-href="content.html" class="item sb-mb-30 sb-bg-gray" th:each="item : ${items}">-->
+            <!--<a class="tab-detail-vacant" th:href="@{/admin/estate/detail/{id}(id=${item.id})}">-->
+              <!--<div class="row item-inner">-->
+                <!--<div class="col-xs-2">-->
+                  <!--<img th:src="${not #lists.isEmpty(item.attachments) ? item.attachments[0].thumbnail : '/admin/assets/images/no_image.jpg'}"/>-->
+                <!--</div>-->
+
+                <!--<div class="col-md-10">-->
+                  <!--<div class="form-group sb-mb-0">-->
+                    <!--<div class="col-md-2">-->
+                      <!--<div class="form-control-static">-->
+                        <!--<strong>보</strong>-->
+                        <!--<strong th:text="${item.depositeCost}">3000</strong>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-7">-->
+                      <!--<div class="form-control-static">-->
+                        <!--<strong th:text="${item.name}">맛있는 식당 신림점</strong>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-3">-->
+                      <!--<div class="form-control-static" th:inline="text">[[${item.businessType.name}]]</div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+
+                  <!--<div class="form-group sb-mb-0">-->
+                    <!--<div class="col-md-2">-->
+                      <!--<div class="form-control-static">-->
+                        <!--<strong>임</strong>-->
+                        <!--<strong th:text="${item.rentCost}"></strong>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-7">-->
+                      <!--<div class="form-control-static" th:text="${item.businessZone}">서울시 관악구 신대방동</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-3">-->
+                      <!--<div class="form-control-static" th:text="${item.area} + m2"></div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+
+                  <!--<div class="form-group sb-mb-0">-->
+                    <!--<div class="col-md-2">-->
+                      <!--<div class="form-control-static">-->
+                        <!--<strong>권</strong>-->
+                        <!--<strong th:text="${item.premiumCost}"></strong>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                          <!--<div class="col-md-7">-->
+                            <!--<div class="form-control-static">-->
+                              <!--<span th:text="${item.onelineComment}">월수입 600만!</span>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                          <!--<div class="col-md-3">-->
+                            <!--<div class="form-control-static">-->
+                              <!--<span th:text="${item.monthlyIncome}">신대방사거리 좋은 목에 위치!</span>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                  <!--</div>-->
+
+                <!--</div>-->
+              <!--</div>-->
+            <!--</a>-->
+          <!--</div>-->
+          <!--&lt;!&ndash; .item&ndash;&gt;-->
+
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="pagination-wrapper sb-pb-30">-->
+      <!--<div th:replace="admin/fragment/common :: pagination(items=${items})"></div>-->
+      <!--&lt;!&ndash; .sb-pagination&ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; .pagination-wrapper&ndash;&gt;-->
+  <!--</div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

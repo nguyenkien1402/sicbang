@@ -14,10 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.trams.sicbang.common.utils.CommonEmailType;
-import org.trams.sicbang.model.entity.Board;
-import org.trams.sicbang.model.entity.Mail;
-import org.trams.sicbang.model.entity.Slide;
-import org.trams.sicbang.model.entity.User;
+import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormBoard;
 import org.trams.sicbang.model.form.FormMail;
@@ -58,6 +55,7 @@ public class ControllerMain extends AbstractController {
         formSlide.setIsDelete(0);
         Page<Slide> slides = serviceSlide.filter(formSlide);
         map.put("slides",slides);
+
         int totalOfSlideWeb  = 0;
         int totalOfSlideApp  = 0;
         for(Slide s : slides){
@@ -303,26 +301,26 @@ public class ControllerMain extends AbstractController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/create/mainImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ResponseEntity createMainImg(
-            @ModelAttribute FormSlide formSlide,
-            ModelMap map
-    ){
-        System.out.println("====================================");
-        System.out.println("upload main image");
-        System.out.println("link: "+formSlide.getLink());
-        System.out.println("attachment: "+formSlide.getAttachments().getOriginalFilename());
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        int checkUpload = serviceSlide.uploadMainImg(formSlide, username);
-        if(checkUpload == 1){
-            System.out.println("upload successfully");
-        }else{
-            System.out.println("cannot upload image");
-        }
-        System.out.println("====================================");
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/create/mainImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @ResponseBody
+//    public ResponseEntity createMainImg(
+//            @ModelAttribute FormSlide formSlide,
+//            ModelMap map
+//    ){
+//        System.out.println("====================================");
+//        System.out.println("upload main image");
+//        System.out.println("link: "+formSlide.getLink());
+//        System.out.println("attachment: "+formSlide.getAttachments().getOriginalFilename());
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//        int checkUpload = serviceSlide.uploadMainImg(formSlide, username);
+//        if(checkUpload == 1){
+//            System.out.println("upload successfully");
+//        }else{
+//            System.out.println("cannot upload image");
+//        }
+//        System.out.println("====================================");
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 //    /**
 //     *
 //     * @param form
