@@ -40,13 +40,13 @@ public class ControllerBroker extends AbstractController {
 
         // authorized request
         form.setRole("MEMBER");
-        form.setType(UserType.BROKER.name() + "," + UserType.TRUSTED_BROKER.name());
-        if (typeBroker != null) {
-            form.setType(UserType.BROKER.name());
-        }
-        if (typeTrustedBroker != null) {
-            form.setType(UserType.TRUSTED_BROKER.name());
-        }
+        form.setType(UserType.BROKER.name() + "," + UserType.NON_BROKER.name());
+//        if (typeBroker != null) {
+//            form.setType(UserType.BROKER.name());
+//        }
+//        if (typeTrustedBroker != null) {
+//            form.setType(UserType.TRUSTED_BROKER.name());
+//        }
         Page<User> users = serviceUser.filter(form);
 
         map.put("items", users);

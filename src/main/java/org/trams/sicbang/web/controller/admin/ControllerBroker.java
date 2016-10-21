@@ -17,6 +17,7 @@ import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.dto.BaseFormSearch;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.UserType;
+import org.trams.sicbang.model.enumerate.UserTypePermission;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.model.form.FormReport;
@@ -27,10 +28,10 @@ import org.trams.sicbang.web.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -54,17 +55,14 @@ public class ControllerBroker extends AbstractController {
             @RequestParam(value = "type-trusted-broker", required = false) String typeTrustedBroker,
             ModelMap map) {
 
-        // authorized request
         System.out.println("go to broker");
-        form.setRole("MEMBER");
-//        form.setType(UserType.BROKER.name() + "," + UserType.TRUSTED_BROKER.name());
-        form.setType(UserType.TRUSTED_BROKER.name());
-        if (typeBroker != null) {
-            form.setType(UserType.BROKER.name());
-        }
-        if (typeTrustedBroker != null) {
-            form.setType(UserType.TRUSTED_BROKER.name());
-        }
+        form.setType(UserType.BROKER.name());
+//        if (typeBroker != null) {
+//            form.setPermission(UserType.BROKER.name());
+//        }
+//        if (typeTrustedBroker != null) {
+//            form.setPermission(UserType.TRUSTED_BROKER.name());
+//        }
         Page<User> users = serviceUser.filter(form);
         map.put("items", users);
         return BASE_TEMPLATE + "list";
@@ -85,6 +83,29 @@ public class ControllerBroker extends AbstractController {
         form.setUserId(userId);
         User user = serviceUser.findOne(form);
         System.out.println("attach: "+user.getAvatar().getThumbnail());
+        System.out.println("permission: "+user.getPermission().getName());
+        if(user.getDueDate() != null){
+            System.out.println("due_date: "+user.getDueDate());
+            System.out.println("create_date: "+user.getCreatedDate());
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
+            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
+            Date dueDate = user.getDueDate();
+            Date dateNow = null;
+            try {
+                dateNow = df.parse(ft.format(new Date()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if(dueDate.compareTo(dateNow)>0){
+                System.out.println("con gioi han");
+            }else{
+                System.out.println("het gioi han");
+                form.setPermission(UserTypePermission.BROKER.name());
+                user = serviceUser.update(form);
+            }
+        }
+        System.out.println("permission: "+user.getPermission().getName());
         map.put("user", user);
         return BASE_TEMPLATE + "detail_list";
     }
@@ -290,8 +311,20 @@ public class ControllerBroker extends AbstractController {
 
     @RequestMapping(value = "/update/type", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity updateTypeUser(@RequestParam("userId") int userId, @RequestParam("userType") String type, @ModelAttribute FormUser form) {
-        form.setType(type);
+    public ResponseEntity updateTypeUser(@RequestParam("userId") int userId,
+                                         @RequestParam("userType") String type,
+                                         @ModelAttribute FormUser form) {
+        if(type.equals(UserTypePermission.BROKER)){
+            form.setDueDate(null);
+        }else {
+            System.out.println("user type: " + type);
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, 1);
+            Date d = calendar.getTime();
+            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
+            form.setDueDate(ft.format(d));
+        }
+        form.setPermission(type);
         serviceUser.update(form);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -321,7 +354,8 @@ public class ControllerBroker extends AbstractController {
         // authorized request
         System.out.println("go for approved");
         form.setRole("MEMBER");
-        form.setType("BROKER");
+//        form.setType("BROKER");
+        form.setType(UserType.NON_BROKER.name());
         Page<User> users = serviceUser.filter(form);
 
         map.put("items", users);
@@ -337,7 +371,6 @@ public class ControllerBroker extends AbstractController {
     public String approvedDetail(
             @ModelAttribute FormUser form,
             ModelMap map) {
-
         User user = serviceUser.findOne(form);
         map.put("user", user);
         return BASE_TEMPLATE + "approved-detail";
@@ -350,7 +383,9 @@ public class ControllerBroker extends AbstractController {
     @RequestMapping(value = "/approved/{userId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity approvedUpdate(
             @ModelAttribute FormUser form) {
-        form.setType(UserType.TRUSTED_BROKER.name());
+//        form.setType(UserType.TRUSTED_BROKER.name());
+        form.setType(UserType.BROKER.name());
+        form.setPermission(UserTypePermission.BROKER.name());
         serviceUser.update(form);
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -52,10 +52,6 @@ public class ControllerEstate extends AbstractController {
         map.put("cities",cities);
         map.put("districts",districts);
         map.put("towns",towns);
-        map.put("soa",9);
-        System.out.println("cityt lenght: "+cities.size());
-//        map.put("districts",districts);
-//        map.put("towns",towns);
         System.out.println("========================");
 
         return BASE_TEMPLATE + "list";
@@ -76,7 +72,7 @@ public class ControllerEstate extends AbstractController {
             @RequestParam(value = "district", defaultValue = "") String district,
             @RequestParam(value = "town", defaultValue = "") String town,
             @RequestParam(value = "subway", defaultValue = "") String subway,
-            @RequestParam(value = "approved", defaultValue = "1") String approved,
+            @RequestParam(value = "approved", defaultValue = "2") String approved,
             ModelMap map) {
         System.out.println("===================================");
         Optional<Integer> _pageIndex = ConvertUtils.toIntNumber(pageIndex);

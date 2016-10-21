@@ -7,6 +7,7 @@ import org.trams.sicbang.model.enumerate.CommonStatus;
 import org.trams.sicbang.model.enumerate.UserType;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by voncount on 4/8/16.
@@ -43,6 +44,12 @@ public class User extends BaseTimestampEntity {
     @OneToOne
     @JoinColumn(nullable = false)
     private UserRole role;
+
+    @OneToOne
+    private UserPermission permission;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dueDate;
 
     @OneToOne
     private Attachment avatar;
@@ -157,6 +164,22 @@ public class User extends BaseTimestampEntity {
 
     public void setAvatar(Attachment avatar) {
         this.avatar = avatar;
+    }
+
+    public UserPermission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(UserPermission permission) {
+        this.permission = permission;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     @PrePersist

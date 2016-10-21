@@ -45,10 +45,10 @@ public class Estate extends BaseTimestampEntity {
     @OneToOne
     private District district;
 
-//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-//    @JsonIdentityReference(alwaysAsId = true)
-//    @OneToOne
-//    private Town town;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @OneToOne
+    private Town town;
 
     @ManyToOne
     private User user;
@@ -94,6 +94,8 @@ public class Estate extends BaseTimestampEntity {
     private Boolean isWishlist = Boolean.FALSE;
 
     private int isApproved;
+
+    private String typeTrust;
 
     public String getEstateCode() {
         return estateCode;
@@ -383,5 +385,21 @@ public class Estate extends BaseTimestampEntity {
 
     public void setIsApproved(int isApproved) {
         this.isApproved = isApproved;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    public String getTypeTrust() {
+        return typeTrust;
+    }
+
+    public void setTypeTrust(String typeTrust) {
+        this.typeTrust = typeTrust;
     }
 }

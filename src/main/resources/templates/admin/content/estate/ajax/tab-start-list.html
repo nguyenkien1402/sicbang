@@ -78,9 +78,9 @@
               <div class="col-md-2">
                 <div class="form-group mg-left-right style_select_box">
                   <select clas="form-control select_box" name="select_box_status" onchange="changeStatus(this);">
-                    <option th:value="${item.id}" th:text="--승인요청--" selected>--승인요청--</option>
-                    <option th:value="${item.id}" th:text="승인완료">승인완료</option>
-                    <option th:value="${item.id}" th:text="승인거절">승인거절</option>
+                    <option th:value="${item.id}" th:text="승인요청" th:selected="${item.isApproved == 0 }" >승인요청</option>
+                    <option th:value="${item.id}" th:text="승인완료" th:selected="${item.isApproved == 1 }">승인완료</option>
+                    <option th:value="${item.id}" th:text="승인거절" th:selected="${item.isApproved == 2 }">승인거절</option>
                   </select>
                 </div>
               </div>
@@ -99,7 +99,7 @@
                 console.log("chap thuan");
                 URL = URL+"?id="+id+"&status=1";
               }else{
-                URL = URL+"?id="+id+"&status=0";
+                URL = URL+"?id="+id+"&status=2";
                 console.log("not");
               }
               admin.showPopupConfirm(null, function() {

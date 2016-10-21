@@ -25,6 +25,9 @@ import org.trams.sicbang.service.IServiceFile;
 import org.trams.sicbang.service.IServiceUser;
 
 import java.io.ByteArrayInputStream;
+import java.security.Permission;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,8 +98,8 @@ public class ServiceUser extends BaseService implements IServiceUser {
         user = repositoryUser.save(user);
 
         switch (userType) {
-            case TRUSTED_BROKER:
-                break;
+//            case TRUSTED_BROKER:
+//                break;
             case BROKER: {
                 String avatar = form.getBase64image();
                 // insert avatar
@@ -123,8 +126,8 @@ public class ServiceUser extends BaseService implements IServiceUser {
                 }
                 break;
             }
-            case MEMBER:
-                break;
+//            case MEMBERSHIP:
+//                break;
             default:
                 throw new ApplicationException(MessageResponse.EXCEPTION_BAD_REQUEST);
         }
@@ -137,6 +140,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
         String username = form.getUsername();
         String cellphoneNumber = form.getCellphoneNumber();
         String type = form.getType();
+        String permission = form.getPermission();
         String companyName = form.getCompanyName();
         // Validate userId
         User existedUser = repositoryUser.findOne(Long.parseLong(userId));
@@ -155,7 +159,24 @@ public class ServiceUser extends BaseService implements IServiceUser {
         if (!Strings.isNullOrEmpty(cellphoneNumber)) {
             existedUser.setCellphoneNumber(cellphoneNumber);
         }
+        if(!Strings.isNullOrEmpty(form.getDueDate())){
+            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
+            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
+            try {
+                existedUser.setDueDate(dt.parse(form.getDueDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         // Update type
+        if (!Strings.isNullOrEmpty(permission)) {
+//            Optional<UserType> _userType = ConvertUtils.toEnum(permission, UserType.class);
+            UserPermission userPermission = repositoryUserPermission.findByName(permission);
+            if (userPermission != null) {
+                existedUser.setPermission(userPermission);
+            }
+        }
+
         if (!Strings.isNullOrEmpty(type)) {
             Optional<UserType> _userType = ConvertUtils.toEnum(type, UserType.class);
             if (_userType.isPresent()) {

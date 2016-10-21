@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorator="admin/layout/base">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Estate list</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+
+        <div class="search-box">
+            <div class="first">
+                <input id="add" class="btn btn-default sanggun" type="button" value="상권으로찾기">
+                <input id="sub" class="btn btn-default subway" type="button" value="지하철역으로 찾기">
+            </div>
+            <div class="second">
+                <div class="city">
+                    <form id="form-search-estate" class="form-search form-horizontal sb-mb-30">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div id="add-all">
+                                    <div class="row mg-left-right">
+                                        <div class="col-md-3">
+                                            <select id="city" class="form-control" >
+                                                <option value="0">--All--</option>
+                                                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}">서울시</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select id="district" class="form-control">
+                                                <option value="0">--All--</option>
+                                                <option th:each="district : ${districts}" th:value="${district.id}" th:text="${district.name}">District</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select id="town" class="form-control">
+                                                <option value="0">--All--</option>
+                                                <option th:each="town : ${towns}" th:value="${town.id}" th:text="${town.name}">Town</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-block green btn-search">검색</button>
+                                            <!--<button class="btn btn-block green" onclick="searchEmail()">검색</button>-->
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-list mg-left-right" style="margin-top: 10px;">
+                                        <label class="checkbox-inline" style="margin-left: 10px;">
+                                            <input id="inlineCheckbox1" type="checkbox" value="option1"/> 승인요청 매물만 보기
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="sub-all">
+                                    <div class="row mg-left-right">
+                                        <div class="col-md-5 col-md-offset-4">
+                                            <input type="text" class="form-control inp-search-sub" name="subway"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-block green btn-search">검색</button>
+                                            <!--<button class="btn btn-block green" onclick="searchEmail()">검색</button>-->
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-list mg-left-right" style="margin-top: 10px; text-align: right;">
+                                        <label class="checkbox-inline"  style="margin-right: 10px;">
+                                            <input id="inlineCheckbox2" type="checkbox" value="option1"/> 승인요청 매물만 보기
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!--<form id="form-search-estate-subway" class="form-horizontal sb-mb-30">-->
+                    <!--<div class="form-body">-->
+                    <!--<div class="form-group">-->
+                    <!---->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</form>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-wrapper tabbable-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-all-estates" data-toggle="tab">전체보기</a></li>
+                <li><a href="#tab-start-list" data-toggle="tab">인수창업</a></li>
+                <li><a href="#tab-vacant-list" data-toggle="tab">공실매물</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-all-estates" class="tab-all-estates tab-pane sb-pt-15 active">
+
+                </div>
+
+                <div id="tab-start-list" class="tab-start-list tab-pane sb-pt-15">
+
+                </div>
+
+                <div id="tab-vacant-list" class="tab-vacant-list tab-pane sb-pt-15">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+//            var cities = /*[[${listcity}]]*/null;
+//            console.log("list city: "+cities);
+            var city = document.getElementById("city");
+            var city_id = 0;
+            var district_id = 0;
+            var town_id = 0;
+            $('#city').change(function () {
+                console.log("haha");
+                city_id = city.options[city.selectedIndex].value;
+                console.log("city_id "+city_id  );
+            });
+
+            var district = document.getElementById("district");
+            $('#district').change(function () {
+                console.log("haha");
+                district_id = district.options[district.selectedIndex].value;
+                console.log("district_id "+district_id  );
+            });
+
+            var town = document.getElementById("town");
+            $('#town').change(function () {
+                console.log("haha");
+                town_id = town.options[town.selectedIndex].value;
+                console.log("town_id "+town_id  );
+            });
+        $(function () {
+            const static_url = '/admin/estate/';
+            console.log("static url: "+static_url);
+            $("#add-all").show();
+            $("#sub-all").hide();
+            $("#add").click(function () {
+                $("#add-all").show(500);
+                $("#sub-all").hide();
+            });
+            $("#sub").click(function () {
+                $("#add-all").hide();
+                $("#sub-all").show(500);
+            });
+            var SELECTED_TAB = 'tab-all-estates';
+            var URL = location.href;
+            // init
+            request(URL, SELECTED_TAB);
+
+            $('.tab-wrapper').on('click', '.nav.nav-tabs a', function (evt) {
+                SELECTED_TAB = $(this).attr('href').replace('#', '');
+                console.log('Tab 1:' + SELECTED_TAB);
+                console.log('URL: ' + URL);
+                request(URL, SELECTED_TAB);
+            });
+
+            $('.tab-wrapper').on('click', '.pagination-wrapper a', function (evt) {
+                evt.preventDefault();
+                console.log("pagination");
+                var _url = $(this).attr('href');
+                request(_url, SELECTED_TAB);
+            });
+
+            function render(selector, html) {
+                $(selector).html(html);
+            };
+
+            function request(url, selected_tab) {
+                $.ajax({
+                    url: url,
+                    method: 'put',
+                    data: {
+                        'dataType': selected_tab
+                    }
+                })
+                        .then(
+                                function (response) {
+                                    var html = $('#' + selected_tab, response).html();
+                                    render('#' + selected_tab, html);
+                                },
+                                function (jqXHR) {
+                                    console.log("reload : "+jqXHR);
+                                    location.reload();
+                                });
+            };
+
+            function requestSearch(url, selected_tab) {
+                $.ajax({
+                    url: url,
+                    method: 'put',
+                    data: {
+                        'dataType': selected_tab,
+                    }
+                })
+                        .then(
+                                function (response) {
+                                    var html = $('#' + selected_tab, response).html();
+                                    render('#' + selected_tab, html);
+                                },
+                                function (jqXHR) {
+                                    console.log("reload : "+jqXHR);
+                                    location.reload();
+                                });
+            };
+
+//          if($('#form-search-estate').is(':visible')){
+            $('#form-search-estate').on('submit', function (evt) {
+                if($('#add-all').is(':visible')){
+                    var checkInboxAdd = 1;
+                    if($('#inlineCheckbox1').is(":checked")){
+                        checkInboxAdd = 0;
+                    }else{
+                        checkInboxAdd = 2;
+                    }
+                    var key_city = "city";
+                    var key_district  = "district";
+                    var key_town = "town";
+                    var keyCheck = "approved"
+                    URL = static_url + "?"+key_city+"="+city_id+"&"+key_district+"="+district_id+"&"+key_town+"="+town_id+"&"+keyCheck+"="+checkInboxAdd;
+                    console.log("url html:"+URL);
+                    requestSearch(URL,SELECTED_TAB);
+                    evt.preventDefault();
+                }else{
+                    var checkInboxSub = 1;
+                    if($('#inlineCheckbox2').is(":checked")){
+                        checkInboxSub = 0;
+                    }else{
+                        checkInboxSub = 2;
+                    }
+                    var value = $('.inp-search-sub').val();
+                    var key = "subway";
+                    var keyCheck = "approved"
+                    URL = static_url + "?"+key+"="+value+"&"+keyCheck+"="+checkInboxSub;
+                    console.log("url html:"+URL);
+                    requestSearch(URL,SELECTED_TAB);
+                    evt.preventDefault();
+                }
+            });
+
+        });
+
+
+        $(function () {
+            $('#tab-all-estates').on('click', '.tab-detail-all', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-all-estates';
+                console.log('===================================');
+                console.log(evt);
+                console.log(url);
+                console.log('===================================');
+
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-start-list').on('click', '.tab-detail-startup', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-start-list';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-vacant-list').on('click', '.tab-detail-vacant', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-vacant-list';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-start-list').on('click', '.tab-estate-repair', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-start-list';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-vacant-list').on('click', '.tab-estate-repair', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-vacant-list';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-all-estates').on('click', '.tab-estate-repair', function (evt) {
+                evt.preventDefault();
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-all-estates';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-start-list').on('click', '.change-type', function (evt) {
+                evt.preventDefault();
+                console.log('change type estate');
+                console.log("================================");
+                console.log(evt);
+                console.log("=================================")
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-start-list';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-vacant-list').on('click', '.change-type', function (evt) {
+                evt.preventDefault();
+                console.log('change type advertised');
+                console.log("================================");
+                console.log(evt);
+                console.log("=================================")
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-vacant-list';
+                requestDetail(url, SELECTED_TAB);
+            });
+
+            $('#tab-all-estates').on('click', '.change-type', function (evt) {
+                evt.preventDefault();
+                console.log('change type advertised');
+                console.log("================================");
+                console.log(evt);
+                console.log("=================================")
+                var url = evt.currentTarget.href;
+                var SELECTED_TAB = 'tab-all-estates';
+                requestDetail(url, SELECTED_TAB);
+            });
+            function requestDetail(url, selected_tab) {
+                $.ajax({
+                    url: url,
+                    method: 'put',
+                    data: {
+                        'dataType': selected_tab
+                    }
+                })
+                        .then(
+                                function (response) {
+                                    // get html by id
+                                    var html = $('#' + 'tab-estate-detail', response).html();
+
+                                    // replace html
+                                    render('#' + selected_tab, html);
+                                },
+                                function (jqXHR) {
+                                    location.reload();
+                                });
+            };
+
+            function render(selector, html) {
+                $(selector).html(html);
+            };
+        });
+
+        /*]]>*/
+    </script>
+</div>
+
+</body>
+</html>

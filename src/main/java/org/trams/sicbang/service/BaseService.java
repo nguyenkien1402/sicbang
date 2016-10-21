@@ -60,4 +60,6 @@ public class BaseService {
     protected RepositorySanggun repositorySanggun;
     @Autowired
     protected RepositoryAdmin repositoryAdmin;
+    @Autowired
+    protected RepositoryUserPermission repositoryUserPermission;
 }

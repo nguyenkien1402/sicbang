@@ -10,6 +10,7 @@ import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.dto.BaseFormSearch;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.EstateType;
+import org.trams.sicbang.model.enumerate.EstateTypeTrust;
 import org.trams.sicbang.model.enumerate.UserType;
 
 import javax.persistence.criteria.*;
@@ -93,7 +94,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
     private String premiumCostFrom;
     private String premiumCostTo;
     private String isApproved;
-
+    private String typeTrust;
     public static Specification<Estate> dongLike(final String keyword) {
         return (Root<Estate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.like(root.get(Estate_.all_addr), "%" + keyword);
@@ -303,6 +304,19 @@ public class FormEstate extends BaseFormSearch<Estate> {
                     Optional<EstateType> _type = ConvertUtils.toEnum(t, EstateType.class);
                     if (_type.isPresent()) {
                         Predicate p = criteriaBuilder.equal(root.get(Estate_.estateType), _type.get().name());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+            }
+
+            if (!Strings.isNullOrEmpty(typeTrust)) {
+                String[] types = typeTrust.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<EstateTypeTrust> _type = ConvertUtils.toEnum(t, EstateTypeTrust.class);
+                    if (_type.isPresent()) {
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.typeTrust), _type.get().name());
                         subPredicates.add(p);
                     }
                 }
@@ -787,6 +801,14 @@ public class FormEstate extends BaseFormSearch<Estate> {
 
     public void setIsApproved(String isApproved) {
         this.isApproved = isApproved;
+    }
+
+    public String getTypeTrust() {
+        return typeTrust;
+    }
+
+    public void setTypeTrust(String typeTrust) {
+        this.typeTrust = typeTrust;
     }
 
     public static Estate convertEstateFormToEstate(FormEstate form, Estate estate){

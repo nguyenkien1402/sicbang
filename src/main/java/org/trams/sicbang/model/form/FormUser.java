@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.dto.BaseFormSearch;
 import org.trams.sicbang.model.entity.User;
+import org.trams.sicbang.model.entity.UserPermission_;
 import org.trams.sicbang.model.entity.UserRole_;
 import org.trams.sicbang.model.entity.User_;
 import org.trams.sicbang.model.enumerate.CommonStatus;
@@ -51,6 +52,26 @@ public class FormUser extends BaseFormSearch<User> {
     private String base64image;
 
     private String emailAbsolute;
+
+    private String permission;
+
+    private String dueDate;
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
 
     public String getUserId() {
         return userId;
@@ -214,6 +235,11 @@ public class FormUser extends BaseFormSearch<User> {
                         criteriaBuilder.equal(root.get(User_.role).get(UserRole_.name), role)
                 );
             }
+
+            if(!Strings.isNullOrEmpty(permission)){
+                predicates.add(criteriaBuilder.equal(root.get(User_.permission).get(UserPermission_.name),permission));
+            }
+
             if (!Strings.isNullOrEmpty(phoneNumber)) {
                 predicates.add(
                         criteriaBuilder.like(root.get(User_.phoneNumber), "%" + phoneNumber + "%")

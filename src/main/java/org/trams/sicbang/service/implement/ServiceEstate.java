@@ -12,14 +12,11 @@ import org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameRes
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.common.utils.FileUtils;
 import org.trams.sicbang.model.dto.CustomUserDetail;
-import org.trams.sicbang.model.entity.Attachment;
-import org.trams.sicbang.model.entity.Estate;
-import org.trams.sicbang.model.entity.User;
+import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.EstateType;
 import org.trams.sicbang.model.enumerate.MessageResponse;
 import org.trams.sicbang.model.exception.ApplicationException;
-import org.trams.sicbang.model.form.FormEstate;
-import org.trams.sicbang.model.form.FormWishlist;
+import org.trams.sicbang.model.form.*;
 import org.trams.sicbang.service.BaseService;
 import org.trams.sicbang.service.IServiceEstate;
 
@@ -66,10 +63,33 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         estate.setDepositeCost(ConvertUtils.toDoubleNumber(form.getDepositeCost()).get());
         estate.setRentCost(ConvertUtils.toDoubleNumber(form.getRentCost()).get());
         estate.setPremiumCost(ConvertUtils.toDoubleNumber(form.getPremiumCost()).get());
-
+        System.out.println("city: " +form.getCity());
+        System.out.println("district: "+form.getDistrict());
+        System.out.println("town: "+form.getTown());
+        if(!Strings.isNullOrEmpty(form.getCity())){
+            FormCity formCity = new FormCity();
+            formCity.setName(form.getCity());
+            City city = repositoryCity.findOne(formCity.getSpecification());
+            System.out.println("city id: "+city.getId() + "-"+"city name: "+city.getName());
+            estate.setCity(city);
+        }
+        if(!Strings.isNullOrEmpty(form.getDistrict())){
+            FormDistrict formDistrict = new FormDistrict();
+            formDistrict.setName(form.getDistrict());
+            District district = repositoryDistrict.findOne(formDistrict.getSpecification());
+            System.out.println("city id: "+district.getId() + "-"+"city name: "+district.getName());
+            estate.setDistrict(district);
+        }
+        if(!Strings.isNullOrEmpty(form.getTown())){
+            FormTown formTown = new FormTown();
+            formTown.setName(form.getTown());
+            Town town = repositoryTown.findOne(formTown.getSpecification());
+            System.out.println("city id: "+town.getId() + "-"+"city name: "+town.getName());
+            estate.setTown(town);
+        }
         //add city,district
-        estate.setCity(repositoryCity.findOne(ConvertUtils.toLongNumber(form.getCity()).get()));
-        estate.setDistrict(repositoryDistrict.findOne(ConvertUtils.toLongNumber(form.getDistrict()).get()));
+//        estate.setCity(repositoryCity.findOne(ConvertUtils.toLongNumber(form.getCity()).get()));
+//        estate.setDistrict(repositoryDistrict.findOne(ConvertUtils.toLongNumber(form.getDistrict()).get()));
         logger.info("estateType : " + estateType + "getEstateType : " + form.getEstateType());
 
 
