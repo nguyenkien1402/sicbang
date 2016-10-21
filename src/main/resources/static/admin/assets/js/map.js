@@ -19,7 +19,7 @@ $(document).ready(function(){
     //시, 도 Select
     var citys = [];
     var districts = [];
-
+    var towns = [];
     $.ajax({
         url:getAllCity(),
         success:function(){
@@ -49,6 +49,7 @@ $(document).ready(function(){
                         districtObject.name = vale.name;
                         districtObject.id = vale.id;
                         district.push(districtObject);
+
                     });
                     districts.push(district);
                 });
@@ -75,7 +76,30 @@ $(document).ready(function(){
             $option.appendTo($parent.find(".districtSelect"));
         });
     });
+    $(".districtSelect").change(function(e){
+        var $parent = $(this).parent();
+        var index = parseInt($(this).find("option:selected").data("index"));
 
+        $parent.find(".townSelect").text("");
+
+        var $selectOption = $("<option disabled selected></option>");
+        $selectOption.text("선택");
+        $selectOption.appendTo($parent.find(".townSelect"));
+        var districtId = $(this).val();
+        $.ajax({
+            url: "/estate/getAllTown/"+districtId,
+            dataType:"json",
+            type:"GET",
+            success:function(data){
+                $.each(data,function(key,val){
+                    towns.push(val);
+                    var $option = $("<option value='"+val.id+"' ></option>");
+                    $option.text(val.name);
+                    $option.appendTo($parent.find(".townSelect"));
+                });
+            }
+        });
+    });
     var subway = {
         url: "/static/admin/include/js/subway.js",
         list: {
@@ -203,7 +227,7 @@ $(document).ready(function(){
     };
 
     // function search map.
-    function search(city,district,subway,estateType){
+    function search(city,district,town,subway,estateType){
         $.ajax({
             url:"/estate/search",
             type:"POST",
@@ -211,6 +235,7 @@ $(document).ready(function(){
             data:{
                 city: city,
                 district: district,
+                town:town,
                 subwayStation:subway,
                 estateType: estateType,
             },success : function(data){
@@ -242,7 +267,7 @@ $(document).ready(function(){
                     // 마커가 지도 위에 표시되도록 설정합니다
                     marker.setMap(map);
                     // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                    var content = '<a target="_blank" href="estate/detail/'+val.id+'">' +
+                    var content = '<a target="_blank" href="/estate/detail/'+val.id+'">' +
                         '<div class="detailOverlay">' +
                         '    <span class="title">'+val.name+'</span>' +
                         '</div>' +
@@ -259,7 +284,7 @@ $(document).ready(function(){
                         yAnchor: 1
                     });
                 });
-                var str = (city == null ? "" : city) + " " + (district == null ? "" : district);
+                var str = (city == null ? "" : city) + " " + (district == null ? "" : district) + (town == null ? "" : town);
                 map.setLevel(7);
                 if(subway != null) {
                     str = subway + "역";
@@ -338,6 +363,7 @@ $(document).ready(function(){
     $("#searchByStore").click(function(){
         var district = $(".districtSelect").val();
         var city = $(".citySelect").val();
+        var town = $(".townSelect").val();
         var attr = '';
         for(var i = 0; i<=30;i++){
             if($('#c'+i).prop('checked')){
@@ -347,7 +373,7 @@ $(document).ready(function(){
         getDepositeCost();
         getRentCost();
         getPremiumCost();
-        searchByBusinessType(city,district,null,attr,estateType);
+        searchByBusinessType(city,district,town,null,attr,estateType);
 
         remember = 'businessZone';
     });
@@ -363,7 +389,7 @@ $(document).ready(function(){
         getDepositeCost();
         getRentCost();
         getPremiumCost();
-        searchByBusinessType(null,null,subway,attr,estateType);
+        searchByBusinessType(null,null,null,subway,attr,estateType);
         remember = 'subway';
     });
 
@@ -381,16 +407,17 @@ $(document).ready(function(){
         if(remember == 'subway'){
             console.log(attr);
             var subway = $('.subwayInput').val();
-            searchByBusinessType(null,null,subway,attr,estateType);
+            searchByBusinessType(null,null,null,subway,attr,estateType);
         }else{
             var district = $(".districtSelect").val();
             var city = $(".citySelect").val();
-            searchByBusinessType(city,district,null,attr,estateType);
+            var town = $(".townSelect").val();
+            searchByBusinessType(city,district,town,null,attr,estateType);
         }
 
     });
 
-    function searchByBusinessType(city,district,subway,businessType,estateType){
+    function searchByBusinessType(city,district,town,subway,businessType,estateType){
         $.ajax({
             url:"/estate/search/business",
             type:"POST",
@@ -398,6 +425,7 @@ $(document).ready(function(){
             data:{
                 city: city,
                 district: district,
+                town:town,
                 depositeCostFrom : depositeCostFrom,
                 depositeCostTo : depositeCostTo,
                 rentFrom : rentCostFrom,
@@ -436,7 +464,7 @@ $(document).ready(function(){
                     // 마커가 지도 위에 표시되도록 설정합니다
                     marker.setMap(map);
                     // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                    var content = '<a target="_blank" href="estate/detail/'+val.id+'">' +
+                    var content = '<a target="_blank" href="/estate/detail/'+val.id+'">' +
                         '<div class="detailOverlay">' +
                         '    <span class="title">'+val.name+'</span>' +
                         '</div>' +
@@ -455,7 +483,8 @@ $(document).ready(function(){
                 });
                 var cityName = "서울";
                 var districtName = "";
-                console.log(city);
+                var townName = "";
+
                 for(var i = 0 ; i< citys.length;i++){
                     if(city == citys[i].id){
                         cityName = citys[i].name;
@@ -468,8 +497,15 @@ $(document).ready(function(){
                         }
                     }
                 }
-                var str = (city == null ? "" : cityName) + " " + (district == null ? "" : districtName);
-                map.setLevel(7);
+                for(var i = 0 ; i< towns.length;i++){
+                    if(town == towns[i].id){
+                        townName = towns[i].name;
+                    }
+                }
+
+                var str = (city == null ? "" : cityName) + " " + (district == null ? "" : districtName) + (town == null ? "" : townName);
+
+                map.setLevel(5);
                 if(subway != null) {
                     str = subway + "역";
                     places.keywordSearch(str, callback);
@@ -502,10 +538,11 @@ $(document).ready(function(){
         var redirect = $("#redirect").val();
         //init map
         if (redirect != 'true') {
-            search("서울", null, null, estateType);
+            search("서울",null,null,null, estateType);
         } else {
             var cityValue = $("#cityValue").val();
             var districtValue = $("#districtValue").val();
+            var townValue = $("#townValue").val();
             var subwayValue = $("#subwayStationValue").val();
             var attr = '';
             for (var i = 0; i <= 30; i++) {
@@ -514,7 +551,8 @@ $(document).ready(function(){
                 }
             }
             if (subwayValue == '') {
-                searchByBusinessType(cityValue, districtValue, null, attr, estateType);
+                console.log("town"+townValue);
+                searchByBusinessType(cityValue, districtValue,townValue, null, attr, estateType);
             } else {
                 $(".searchBox .searchMethodArea").removeClass("active");
                 $(".searchBox .buttonArea button").removeClass("active");
@@ -522,7 +560,7 @@ $(document).ready(function(){
                 $(".searchBox .subwaySearch").addClass("active");
                 $("#subwaySearchButton").addClass("active");
                 $(".subwayInput").val(subwayValue);
-                searchByBusinessType(null, null, subwayValue, attr, estateType);
+                searchByBusinessType(null, null,null, subwayValue, attr, estateType);
             }
 
         }

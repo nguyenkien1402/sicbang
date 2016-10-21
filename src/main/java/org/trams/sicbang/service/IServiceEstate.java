@@ -82,7 +82,7 @@ public interface IServiceEstate {
 
     Long totalEstateFilter(String city, String district, String town, String type, String subway);
 
-    List<Estate> filterEstateByType(int pageSize,int userType,String type);
+    List<Estate> filterEstateByType(int pageSize,String typeTrust,String type);
 
     List<Estate> filterEstateOnMap(FormEstate form);
 

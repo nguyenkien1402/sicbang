@@ -115,7 +115,7 @@
                             <select class="formControl districtSelect">
                                 <option selected value ="선택" disabled>선택</option>
                             </select>
-                            <select class="formControl">
+                            <select class="formControl townSelect">
                                 <option selected disabled>선택</option>
                             </select>
                             <button class="btn primary" id="searchByStore" style="height:35px;">조회</button>
@@ -129,6 +129,7 @@
                     <input type="hidden" id="estateType" th:value="${estateType}"/>
                     <input type="hidden" id="cityValue" th:value="${city}"/>
                     <input type="hidden" id="districtValue" th:value="${district}"/>
+                    <input type="hidden" id="townValue" th:value="${town}"/>
                     <input type="hidden" id="subwayStationValue" th:value="${subway}"/>
                     <input type="hidden" id="redirect" th:value="${redirect}"/>
                     <div id="map" ></div>

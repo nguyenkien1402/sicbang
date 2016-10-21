@@ -17,7 +17,7 @@
                     <button class="btn warning littleWide">연장</button>
                     <div class="extendDate">
                         <img th:src="@{../../static/admin/include/images/content/clock.png}" />
-                        <span>유료종료일시 : </span>
+                        <span>유료종료일시 : <span th:text="${user.dueDate}"></span></span>
                     </div>
                 </div>
         <div class="slideBox">
