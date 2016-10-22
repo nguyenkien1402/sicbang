@@ -438,8 +438,8 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         return count;
     }
     @Override
-    public List<Estate> filterEstateByType(int pageSize,int userType,String type) {
-        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,userType,type);
+    public List<Estate> filterEstateByType(int pageSize,String typeTrust,String type) {
+        List<Estate> estates = repositoryEstate.findEstateByType(pageSize,typeTrust,type);
         Iterator<Estate> iterator = estates.iterator();
         while (iterator.hasNext()) {
             Estate estate = iterator.next();
@@ -451,6 +451,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
 
     @Override
     public List<Estate> filterEstateOnMap(FormEstate formEstate) {
+        formEstate.setIsApproved("1");
         List<Estate> estates = repositoryEstate.findAll(formEstate.searchOnMap());
         Iterator<Estate> iterator = estates.iterator();
         while (iterator.hasNext()) {

@@ -51,6 +51,7 @@ public class ControllerEstate extends AbstractController {
         map.put("redirect","true");
         map.put("city",formEstate.getCity());
         map.put("district",formEstate.getDistrict());
+        map.put("town",formEstate.getTown());
         map.put("subway",formEstate.getSubwayStation());
         return BASE_TEMPLATE + "map-all";
     }
@@ -95,6 +96,7 @@ public class ControllerEstate extends AbstractController {
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
+
         //if logged as realtor
         if(auth != null){
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -110,7 +112,7 @@ public class ControllerEstate extends AbstractController {
                 System.out.println("null");
                 map.put("isWishList","false");
             }
-
+            map.put("user",user);
             map.put("memberId",user.getId());
             FormRecent formRecent = new FormRecent();
             formRecent.setUserId(user.getId().toString());
@@ -123,7 +125,7 @@ public class ControllerEstate extends AbstractController {
             serviceRecent.create(formRecent);
             }
             if(user.getId() == estate.getUser().getId()){
-                if(estate.getAdvertised() != null && estate.getAdvertised() == true){ // if estate is premium.
+                if(user.getPermission() != null && user.getPermission().getName().equals("TRUSTED_BROKER")){ // if estate is premium.
                     return BASE_TEMPLATE_BROKER +"/broker-content-premium";
                 }
                 // estate isn't premium.
@@ -200,8 +202,14 @@ public class ControllerEstate extends AbstractController {
     @RequestMapping(value = "/search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity searchEstate(@ModelAttribute FormEstate formEstate){
-        if(!formEstate.getDistrict().equals(""))
+        if(!formEstate.getTown().equals("")){
             formEstate.setCity(null);
+            formEstate.setDistrict(null);
+        }
+        else if(!formEstate.getDistrict().equals("")){
+            formEstate.setCity(null);
+            formEstate.setTown(null);
+        }
         List<Estate> estates = serviceEstate.filterBy(0,formEstate.getCity(),formEstate.getDistrict(),formEstate.getTown(),formEstate.getEstateType(),formEstate.getSubwayStation());
 
         return new ResponseEntity(estates,HttpStatus.OK);
@@ -209,16 +217,24 @@ public class ControllerEstate extends AbstractController {
     @RequestMapping(value = "/search/business", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity searchEstateByBusiness(@ModelAttribute FormEstate formEstate){
-        if(formEstate.getDistrict().equals("")){
-            formEstate.setDistrict(null);
-        }
-        if(formEstate.getDistrict() != null ) {
-            formEstate.setCity(null);
+        if(formEstate.getSubwayStation().equals("")){
             formEstate.setSubwayStation(null);
         }
         if(formEstate.getSubwayStation() != null){
+            System.out.println("Subway");
             formEstate.setCity(null);
             formEstate.setDistrict(null);
+            formEstate.setTown(null);
+        }else{
+            if(formEstate.getCity().equals("")){
+                formEstate.setCity(null);
+            }
+            if(formEstate.getDistrict().equals("")){
+                formEstate.setDistrict(null);
+            }
+            if(formEstate.getTown().equals("")){
+                formEstate.setTown(null);
+            }
         }
         if(formEstate.getEstateType().equals("%%")){
             formEstate.setEstateType("");
@@ -230,9 +246,9 @@ public class ControllerEstate extends AbstractController {
     @ResponseBody
     public ResponseEntity estateMap(@ModelAttribute FormEstate formEstate){
 
-        List<Estate> trusted = serviceEstate.filterEstateByType(10,1,formEstate.getEstateType());
-        List<Estate> broker = serviceEstate.filterEstateByType(10,0,formEstate.getEstateType());
-        List<Estate> member = serviceEstate.filterEstateByType(10,2,formEstate.getEstateType());
+        List<Estate> trusted = serviceEstate.filterEstateByType(10,"TRUSTED_STARTUP",formEstate.getEstateType());
+        List<Estate> broker = serviceEstate.filterEstateByType(10,"REALTOR",formEstate.getEstateType());
+        List<Estate> member = serviceEstate.filterEstateByType(10,"DIRECT_DEAL",formEstate.getEstateType());
 
         Map<String,List> estates = new HashMap<>();
         estates.put("trusted",trusted);
@@ -248,7 +264,12 @@ public class ControllerEstate extends AbstractController {
         return new ResponseEntity(cities,HttpStatus.OK);
     }
 
-
+    @RequestMapping(value = "/getAllTown/{districtId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity getAllTown(@PathVariable(value = "districtId") int id){
+        List<Town> towns = serviceLocation.findAllTown(id);
+        return new ResponseEntity(towns,HttpStatus.OK);
+    }
     /**
      * Filter
      * @param map

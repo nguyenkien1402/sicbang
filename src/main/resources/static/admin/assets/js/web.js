@@ -65,6 +65,29 @@ $(document).ready(function(){
         });
     });
 
+    $(".districtSelect").change(function(e){
+        var $parent = $(this).parent();
+        var index = parseInt($(this).find("option:selected").data("index"));
+
+        $parent.find(".townSelect").text("");
+
+        var $selectOption = $("<option disabled selected></option>");
+        $selectOption.text("선택");
+        $selectOption.appendTo($parent.find(".townSelect"));
+        var districtId = $(this).val();
+        $.ajax({
+            url: "/estate/getAllTown/"+districtId,
+            dataType:"json",
+            type:"GET",
+            success:function(data){
+                $.each(data,function(key,val){
+                    var $option = $("<option value='"+val.id+"' ></option>");
+                    $option.text(val.name);
+                    $option.appendTo($parent.find(".townSelect"));
+                });
+            }
+        });
+    });
     //시, 도 Select
 
     //처음에 팝업창 띄우기

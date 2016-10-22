@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import org.trams.sicbang.model.entity.Category;
 import org.trams.sicbang.model.entity.City;
 import org.trams.sicbang.model.entity.District;
+import org.trams.sicbang.model.entity.Town;
 import org.trams.sicbang.repository.RepositoryCategory;
 import org.trams.sicbang.repository.RepositoryCity;
 import org.trams.sicbang.repository.RepositoryDistrict;
+import org.trams.sicbang.repository.RepositoryTown;
 import org.trams.sicbang.service.IServiceLocation;
 
 import java.util.List;
@@ -27,6 +29,9 @@ public class ServiceLocation implements IServiceLocation {
     @Autowired
     private RepositoryCategory repositoryCategory;
 
+    @Autowired
+    private RepositoryTown repositoryTown;
+
     @Override
     public List<City> findAllCity() {
         return repositoryCity.findAll();
@@ -35,6 +40,11 @@ public class ServiceLocation implements IServiceLocation {
     @Override
     public List<Category> findAllCategory() {
         return repositoryCategory.findAll();
+    }
+
+    @Override
+    public List<Town> findAllTown(int districtId) {
+        return repositoryTown.findAllTown(districtId);
     }
 
     @Override

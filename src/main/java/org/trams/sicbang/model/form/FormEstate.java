@@ -280,6 +280,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
             root.join(Estate_.user, JoinType.INNER);
             root.join(Estate_.city, JoinType.INNER);
             root.join(Estate_.district, JoinType.INNER);
+            root.join(Estate_.town, JoinType.INNER);
 
              List<Predicate> predicates = new ArrayList<>();
             Optional<Double> _depositeCostFrom = ConvertUtils.toDoubleNumber(depositeCostFrom);
@@ -383,7 +384,22 @@ public class FormEstate extends BaseFormSearch<Estate> {
                         criteriaBuilder.equal(root.get(Estate_.district).get(District_.id), district)
                 );
             }
-
+            if (!Strings.isNullOrEmpty(town)) {
+                String[] types = town.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : types) {
+                    Optional<Long> _id = ConvertUtils.toLongNumber(t);
+                    if (_id.isPresent()) {
+                        Predicate p = criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), _id.get());
+                        subPredicates.add(p);
+                    }
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+                root.join(Estate_.town, JoinType.LEFT);
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), town)
+                );
+            }
             if (_depositeCostFrom.isPresent() && _depositeCostTo.isPresent()) {
                 predicates.add(
                         criteriaBuilder.between(root.get(Estate_.depositeCost),_depositeCostFrom.get(),_depositeCostTo.get())
@@ -412,6 +428,9 @@ public class FormEstate extends BaseFormSearch<Estate> {
             }
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
+            );
+            predicates.add(
+                    criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
             );
 
 

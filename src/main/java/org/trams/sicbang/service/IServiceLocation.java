@@ -3,6 +3,7 @@ package org.trams.sicbang.service;
 import org.trams.sicbang.model.entity.Category;
 import org.trams.sicbang.model.entity.City;
 import org.trams.sicbang.model.entity.District;
+import org.trams.sicbang.model.entity.Town;
 
 import java.util.List;
 
@@ -24,4 +25,5 @@ public interface IServiceLocation {
      */
     List<Category> findAllCategory();
 
+    List<Town> findAllTown(int districtId);
 }
