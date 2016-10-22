@@ -15,6 +15,7 @@ import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.CommonStatus;
 import org.trams.sicbang.model.enumerate.MessageResponse;
 import org.trams.sicbang.model.enumerate.UserType;
+import org.trams.sicbang.model.enumerate.UserTypePermission;
 import org.trams.sicbang.model.exception.ApplicationException;
 import org.trams.sicbang.model.form.FormLogin;
 import org.trams.sicbang.model.form.FormPassword;
@@ -83,7 +84,6 @@ public class ServiceUser extends BaseService implements IServiceUser {
         String role = form.getRole();
         String status = form.getStatus();
 
-
         UserType userType = UserType.valueOf(type);
         UserRole userRole = repositoryUserRole.findByName(role);
         CommonStatus userStatus= CommonStatus.valueOf(status);
@@ -92,9 +92,21 @@ public class ServiceUser extends BaseService implements IServiceUser {
         BeanUtils.copyProperties(form, user);
 
         user.setRole(userRole);
-        user.setType(userType);
+//        user.setType(userType);
         user.setStatus(userStatus);
 
+        if(type.equals("MEMBER")){
+            UserPermission permission = new UserPermission();
+            permission.setName(UserTypePermission.MEMBERSHIP.name());
+            user.setPermission(permission);
+
+        }
+        if(type.equals("BROKER")){
+            UserPermission permission = new UserPermission();
+            permission.setName(UserTypePermission.BROKER.name());
+            user.setPermission(permission);
+            user.setType(UserType.valueOf("NON_BROKER"));
+        }
         user = repositoryUser.save(user);
 
         switch (userType) {

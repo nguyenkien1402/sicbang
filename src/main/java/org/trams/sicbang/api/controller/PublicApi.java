@@ -15,6 +15,7 @@ import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.CommonStatus;
 import org.trams.sicbang.model.enumerate.MessageResponse;
 import org.trams.sicbang.model.enumerate.UserType;
+import org.trams.sicbang.model.enumerate.UserTypePermission;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.*;
 import org.trams.sicbang.validation.ValidationEstate;
