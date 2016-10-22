@@ -56,7 +56,7 @@ public class PublicApi extends AbstractController {
             return new Response(MessageResponse.EXCEPTION_BAD_REQUEST, error);
         }
         CustomUserDetail userDetail = serviceUser.authenticateUser(form);
-        if(userDetail.getType().equals(UserType.BROKER.name())) {
+        if(userDetail.getType().equals(UserType.NON_BROKER.name())) {
             error = new FormError();
             error.rejectValue("message",MessageResponse.EXCEPTION_NOT_TRUST_BROKER.getMessage());
             return new Response(MessageResponse.EXCEPTION_NOT_TRUST_BROKER, error);

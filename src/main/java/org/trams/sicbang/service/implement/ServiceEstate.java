@@ -14,6 +14,7 @@ import org.trams.sicbang.common.utils.FileUtils;
 import org.trams.sicbang.model.dto.CustomUserDetail;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.enumerate.EstateType;
+import org.trams.sicbang.model.enumerate.EstateTypeTrust;
 import org.trams.sicbang.model.enumerate.MessageResponse;
 import org.trams.sicbang.model.exception.ApplicationException;
 import org.trams.sicbang.model.form.*;
@@ -86,6 +87,15 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
             Town town = repositoryTown.findOne(formTown.getSpecification());
             System.out.println("city id: "+town.getId() + "-"+"city name: "+town.getName());
             estate.setTown(town);
+        }
+        User user = repositoryUser.findOne(Long.parseLong(form.getUserId()));
+        switch (user.getPermission().getName()){
+            case "MEMBERSHIP":
+                estate.setTypeTrust(EstateTypeTrust.DIRECT_DEAL.name());
+                break;
+            default:
+                estate.setTypeTrust(EstateTypeTrust.REALTOR.name());
+                break;
         }
         //add city,district
 //        estate.setCity(repositoryCity.findOne(ConvertUtils.toLongNumber(form.getCity()).get()));
