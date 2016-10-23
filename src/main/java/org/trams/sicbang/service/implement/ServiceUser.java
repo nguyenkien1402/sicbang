@@ -85,6 +85,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
         String status = form.getStatus();
 
         UserType userType = UserType.valueOf(type);
+        System.out.println(userType.name());
         UserRole userRole = repositoryUserRole.findByName(role);
         CommonStatus userStatus= CommonStatus.valueOf(status);
 
@@ -95,15 +96,13 @@ public class ServiceUser extends BaseService implements IServiceUser {
 //        user.setType(userType);
         user.setStatus(userStatus);
 
-        if(type.equals("MEMBER")){
-            UserPermission permission = new UserPermission();
-            permission.setName(UserTypePermission.MEMBERSHIP.name());
+        if(type.equals("NON_BROKER")){
+            UserPermission permission = repositoryUserPermission.findByName("MEMBERSHIP");
             user.setPermission(permission);
-
+            user.setType(UserType.valueOf("NON_BROKER"));
         }
         if(type.equals("BROKER")){
-            UserPermission permission = new UserPermission();
-            permission.setName(UserTypePermission.BROKER.name());
+            UserPermission permission = repositoryUserPermission.findByName("BROKER");
             user.setPermission(permission);
             user.setType(UserType.valueOf("NON_BROKER"));
         }
@@ -138,8 +137,8 @@ public class ServiceUser extends BaseService implements IServiceUser {
                 }
                 break;
             }
-//            case MEMBERSHIP:
-//                break;
+            case NON_BROKER:
+                break;
             default:
                 throw new ApplicationException(MessageResponse.EXCEPTION_BAD_REQUEST);
         }

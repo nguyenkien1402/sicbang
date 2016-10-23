@@ -106,28 +106,36 @@ public class ValidationUser {
 
         if (Strings.isNullOrEmpty(email) || !EmailValidator.getInstance().isValid(email)) {
             error.rejectValue("email", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("email 1 failed");
         }
         User existedUser = repositoryUser.findByEmail(email);
         if (existedUser != null) {
             error.rejectValue("email", MessageResponse.EXCEPTION_EXISTED.getMessage());
+            System.out.println("email 2 failed");
         }
         if (Strings.isNullOrEmpty(password)) {
             error.rejectValue("password", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("password failed");
         }
         if (Strings.isNullOrEmpty(passwordConfirm)) {
             error.rejectValue("passwordConfirm", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("password confirm 1 failed");
         }
         if (password != null && passwordConfirm != null && !password.equals(passwordConfirm)) {
             error.rejectValue("passwordConfirm", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("password confirm 2 failed");
         }
         if (Strings.isNullOrEmpty(type)) {
             error.rejectValue("type", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("type failed");
         }
         if (Strings.isNullOrEmpty(role)) {
             error.rejectValue("role", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("role failed");
         }
         if (Strings.isNullOrEmpty(status)) {
             error.rejectValue("status", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("status failed");
         }
 
         try {
@@ -135,19 +143,23 @@ public class ValidationUser {
             if (_type.equals(UserType.BROKER)) {
                 if (Strings.isNullOrEmpty(avatar)) {
                     error.rejectValue("base64image", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+                    System.out.println("type 1 memeber");
                 }
             }
         } catch (Exception e) {
             error.rejectValue("type", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("type 2 memeber");
         }
         UserRole userRole = repositoryUserRole.findByName(role);
         if (userRole == null) {
             error.rejectValue("role", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("role memeber");
         }
         try {
             CommonStatus.valueOf(status);
         } catch (Exception e) {
             error.rejectValue("status", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
+            System.out.println("status memeber");
         }
 
         return error.hasErrors() ? error : null;

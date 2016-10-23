@@ -104,6 +104,9 @@ public class PublicApi extends AbstractController {
         System.out.println("===============================");
         System.out.println("api join user - broker: "+form.getType());
         form.setRole("MEMBER");
+        if(form.getType().equals("MEMBER")){
+            form.setType("NON_BROKER");
+        }
         form.setStatus(CommonStatus.ACTIVE.name());
         FormError error = validationUser.validateCreate(form);
         if (error != null) {
