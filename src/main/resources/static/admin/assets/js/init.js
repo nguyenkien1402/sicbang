@@ -56,7 +56,7 @@ function Admin() {
             contentType: false,
             processData: false
         }).then(function(data) {
-            _this.showPopupNotice('file uploaded successfully.', function() {
+            _this.showPopupNotice('image upload success.', function() {
                 if (callback) callback();
                 else location.reload();
             });
@@ -76,6 +76,42 @@ function Admin() {
         });
     };
 
+    this.submitFormEstateWeb = function($form, callback) {
+        _this.resetForm($form);
+
+        if (!_this.validateForm($form)) {
+            return false;
+        }
+        _this.convertForm($form);
+        var formData = new FormData($form[0]);
+        console.log("data:"+formData);
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).then(function(data) {
+            if (callback)
+                callback();
+                else location.href='/member/estate/estate-waiting';
+
+        }, function(jqXHR) {
+            _this.resetForm($form);
+            // show message error
+            if (jqXHR.status == 400) {
+                var response = JSON.parse(jqXHR.responseText);
+                $.each(response.errors, function(key, value) {
+                    _this.showErrorForm($form, key, value);
+                });
+            }
+            // undefined error, show popup
+            else {
+                _this.showPopupNotice('변경하지 못 했습니다.');
+            }
+        });
+    };
     this.submitFormEmailSend = function($form, callback) {
         _this.resetForm($form);
 
@@ -358,7 +394,7 @@ function Admin() {
     };
 
     this.handleImgError = function() {
-        $('img').one('error', function() { this.src = '/admin/assets/images/no_image.jpg'; });
+        $('img').one('error', function() { this.src = '../../static/admin/assets/images/no_image.jpg'; });
     };
 
 }

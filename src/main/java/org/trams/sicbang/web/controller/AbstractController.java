@@ -3,14 +3,18 @@ package org.trams.sicbang.web.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.service.*;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.validation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by voncount on 4/6/16.
@@ -96,4 +100,15 @@ public class AbstractController {
         }
     }
 
+    protected void isSession(){
+        Authentication auth = serviceAuthorized.isAuthenticated();
+        if(auth != null) {
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            User user = serviceUser.findUserByEmail(userDetails.getUsername());
+            HttpSession session = httpRequest.getSession();
+            session.setAttribute("type", user.getType().name());
+            session.setAttribute("USER_SESSION", user);
+
+        }
+    }
 }

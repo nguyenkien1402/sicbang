@@ -13,6 +13,9 @@
         .success-message{
             color:green;
         }
+        .help-block{
+            color:red;
+        }
     </style>
     <!-- Latest compiled and minified CSS -->
     <!-- Optional theme -->
@@ -21,6 +24,8 @@
     <script th:src="@{../../static/admin/include/js/jquery-1.12.2.min.js}"></script>
     <script th:src="@{../../static/admin/include/js/jquery-ui.min.js}"></script>
     <script th:src="@{../../static/admin/include/js/jquery.easy-autocomplete.js}"></script>
+
+    <script type="text/javascript" th:src="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap/js/bootstrap.min.js}"></script>
     <link rel="stylesheet" th:href="@{../../static/admin/include/css/map.css}"/>
     <link rel="stylesheet" th:href="@{../../static/admin/include/css/style.css}"/>
     <link rel="stylesheet" th:href="@{../../static/admin/include/css/font-awesome.min.css}"/>
@@ -31,10 +36,15 @@
     <link rel="stylesheet" th:href="@{../../static/admin/include/css/join.css}"/>
     <link rel="stylesheet" th:href="@{../../static/admin/include/css/list.css}"/>
     <link rel="stylesheet" th:href="@{../../static/admin/include/css/content.css}"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.js"></script>
+    <script th:src="@{../../static/admin/assets/js/web.js}"></script>
+    <script type="text/javascript" th:src="@{http://momentjs.com/downloads/moment.js}"></script>
     <!-- need to change apikey when deploy to server -->
     <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=f0e1d8a7194226766a1ecfe4029445fc&libraries=services"></script>
 
+    <script type="text/javascript" th:src="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css}" />
+    <script th:src="@{../../static/admin/assets/js/init.js}"></script>
 </head>
 <body>
 <div th:replace="web/fragment/common-login :: header"></div>
@@ -81,7 +91,7 @@
         <div class="formControlGroup horizontal">
             <label class="">이메일</label>
             <input name="joinEmail" type="text" class="formControl wide warning" />
-            <span class="helpBlock primary">* 사용하실 아이디를 이메일로 입력해주세요.</span>
+            <span id="helpBlockMessage" class="helpBlock primary">* 사용하실 아이디를 이메일로 입력해주세요.</span>
         </div>
 
         <div class="formControlGroup horizontal">
@@ -164,6 +174,5 @@ TOP
 </div>
 
 <!-- END FOOTER FRAGMENT -->
-<script th:src="@{../../static/admin/assets/js/web.js}"></script>
 </body>
 </html>

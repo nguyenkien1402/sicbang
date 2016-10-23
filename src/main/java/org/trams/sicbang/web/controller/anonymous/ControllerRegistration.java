@@ -23,21 +23,34 @@ public class ControllerRegistration extends AbstractController{
 
     final String BASE_TEMPLATE = "web/content/";
 
+    /**
+     * Redirect to broker-join
+     * @return
+     */
     @RequestMapping(value = "/broker-join", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String brokerJoin() throws IOException {
         return BASE_TEMPLATE + "register/broker-join";
     }
 
-
+    /**
+     * Redirect to broker-join-waiting
+     * @return
+     */
     @RequestMapping(value = "/broker-join-waiting", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String brokerJoinWaiting() throws IOException {
         return BASE_TEMPLATE + "register/broker-join-waiting";
     }
 
+
+    /**
+     * create member
+     *
+     * @return
+     */
     @RequestMapping(value = "/member-join", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String memberJoin(@ModelAttribute FormUser formUser) throws IOException {
-        formUser.setType("MEMBER");
+        formUser.setType("NON_BROKER");
         formUser.setRole("MEMBER");
         formUser.setStatus("ACTIVE");
         FormError error = validationUser.validateCreate(formUser);
@@ -52,6 +65,10 @@ public class ControllerRegistration extends AbstractController{
         return "SUCCESS";
     }
 
+    /**
+     * Create broker
+     * @return
+     */
     @RequestMapping(value = "/create-broker", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity create(

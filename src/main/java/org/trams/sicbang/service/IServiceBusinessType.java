@@ -11,4 +11,5 @@ import java.util.List;
 public interface IServiceBusinessType {
     List<BusinessType> findAll();
     List<Category> findAllCategory();
+    List<BusinessType> findByCategory(Long categoryId);
 }

@@ -26,19 +26,15 @@ public class ControllerHome extends AbstractController {
 
     final String BASE_TEMPLATE = "web/content/";
 
+
+    /**
+     * Redirect to home
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) throws IOException {
-
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        if(auth != null) {
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            User user = serviceUser.findUserByEmail(userDetails.getUsername());
-            HttpSession session = httpRequest.getSession();
-            System.out.println("User Type: " + user.getType().name());
-            session.setAttribute("type", user.getType().name());
-
-        }
-
+        isSession();
         FormBoard formBoard = new FormBoard();
         formBoard.setPageIndex(0);
         formBoard.setPageSize(5);

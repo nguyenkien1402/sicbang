@@ -27,4 +27,10 @@ public class ServiceBusinessType extends BaseService implements IServiceBusiness
         List<Category> categories = repositoryCategory.findAll();
         return categories;
     }
+
+    @Override
+    public List<BusinessType> findByCategory(Long categoryId) {
+        List<BusinessType> businessTypes = repositoryBusinessType.findByCategory(categoryId);
+        return businessTypes;
+    }
 }

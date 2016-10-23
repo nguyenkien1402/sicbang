@@ -42,9 +42,7 @@ public class ControllerUser extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) {
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
         map.put("user",user);
         return BASE_TEMPLATE + "setting";
     }
@@ -107,7 +105,11 @@ public class ControllerUser extends AbstractController {
         return "SUCCESS";
     }
 
-
+    /**
+     * Withdraw user
+     * @param form
+     * @return
+     */
     @RequestMapping(value = "/update/withdraw", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String withdraw(
