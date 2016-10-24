@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.trams.sicbang.model.entity.ReportInformation;
 import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.enumerate.MessageResponse;
+import org.trams.sicbang.model.enumerate.UserType;
+import org.trams.sicbang.model.enumerate.UserTypePermission;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormPassword;
 import org.trams.sicbang.model.form.FormReport;
@@ -44,6 +46,9 @@ public class ControllerUser extends AbstractController {
             ModelMap map, Principal principal) {
         // authorized request
         form.setRole("MEMBER");
+        form.setType(UserType.NON_BROKER.name());
+        form.setPermission(UserTypePermission.MEMBERSHIP.name());
+
         Page<User> users = serviceUser.filter(form);
 
         map.put("items", users);

@@ -57,6 +57,7 @@ public class ControllerBroker extends AbstractController {
 
         System.out.println("go to broker");
         form.setType(UserType.BROKER.name());
+        form.setPermission(UserTypePermission.BROKER.name());
 //        if (typeBroker != null) {
 //            form.setPermission(UserType.BROKER.name());
 //        }
@@ -356,6 +357,7 @@ public class ControllerBroker extends AbstractController {
         form.setRole("MEMBER");
 //        form.setType("BROKER");
         form.setType(UserType.NON_BROKER.name());
+        form.setPermission(UserTypePermission.BROKER.name());
         Page<User> users = serviceUser.filter(form);
 
         map.put("items", users);
