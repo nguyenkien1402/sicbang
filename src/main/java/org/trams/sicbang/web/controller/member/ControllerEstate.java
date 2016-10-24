@@ -24,8 +24,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,9 +49,8 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(@ModelAttribute FormEstate formEstate, ModelMap map) {
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        isSession();
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
         formEstate.setUserId(user.getId().toString());
         Page<Estate> estates = serviceEstate.filter(formEstate);
         map.put("estates",estates);
@@ -70,9 +72,8 @@ public class ControllerEstate extends AbstractController {
 
     @RequestMapping(value="/advertised",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getAdvertised(@ModelAttribute FormEstate formEstate, ModelMap map) {
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        isSession();
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
         formEstate.setUserId(user.getId().toString());
         formEstate.setIsAdvertised("true");
         Page<Estate> estates = serviceEstate.filter(formEstate);
@@ -112,33 +113,18 @@ public class ControllerEstate extends AbstractController {
     /**
      * Create
      * @param form
+     * @param map
      * @return
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Object create(@ModelAttribute FormEstate form) {
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+    @RequestMapping(value = "/sell-upload", method = RequestMethod.POST)
+    public Object create(@ModelAttribute FormEstate form,ModelMap map) {
+        isSession();
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
         form.setUserId(user.getId().toString());
-        System.out.println("Name:"+form.getName());
-        System.out.println("City:"+form.getCity());
-        System.out.println("District:"+form.getDistrict());
-        System.out.println("All:"+form.getAll_addr());
-        System.out.println("EstateType:"+form.getEstateType());
-        System.out.println("Area:"+form.getArea());
-        System.out.println("BusinesSType:"+form.getBusinessType());
-        System.out.println("Subway:"+form.getSubwayStation());
-        System.out.println("Deposite: "+form.getDepositeCost());
-        System.out.println("Detail"+form.getDetail());
-        System.out.println("rent:"+form.getRentCost());
-        System.out.println("Service:"+form.getServiceCost());
-        System.out.println("other:"+form.getOtherCost());
-        System.out.println("premium:"+form.getPremiumCost());
-        System.out.println("gain:"+form.getGainRatio());
-        System.out.println("floor:"+form.getFloor());
-        System.out.println("monthly"+form.getMonthlyIncome());
-        System.out.println("tax:"+form.getMonthlyTax());
+        form.setAll_addr(form.getCity()+" "+form.getDistrict()+" "+form.getTown()+" "+form.getAll_addr());
         form.setIsAdvertised("0");
+        form.setIsApproved("0");
+        form.setBusinessZone(form.getTown()+" "+form.getDistrict()+" "+form.getCity());
         List<String> attachments = new ArrayList<>();
         for(MultipartFile multipartFile: form.getAttachmentFiles()){
             if(!multipartFile.getOriginalFilename().equals("")) {
@@ -154,22 +140,39 @@ public class ControllerEstate extends AbstractController {
         form.setAttachments(attachments);
         FormError error = validationEstate.validateCreate(form);
             if (error != null) {
-                return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(error,HttpStatus.BAD_REQUEST);
             }
             serviceEstate.create(form);
-            return new ResponseEntity(HttpStatus.OK);
-
-
+            return "redirect:/member/estate/estate-waiting";
     }
 
+    /**
+     * Redirect
+     * @return
+     */
+    @RequestMapping(value="/estate-waiting",method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public String estateWaiting(){
+        return "web/content/estate/estate-waiting";
+    }
+
+
+    /**
+     * Add Wishlist
+     * @param formWishlist
+     * @return
+     */
     @RequestMapping(value="/addWishList",method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String addWishList(@ModelAttribute FormWishlist formWishlist) {
-        System.out.println("USER ID :"+formWishlist.getUserId());
-        System.out.println("ESTATE ID:"+formWishlist.getEstateId());
         serviceWishlist.create(formWishlist);
         return "SUCCESS";
     }
+
+    /**
+     * remove Wishlist
+     * @param formWishlist
+     * @return
+     */
     @RequestMapping(value="/removeWishList",method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String removeWishList(@ModelAttribute FormWishlist formWishlist) {
@@ -177,25 +180,39 @@ public class ControllerEstate extends AbstractController {
         return "SUCCESS";
     }
 
+    /**
+     * Get All Wishlist
+     * @param form
+     * @param map
+     * @return
+     */
     @RequestMapping(value="/wishlist",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String wishlist(@ModelAttribute FormWishlist form, ModelMap map) throws IOException {
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        isSession();
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
         form.setUserId(user.getId().toString());
         Page<Wishlist> wishlists = serviceWishlist.filter(form);
         map.put("wishlists",wishlists);
         return "web/content/" + "optional/wishlist";
     }
-
+    /**
+     * Redirect to Sell-upload
+     * @param form
+     * @return
+     */
     @RequestMapping(value="/sell-upload",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String sellUpload(@ModelAttribute FormEstate formEstate, ModelMap map) {
+    public String sellUpload(FormEstate form) {
+        return "web/content/estate/sell-upload";
+    }
+
+    /**
+     * getALlCategory
+     *
+     * @return
+     */
+    @RequestMapping(value="/getAllCategory",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity findBusinessType(){
         List<Category> categories = serviceBusinessType.findAllCategory();
-        List<BusinessType> businessTypes = serviceBusinessType.findAll();
-
-        map.put("categories",categories);
-        map.put("businessTypes",businessTypes);
-
-        return "web/content/estate/" + "sell-upload";
+        return new ResponseEntity(categories,HttpStatus.OK);
     }
 }

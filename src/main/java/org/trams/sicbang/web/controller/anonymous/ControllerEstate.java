@@ -44,6 +44,13 @@ public class ControllerEstate extends AbstractController {
         return BASE_TEMPLATE + "map-all";
     }
 
+
+    /**
+     * Redirect to map-all
+     * @param map
+     * @param formEstate
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
     public String goEstatePage(ModelMap map,@ModelAttribute FormEstate formEstate) {
         initPage(map);
@@ -55,6 +62,8 @@ public class ControllerEstate extends AbstractController {
         map.put("subway",formEstate.getSubwayStation());
         return BASE_TEMPLATE + "map-all";
     }
+
+
     // init all model in map page
     private void initPage(ModelMap map){
 
@@ -75,13 +84,13 @@ public class ControllerEstate extends AbstractController {
         map.put("restaurants",restaurants);
         map.put("liquors",liquors);
     }
+
     /**
      * Detail
      * @param estateId
      * @param map
      * @return
      */
-
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detail(
             @PathVariable(value = "id") String estateId,
@@ -99,8 +108,8 @@ public class ControllerEstate extends AbstractController {
 
         //if logged as realtor
         if(auth != null){
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            User user = serviceUser.findUserByEmail(userDetails.getUsername());
+            isSession();
+            User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
             FormWishlist formWishlist = new FormWishlist();
             formWishlist.setUserId(user.getId().toString());
             formWishlist.setEstateId(estateId);
@@ -214,6 +223,12 @@ public class ControllerEstate extends AbstractController {
 
         return new ResponseEntity(estates,HttpStatus.OK);
     }
+
+    /**
+     * Search By Business Type
+     * @param formEstate
+     * @return
+     */
     @RequestMapping(value = "/search/business", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity searchEstateByBusiness(@ModelAttribute FormEstate formEstate){
@@ -242,6 +257,12 @@ public class ControllerEstate extends AbstractController {
         List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
         return new ResponseEntity(estates,HttpStatus.OK);
     }
+
+    /**
+     * Get top 10 estate per type when load map-all page
+     * @param formEstate
+     * @return
+     */
     @RequestMapping(value = "/map", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity estateMap(@ModelAttribute FormEstate formEstate){
@@ -257,10 +278,20 @@ public class ControllerEstate extends AbstractController {
         return new ResponseEntity(estates,HttpStatus.OK);
     }
 
+    /**
+     *
+     * Get all city
+     * @return
+     */
     @RequestMapping(value = "/getAllCity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity getAllCity(){
-        List<City> cities = serviceLocation.findAllCity();
+        List<City> cities = new ArrayList();
+        try {
+           cities = serviceLocation.findAllCity();
+        }catch(Exception e) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
         return new ResponseEntity(cities,HttpStatus.OK);
     }
 

@@ -32,13 +32,16 @@ public class ControllerRecents extends AbstractController {
 
     final String BASE_TEMPLATE = "web/content/";
 
-
-
+    /**
+     * Redirect to lately
+     * @param form
+     * @param map
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String lately(@ModelAttribute FormRecent form, ModelMap map) throws IOException {
-        Authentication auth = serviceAuthorized.isAuthenticated();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        isSession();
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
         form.setUserId(user.getId().toString());
         Page<Recent> recents = serviceRecent.filter(form);
         map.put("recents",recents);

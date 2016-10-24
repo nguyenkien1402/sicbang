@@ -1,3 +1,7 @@
+/**
+ * Created by DinhTruong on 10/3/2016.
+ */
+
 $(document).ready(function(){
     //초기 변수 설정
     var estateType = $("#estateType").val();

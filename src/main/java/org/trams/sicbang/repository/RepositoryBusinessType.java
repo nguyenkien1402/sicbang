@@ -13,5 +13,6 @@ import java.util.List;
  * Created by voncount on 5/12/16.
  */
 public interface RepositoryBusinessType extends JpaRepository<BusinessType, Long> {
-
+    @Query(value = "SELECT * FROM BUSINESS_TYPE b where b.category_id = :categoryId",nativeQuery = true)
+    public List<BusinessType> findByCategory(@Param("categoryId") Long categoryId);
 }
