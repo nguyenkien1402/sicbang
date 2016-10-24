@@ -10,12 +10,12 @@
         <div class="page-head">
             <div class="container">
                 <div class="page-title">
-                    <h1>신고관리</h1>
+                    <h1>문의관리</h1>
                 </div>
                 <!-- .page-title-->
                 <div class="page-toolbar">
-                    <a th:href="@{/admin/report}" class="btn btn-default" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/report') ? 'active' : ''}"><i class="fa fa-plus-left"></i>접수된 신고</a>
-                    <a th:href="@{/admin/answer}" class="btn btn-default" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/answer') ? 'active' : ''}"><i class="fa fa-plus-left"></i>답변내역</a>
+                    <a th:href="@{/admin/report}" class="btn btn-default" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/report') ? 'active' : ''}"><i class="fa fa-plus-left"></i>신고 관리</a>
+                    <a th:href="@{/admin/answer}" class="btn btn-default" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/answer') ? 'active' : ''}"><i class="fa fa-plus-left"></i>문의 관리</a>
                 </div>
                 <!-- .page-toolbar-->
             </div>
@@ -45,7 +45,7 @@
                                         <!--<td th:text="${#strings.length(item.content) ge 100 ? #strings.substring(item.content,0,100) : item.content}">Content</td>-->
                                         <td th:text="${item.createdDate}"></td>
                                         <td>
-                                            <a href="javascript:;" class="text-danger btn-action-delete" th:attr="data-url=@{__${#httpServletRequest.getRequestURI()}__/__${item.id}__}" th:text="탈퇴">Delete</a>
+                                            <a href="javascript:;" class="text-danger btn-action-delete" th:attr="data-url=@{__${#httpServletRequest.getRequestURI()}__/__${item.id}__}" th:text="삭제">Delete</a>
                                         </td>
                                     </tr>
                                     </tbody>

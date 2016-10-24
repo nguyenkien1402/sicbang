@@ -353,6 +353,34 @@ public class AuthenticatedApi extends AbstractController {
         return new Response(MessageResponse.OK, estates);
     }
 
+    /*
+     * ask api
+     */
+    @ApiOperation(
+            value = "User ask - page 44",
+            notes = "Request:" +
+                    "<ol>" +
+                    "<li>title</li>" +
+                    "<li>content</li>" +
+                    "<li>name</li>" +
+                    "<li>contact</li>" +
+                    "</ol>")
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/ask", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Response userAsk(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestBody FormAsk form) {
+        FormError error = validationUser.validateAsk(form);
+        System.out.println(getUserDetail().getUserId());
+        form.setUserId(getUserDetail().getUserId());
+        if (error != null) {
+            return new Response(MessageResponse.EXCEPTION_BAD_REQUEST, error);
+        }
+
+        return new Response(MessageResponse.OK, serviceAsk.create(form));
+    }
     ;
     // --------------------------------------------------------
     // -------------------- End Estate ------------------------

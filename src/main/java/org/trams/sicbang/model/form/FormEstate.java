@@ -261,11 +261,22 @@ public class FormEstate extends BaseFormSearch<Estate> {
                 );
             }
 
-
+            if(!Strings.isNullOrEmpty(subwayStation)){
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.subwayStation),subwayStation)
+                );
+            }
+            if(!Strings.isNullOrEmpty(businessZone)){
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.businessZone),businessZone)
+                );
+            }
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );
-
+            predicates.add(
+                    criteriaBuilder.equal(root.get(Estate_.isApproved),isApproved)
+            );
 
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Estate_.id));

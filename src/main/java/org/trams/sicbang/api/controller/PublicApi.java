@@ -118,27 +118,7 @@ public class PublicApi extends AbstractController {
         return new Response(MessageResponse.OK, user);
     }
 
-    @ApiOperation(
-            value = "User ask - page 44",
-            notes = "Request:" +
-                    "<ol>" +
-                    "<li>title</li>" +
-                    "<li>content</li>" +
-                    "<li>name</li>" +
-                    "<li>contact</li>" +
-                    "</ol>")
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/ask", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Response userAsk(@RequestBody FormAsk form) {
-        FormError error = validationUser.validateAsk(form);
-        if (error != null) {
-            return new Response(MessageResponse.EXCEPTION_BAD_REQUEST, error);
-        }
 
-        return new Response(MessageResponse.OK, serviceAsk.create(form));
-    }
     // ------------------------------------------------------
     // -------------------- End User ------------------------
     // ------------------------------------------------------
@@ -206,12 +186,15 @@ public class PublicApi extends AbstractController {
             @ModelAttribute FormEstate form) {
 
         Page<Estate> estates;
+        System.out.println("subway in form: "+form.getSubwayStation());
         if (!Strings.isNullOrEmpty(authorization)) {
             logger.info("isLogin : " + true);
+            form.setIsApproved("1");
             estates = serviceEstate.filter(form, getUserDetail());
         } else {
             logger.info("isLogin : " + false);
             logger.info(form.toString());
+            form.setIsApproved("1");
             estates = serviceEstate.filter(form);
         }
         logger.info(estates);

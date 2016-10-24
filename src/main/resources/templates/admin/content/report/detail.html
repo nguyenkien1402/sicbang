@@ -42,14 +42,14 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label"><strong>시간</strong></label>
+                                            <label class="col-md-3 control-label"><strong>작성일시</strong></label>
                                             <div class="col-md-9">
                                                 <input type="text" readonly="readonly" th:value="${item.createdDate}" value="01/01/2001" class="form-control"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label"><strong>사업자 등록번호</strong></label>
+                                            <label class="col-md-3 control-label"><strong>연락처</strong></label>
                                             <div class="col-md-9">
                                                 <input type="text" readonly="readonly" th:value="${item.cellphone}" value="155223513" class="form-control"/>
                                             </div>
@@ -58,7 +58,7 @@
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"><strong>신고매물</strong></label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly="readonly" th:value="${item.estate.name}" value="신태열" class="form-control"/>
+                                                <input type="text" readonly="readonly" th:value="${item.user.email}" value="신태열" class="form-control"/>
                                                 <input type="text" readonly="readonly" th:value="${item.estate.detail}" value="신태열" class="form-control"/>
                                                 <input type="text" readonly="readonly" th:value="${item.estate.createdDate}" value="신태열" class="form-control"/>
                                             </div>
@@ -75,8 +75,7 @@
                                 <!-- .form-body-->
 
                                 <div class="form-actions text-center">
-                                    <a th:href="@{/admin/answer/create?reportId=__${item.id}__}" class="btn green">삭제하기</a>
-                                    <a href="javascript:;" class="btn red" id="btn-delete">답변하기</a>
+                                    <a href="javascript:;" class="btn red" id="btn-delete">삭제하기</a>
                                     <a th:href="@{/admin/estate/__${item.estate.id}__}" class="btn green">매물 보기</a>
                                 </div>
                                 <!-- .form-actions-->

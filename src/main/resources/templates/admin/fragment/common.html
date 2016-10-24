@@ -55,7 +55,7 @@
 								<a th:href="@{/admin/notice}">공지사항</a>
 							</li>
 							<li th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/report') or #httpServletRequest.getRequestURI().startsWith('/admin/answer') ? 'active' : ''}">
-								<a th:href="@{/admin/report}">신고관리</a>
+								<a th:href="@{/admin/report}">신고/문의관리</a>
 							</li>
 							<li th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/main') ? 'active' : ''}">
 								<a th:href="@{/admin/main}">관리자</a>

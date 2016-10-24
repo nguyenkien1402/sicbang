@@ -141,6 +141,7 @@ public class ControllerBroker extends AbstractController {
                 System.out.println("call advertised");
                 FormEstate formEstate = new FormEstate();
                 formEstate.setUserId(userId);
+                formEstate.setIsApproved("1");
                 formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
                 formEstate.setIsAdvertised(Boolean.TRUE.toString());
                 Page<Estate> estates = serviceEstate.filter(formEstate);
@@ -150,6 +151,7 @@ public class ControllerBroker extends AbstractController {
             case "tab-estates-registered": {
                 FormEstate formEstate = new FormEstate();
                 formEstate.setUserId(userId);
+                formEstate.setIsApproved("1");
                 formEstate.setPageIndex(_pageIndex.isPresent() ? _pageIndex.get() : 0);
                 Page<Estate> estates = serviceEstate.filter(formEstate);
                 map.put("items", estates);
@@ -170,6 +172,7 @@ public class ControllerBroker extends AbstractController {
             ModelMap map) {
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
+        formEstate.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
         User user = estate.getUser();
         Collection<Attachment> listAttach = new ArrayList<Attachment>();
@@ -201,6 +204,7 @@ public class ControllerBroker extends AbstractController {
             ModelMap map) {
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
@@ -230,6 +234,7 @@ public class ControllerBroker extends AbstractController {
         System.out.println("type:" +type);
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
         Estate estate = new Estate();
         serviceEstate.updateEstateType(estateForm,type);
         estate = serviceEstate.findOne(estateForm);
@@ -274,6 +279,7 @@ public class ControllerBroker extends AbstractController {
 //        String estateId = formEstate.getEstateId();
         FormEstate formSearch = new FormEstate();
         formSearch.setEstateId(estateId);
+        formSearch.setIsApproved("1");
         Estate estate = serviceEstate.findOne(formSearch);
         if(!Strings.isNullOrEmpty(formEstate.getDetail())) {
             formEstate.setDetail(formEstate.getDetail().trim());

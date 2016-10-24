@@ -153,12 +153,13 @@ public class ControllerEstate extends AbstractController {
             @PathVariable(value = "estateId") String estateId,
             @ModelAttribute FormEstate formEstate,
             ModelMap map) {
-        System.out.println("estate id: "+estateId);
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
-
+        estateForm.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
+        System.out.println("estate name: "+estate.getName());
         User user = estate.getUser();
+        System.out.println("user email: "+estate.getUser().getEmail());
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
         map.put("attachments", listAttach);
@@ -189,6 +190,7 @@ public class ControllerEstate extends AbstractController {
         System.out.println("estate id: "+id);
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(id);
+        estateForm.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
@@ -218,6 +220,7 @@ public class ControllerEstate extends AbstractController {
             ModelMap map) {
         FormEstate formSearch = new FormEstate();
         formSearch.setEstateId(estateId);
+        formEstate.setIsApproved("1");
         Estate estate = serviceEstate.findOne(formSearch);
         serviceEstate.updateEstate(formEstate,estate);
 //        Collection<Attachment> listAttach = estate.getAttachments();
@@ -296,6 +299,7 @@ public class ControllerEstate extends AbstractController {
         System.out.println("Go estate repair");
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
@@ -326,6 +330,7 @@ public class ControllerEstate extends AbstractController {
         System.out.println("name: "+form.getName());
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
         Estate estate = new Estate();
         serviceEstate.updateEstateType(estateForm,type);
         estate = serviceEstate.findOne(estateForm);

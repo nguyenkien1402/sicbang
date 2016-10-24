@@ -2,6 +2,7 @@ package org.trams.sicbang.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  * Created by voncount on 5/4/16.
@@ -14,6 +15,9 @@ public class Ask extends BaseTimestampEntity {
     private String content;
     private String name;
     private String contact;
+
+    @ManyToOne
+    private User user;
 
     public String getTitle() {
         return title;
@@ -45,5 +49,13 @@ public class Ask extends BaseTimestampEntity {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

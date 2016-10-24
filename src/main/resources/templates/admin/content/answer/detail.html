@@ -10,7 +10,7 @@
         <div class="page-head">
             <div class="container">
                 <div class="page-title">
-                    신고관리
+                    문의관리
                 </div>
                 <!-- .page-title-->
                 <div class="page-toolbar">
@@ -28,17 +28,17 @@
                         <div class="portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    신고관리
+                                    문의관리
                                 </div>
                             </div>
                             <div class="portlet-body form">
                                 <!-- .form-body-->
-                                <form class="form-horizontal form-ajax">
+                                <form id="create-answer-ajax" class="form-horizontal" th:action="@{/admin/answer/create/{askId}(askId=${item.id})}" method="post">
                                     <div class="form-body">
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"><strong>제목</strong></label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly="readonly" name="title" th:value="${item.title}" value="xigbang@trams.co.kr" class="form-control"/>
+                                                <input type="text" readonly="readonly" th:value="${item.title}" value="xigbang@trams.co.kr" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -47,18 +47,51 @@
                                                 <input type="text" readonly="readonly" th:value="${item.createdDate}" value="01/01/2001" class="form-control"/>
                                             </div>
                                         </div>
+
+                                        <!-- question name area -->
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>이름</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.name}" value="01/01/2001" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- question phone number -->
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>연락처</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.contact}" value="01/01/2001" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- question email number -->
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>이메일</strong></label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly="readonly" th:value="${item.user.email}" value="01/01/2001" class="form-control"/>
+                                            </div>
+                                        </div>
+
+
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"><strong>답변내용</strong></label>
                                             <div class="col-md-9">
-                                                <textarea rows="15" name="content" readonly="readonly" th:text="${item.content}" class="form-control">Lorem ipsum</textarea>
+                                                <textarea rows="15" readonly="readonly" th:text="${item.content}" class="form-control">Lorem ipsum</textarea>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><strong>답변내용</strong></label>
+                                            <div class="col-md-9">
+                                                <textarea rows="15" th:text="${answer != null ? answer.content : ''}" th:readonly="${answer != null ? true : false}" name="content" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div class="form-actions text-center">
-                                        <a th:href="@{/admin/answer/edit/{id}(id=${item.id})}" class="btn green">수정하기</a>
+                                        <input th:classappend="${answer != null ? 'hide' : 'btn green'}" type="submit" value="수정하기"/>
                                         <a href="javascript:;" class="btn red" id="btn-delete">삭제하기</a>
-                                        <a th:href="@{/admin/answer}" class="btn green">목록</a>
                                     </div>
                                     <!-- .form-actions-->
                                 </form>
@@ -74,6 +107,7 @@
 
     <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
+
         $('#btn-delete').click(function() {
             admin.showPopupConfirm(null, function() {
                 admin.deleteItem(location.href, function() {
@@ -81,6 +115,15 @@
                 });
             });
         });
+        $(document).ready(function () {
+            var admin = new Admin();
+            $('#create-answer-ajax').on('submit',function (evt) {
+                console.log("create ajax");
+                evt.preventDefault();
+                admin.submitFormReport($(this));
+            });
+        });
+
     /*]]>*/
     </script>
 

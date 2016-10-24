@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trams.sicbang.model.entity.Ask;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.enumerate.MessageResponse;
 import org.trams.sicbang.model.exception.ApplicationException;
 import org.trams.sicbang.model.form.FormAsk;
@@ -22,6 +23,8 @@ public class ServiceAsk extends BaseService implements IServiceAsk {
     public Ask create(FormAsk form) {
         Ask ask = new Ask();
         BeanUtils.copyProperties(form, ask);
+        User user = repositoryUser.findByUserId(Integer.parseInt(form.getUserId()));
+        ask.setUser(user);
         return repositoryAsk.save(ask);
     }
 

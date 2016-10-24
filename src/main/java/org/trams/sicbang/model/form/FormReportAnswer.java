@@ -22,6 +22,7 @@ public class FormReportAnswer extends BaseFormSearch<ReportAnswer> {
     private String reportId;
     private String title;
     private String content;
+    private String askId;
 
     public String getReportAnswerId() {
         return reportAnswerId;
@@ -55,23 +56,31 @@ public class FormReportAnswer extends BaseFormSearch<ReportAnswer> {
         this.content = content;
     }
 
+    public String getAskId() {
+        return askId;
+    }
+
+    public void setAskId(String askId) {
+        this.askId = askId;
+    }
+
     @Override
     public Specification<ReportAnswer> getSpecification() {
         return (Root<ReportAnswer> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
-            root.join(ReportAnswer_.reportInformation, JoinType.INNER);
+            root.join(ReportAnswer_.ask, JoinType.INNER);
 
             List<Predicate> predicates = new ArrayList<>();
             Optional<Long> _reportAnswerId = ConvertUtils.toLongNumber(reportAnswerId);
-            Optional<Long> _reportId = ConvertUtils.toLongNumber(reportId);
+            Optional<Long> _askId = ConvertUtils.toLongNumber(askId);
 
             if (_reportAnswerId.isPresent()) {
                 predicates.add(
                         criteriaBuilder.equal(root.get(ReportAnswer_.id), _reportAnswerId.get())
                 );
             }
-            if (_reportId.isPresent()) {
+            if (_askId.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.equal(root.get(ReportAnswer_.reportInformation).get(ReportInformation_.id), _reportId.get())
+                        criteriaBuilder.equal(root.get(ReportAnswer_.ask).get(Ask_.id), _askId.get())
                 );
             }
 

@@ -38,6 +38,40 @@ function Admin() {
         });
     };
 
+    this.submitFormReport = function($form, callback) {
+        _this.resetForm($form);
+
+        if (!_this.validateForm($form)) {
+            return false;
+        }
+
+        _this.convertForm($form);
+
+        $.ajax({
+            url: $form.attr('action'),
+            method: 'post',
+            data: $form.serialize()
+        }).then(function(data) {
+            _this.showPopupNotice('“이메일 발송에 성공하였습니다.', function() {
+                if (callback) callback();
+                else location.reload();
+            });
+        }, function(jqXHR) {
+            _this.resetForm($form);
+            // show message error
+            if (jqXHR.status == 400) {
+                var response = JSON.parse(jqXHR.responseText);
+                $.each(response.errors, function(key, value) {
+                    _this.showErrorForm($form, key, value);
+                });
+            }
+            // undefined error, show popup
+            else {
+                _this.showPopupNotice('변경하지 못 했습니다.');
+            }
+        });
+    };
+
     this.submitFormImage = function($form, callback) {
         _this.resetForm($form);
 

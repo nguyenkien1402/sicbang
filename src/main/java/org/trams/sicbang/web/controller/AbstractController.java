@@ -74,6 +74,8 @@ public class AbstractController {
     protected IServiceDistrict serviceDistrict;
     @Autowired
     protected IServiceTown serviceTown;
+    @Autowired
+    protected IServiceAsk serviceAsk;
 
 
     protected final Logger logger = Logger.getLogger(this.getClass());

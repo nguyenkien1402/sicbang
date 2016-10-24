@@ -15,7 +15,7 @@ public class ReportAnswer extends BaseTimestampEntity {
     private String content;
 
     @OneToOne
-    private ReportInformation reportInformation;
+    private Ask ask;
 
     public String getTitle() {
         return title;
@@ -33,11 +33,11 @@ public class ReportAnswer extends BaseTimestampEntity {
         this.content = content;
     }
 
-    public ReportInformation getReportInformation() {
-        return reportInformation;
+    public Ask getAsk() {
+        return ask;
     }
 
-    public void setReportInformation(ReportInformation reportInformation) {
-        this.reportInformation = reportInformation;
+    public void setAsk(Ask ask) {
+        this.ask = ask;
     }
 }

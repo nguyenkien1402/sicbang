@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trams.sicbang.model.entity.Ask;
 import org.trams.sicbang.model.entity.ReportAnswer;
 import org.trams.sicbang.model.entity.ReportInformation;
 import org.trams.sicbang.model.enumerate.MessageResponse;
@@ -33,12 +34,18 @@ public class ServiceReportAnswer extends BaseService implements IServiceReportAn
     @Override
     public ReportAnswer create(FormReportAnswer form) {
 
-        String reportId = form.getReportId();
-        ReportInformation reportInformation = repositoryReportInformation.findOne(Long.parseLong(reportId));
-
+        String askId = form.getAskId();
+        Ask ask = repositoryAsk.findOne(Long.parseLong(askId));
+        System.out.println("ask title: "+ask.getTitle());
         ReportAnswer reportAnswer = new ReportAnswer();
-        reportAnswer.setReportInformation(reportInformation);
-        BeanUtils.copyProperties(form, reportAnswer);
+        reportAnswer.setAsk(ask);
+        reportAnswer.setContent(form.getContent());
+        reportAnswer.setTitle(ask.getTitle());
+//        ReportInformation reportInformation = repositoryReportInformation.findOne(Long.parseLong(reportId));
+
+//        ReportAnswer reportAnswer = new ReportAnswer();
+//        reportAnswer.setReportInformation(reportInformation);
+//        BeanUtils.copyProperties(form, reportAnswer);
 
         return repositoryReportAnswer.save(reportAnswer);
     }
