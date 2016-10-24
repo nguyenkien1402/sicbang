@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static javax.swing.text.StyleConstants.ModelAttribute;
+
 /**
  * Created by voncount on 15/04/2016.
  */
@@ -51,8 +53,10 @@ public class ControllerEstate extends AbstractController {
     public String index(@ModelAttribute FormEstate formEstate, ModelMap map) {
         isSession();
         User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+        formEstate.setIsApproved("1");
         formEstate.setUserId(user.getId().toString());
         Page<Estate> estates = serviceEstate.filter(formEstate);
+        System.out.println(estates.getTotalElements());
         map.put("estates",estates);
         return BASE_TEMPLATE + "broker-content-list";
     }
@@ -215,4 +219,30 @@ public class ControllerEstate extends AbstractController {
         List<Category> categories = serviceBusinessType.findAllCategory();
         return new ResponseEntity(categories,HttpStatus.OK);
     }
+
+    @RequestMapping(value="/paid",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String paid() {
+        return "web/content/policy/paid";
+    }
+
+    @RequestMapping(value="/changeAdv",method = RequestMethod.POST,produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public Object changeAdv(@ModelAttribute FormEstate formEstate) {
+        isSession();
+        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+        formEstate.setUserId(user.getId().toString());
+        formEstate.setIsApproved("1");
+        String advertised = formEstate.getIsAdvertised();
+        System.out.println(advertised);
+        formEstate.setIsAdvertised(null);
+        try {
+            serviceEstate.changeAdvertisedEstate(formEstate, advertised);
+        }catch(Exception e){
+            e.printStackTrace();
+            return "FAIL";
+        }
+        return "SUCCESS";
+    }
+
+
 }

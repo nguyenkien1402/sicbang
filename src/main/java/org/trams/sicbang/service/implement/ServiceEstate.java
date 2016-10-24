@@ -472,6 +472,22 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         }
         return 0;
     }
+    @Override
+    public Estate changeAdvertisedEstate(FormEstate formEstate,String isAdvertised){
+        Estate estate = repositoryEstate.findOne(formEstate.getSpecification());
+        User user = estate.getUser();
+        System.out.println("isAdvertised: "+isAdvertised);
+        Optional<Boolean> _isAdvertised = ConvertUtils.toBoolean(isAdvertised);
+        if (_isAdvertised.isPresent() && user.getAdvertisedRemain() > 0) {
+            estate.setTypeTrust("REALTOR");
+            if(_isAdvertised.get()) {
+                user.setAdvertisedRemain(user.getAdvertisedRemain() - 1);
+                estate.setTypeTrust("TRUSTED_STARTUP");
+            }
+            estate.setAdvertised(_isAdvertised.get());
+        }
+        return repositoryEstate.save(estate);
+    }
 }
 
 

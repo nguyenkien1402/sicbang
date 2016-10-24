@@ -199,5 +199,28 @@ $(document).ready(function() {
         alert("Members only; please login.(로그인해주세요)");
     });
 
+    $("#changeAdvertised").click(function(){
+         var status = $("#changeAdvertised").text();
+         var isAdvertised = false;
+         if(status == "광고등록"){
+            isAdvertised = true;
+         }
+         var estateId = $("#estateId").val();
+         $.ajax({
+             url:"/member/estate/changeAdv",
+             type:"POST",
+             data:{
+                 isAdvertised: isAdvertised,
+                 estateId: estateId,
+             },success:function(data){
+                     if(data == "SUCCESS"){
+                         location.reload();
+                     }else{
+                         alert("false");
+                     }
+             }
+         });
+         return false;
+    });
 });
 

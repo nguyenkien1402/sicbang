@@ -93,20 +93,19 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String detail(
-            @PathVariable(value = "id") String estateId,
-            ModelMap map) {
+            @PathVariable(value = "id") String estateId, ModelMap map) {
+
         FormEstate estateForm = new FormEstate();
+        estateForm.setIsApproved("1");
         estateForm.setEstateId(estateId);
         Authentication auth = serviceAuthorized.isAuthenticated();
         Estate estate = serviceEstate.findOne(estateForm);
-
         Collection<Attachment> listAttach = estate.getAttachments();
         System.out.println("list attach: " +listAttach.size());
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
-
-        //if logged as realtor
+        //if logged as member
         if(auth != null){
             isSession();
             User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
@@ -115,10 +114,8 @@ public class ControllerEstate extends AbstractController {
             formWishlist.setEstateId(estateId);
             Wishlist wishlist = serviceWishlist.findOne(formWishlist);
             if(wishlist != null){
-                System.out.println("Khác null");
                map.put("isWishList","true");
             }else{
-                System.out.println("null");
                 map.put("isWishList","false");
             }
             map.put("user",user);
@@ -134,11 +131,12 @@ public class ControllerEstate extends AbstractController {
             serviceRecent.create(formRecent);
             }
             if(user.getId() == estate.getUser().getId()){
-                if(user.getPermission() != null && user.getPermission().getName().equals("TRUSTED_BROKER")){ // if estate is premium.
+                if(user.getPermission().getName().equals("TRUSTED_BROKER")){ // if estate is premium.
                     return BASE_TEMPLATE_BROKER +"/broker-content-premium";
                 }
                 // estate isn't premium.
                 System.out.println("go for broker-content");
+                map.put("broker_type",user.getPermission().getName());
                 return BASE_TEMPLATE_BROKER +"/broker-content";
             }
 

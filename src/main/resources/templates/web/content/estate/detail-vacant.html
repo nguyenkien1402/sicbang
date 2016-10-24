@@ -37,11 +37,11 @@
                         <div class="infoText">
                             <p><strong>담당자:</strong> <span th:text="${estate.user.companyName}"></span></p>
                             <p><strong>연락처:</strong> <span th:text="${estate.user.cellphoneNumber}"></span></p>
-                            <p>
+                            <p th:if="${estate.user.permission.name == 'TRUSTED_BROKER'}">
                                 <strong>담당자 정보:</strong><br/>
                                 <span>
-                                    이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.
-                                </span>
+                            이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.
+                             </span>
                             </p>
                         </div>
                         <button th:if="${@serviceAuthorized.isAuthenticated()}" class="btn primary wide" id="wishList">

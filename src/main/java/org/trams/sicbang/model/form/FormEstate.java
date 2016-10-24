@@ -95,6 +95,8 @@ public class FormEstate extends BaseFormSearch<Estate> {
     private String premiumCostTo;
     private String isApproved;
     private String typeTrust;
+
+
     public static Specification<Estate> dongLike(final String keyword) {
         return (Root<Estate> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.like(root.get(Estate_.all_addr), "%" + keyword);
@@ -271,6 +273,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
                         criteriaBuilder.equal(root.get(Estate_.businessZone),businessZone)
                 );
             }
+
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );

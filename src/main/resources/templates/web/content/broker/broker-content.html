@@ -10,7 +10,7 @@
                     <h2>내가 올린 매물</h2>
                 </div>
                 <div class="" style="margin-bottom:40px;">
-                    <button class="btn warning littleWide">광고등록</button>
+                    <a th:href="@{/member/estate/paid}"><button class="btn warning littleWide">광고등록</button></a>
                     <button class="btn warning littleWide">수정</button>
                     <button id="deleteMarket" class="btn warning littleWide">삭제</button>
                     <a th:href="@{/member/estate}"><button class="btn warning littleWide">목록</button></a>
@@ -43,12 +43,7 @@
                 <div class="infoText">
                     <p><strong>담당자:</strong> <span th:text="${estate.user.companyName}"></span></p>
                     <p><strong>연락처:</strong> <span th:text="${estate.user.cellphoneNumber}"></span></p>
-                    <p>
-                        <strong>담당자 정보:</strong><br/>
-                        <span>
-                                    이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.
-                                </span>
-                    </p>
+
                 </div>
             </div>
         </div>

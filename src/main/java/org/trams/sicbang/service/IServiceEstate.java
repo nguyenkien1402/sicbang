@@ -96,4 +96,6 @@ public interface IServiceEstate {
 //    Long totalEstateFilterBySubway(String name);
 
     Integer changeStatus(String id, String status);
+
+    Estate changeAdvertisedEstate(FormEstate formEstate,String isAdvertised);
 }
