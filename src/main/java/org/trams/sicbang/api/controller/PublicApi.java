@@ -57,7 +57,8 @@ public class PublicApi extends AbstractController {
             return new Response(MessageResponse.EXCEPTION_BAD_REQUEST, error);
         }
         CustomUserDetail userDetail = serviceUser.authenticateUser(form);
-        if(userDetail.getType().equals(UserType.NON_BROKER.name())) {
+        User user = serviceUser.findByUserId(Integer.parseInt(userDetail.getUserId()));
+        if(userDetail.getType().equals(UserType.NON_BROKER.name()) && user.getPermission().getName().equals("BROKER")) {
             error = new FormError();
             error.rejectValue("message",MessageResponse.EXCEPTION_NOT_TRUST_BROKER.getMessage());
             return new Response(MessageResponse.EXCEPTION_NOT_TRUST_BROKER, error);
@@ -320,7 +321,6 @@ public class PublicApi extends AbstractController {
     public Response popupTrust(
             @ModelAttribute FormSlide form
     ){
-        logger.info("api: " + "get list of slide banner");
         Slide slide = null;
         slide = serviceSlide.fileterPopup(form);
         if (slide == null) {

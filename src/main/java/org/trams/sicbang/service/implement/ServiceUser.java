@@ -71,6 +71,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
         userDetail.setEnabled(true);
         userDetail.setCredentialsNonExpired(true);
         userDetail.setType(user.getType().name());
+
         if (rememberme != null && !rememberme.trim().isEmpty() && rememberme.equals("on")) {
             userDetail.setExpiry(-1L);
         }
