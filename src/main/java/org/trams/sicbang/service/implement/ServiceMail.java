@@ -177,7 +177,7 @@ public class ServiceMail extends BaseService implements IServiceMail{
                     for (int i = 0 ; i < emails.size() ; i++) {
                         String recipient = emails.get(i);
                         helper.setTo(recipient);
-                        helper.setReplyTo(recipient);
+//                        helper.setReplyTo(recipient);
 
                         Set<MultipartFile> attachments = form.getAttachments();
                         if (attachments != null && !attachments.isEmpty()) {
@@ -192,7 +192,6 @@ public class ServiceMail extends BaseService implements IServiceMail{
                         mail.setMailContent(form.getMailContent());
                         logger.info("mail recipient : " + recipient + "title : " + form.getMailSubject() + "form.getContent() : " + form.getMailContent());
                         mail.encodeContent();
-                        System.out.println("Encode 1: " + mail.getMailContent());
                         mailSender.send(mimeMessage); // sau nay de cai nay len tren save mail
                         repositoryMail.save(mail);
                         return 1;

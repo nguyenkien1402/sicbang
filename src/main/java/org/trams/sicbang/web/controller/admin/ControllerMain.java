@@ -393,12 +393,13 @@ public class ControllerMain extends AbstractController {
             @ModelAttribute FormMail form,
             ModelMap map) {
         logger.info("mailCreatePost form  : "+form.toString());
-        System.out.println("type mail: "+form.getType());
+        System.out.println("mail content: "+form.getMailContent());
 //        if(Strings.isNullOrEmpty(form.getType())){
             switch (getRequestMethod()) {
                 case POST:
                     FormError error = validationEmail.validateCreate(form);
                     if (error != null) {
+                        System.out.println("has error");
                         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
                     }
                     int check = serviceMail.send(form);

@@ -28,15 +28,11 @@ import java.util.Set;
 @ToString
 public class FormMail extends BaseFormSearch<Mail> {
 
-    @ApiModelProperty(hidden = true) @Getter @Setter
+    @ApiModelProperty(hidden = true)
     private String id;
-    @Getter @Setter
     private String mailSubject;
-    @Getter @Setter
     private String mailTo;
-    @Getter @Setter
     private String mailContent;
-    @Getter @Setter
     private Set<MultipartFile> attachments;
 
     private List<String> emailsTo;
@@ -148,6 +144,7 @@ public class FormMail extends BaseFormSearch<Mail> {
     public void setEmailsTo(List<String> emailsTo) {
         this.emailsTo = emailsTo;
     }
+
 
     public String converType(){
         switch (type){

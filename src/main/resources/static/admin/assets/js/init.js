@@ -124,13 +124,13 @@ function Admin() {
         console.log("data:"+formData);
         $.ajax({
             url: $form.attr('action'),
-            type: 'POST',
+            type: 'post',
             data: formData,
             cache: false,
             contentType: false,
             processData: false
         }).then(function(data) {
-            _this.showPopupNotice('email sent.', function() {
+            _this.showPopupNotice('이메일 발송에 성공하였습니다.', function() {
                 if (callback) callback();
                 else location.reload();
             });
@@ -167,6 +167,40 @@ function Admin() {
             _this.showPopupNotice('변경 되었습니다.', function() {
                 // if (callback) callback();
                 // else location.reload();
+            });
+        }, function(jqXHR) {
+            _this.resetForm($form);
+            // show message error
+            if (jqXHR.status == 400) {
+                var response = JSON.parse(jqXHR.responseText);
+                $.each(response.errors, function(key, value) {
+                    _this.showErrorForm($form, key, value);
+                });
+            }
+            // undefined error, show popup
+            else {
+                _this.showPopupNotice('변경하지 못 했습니다.');
+            }
+        });
+    };
+
+    this.submitFormReport = function($form, callback) {
+        _this.resetForm($form);
+
+        if (!_this.validateForm($form)) {
+            return false;
+        }
+
+        _this.convertForm($form);
+
+        $.ajax({
+            url: $form.attr('action'),
+            method: 'post',
+            data: $form.serialize()
+        }).then(function(data) {
+            _this.showPopupNotice('“이메일 발송에 성공하였습니다.', function() {
+                if (callback) callback();
+                else location.reload();
             });
         }, function(jqXHR) {
             _this.resetForm($form);
@@ -455,6 +489,8 @@ $(function() {
         var formatted_value = admin.formatNumber($(this).val(), SEPARATOR_NUMBER);
         $(this).val(formatted_value);
     });
+
+
     admin.populateFilter();
     admin.handleImgError();
 

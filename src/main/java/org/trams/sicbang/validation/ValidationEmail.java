@@ -29,11 +29,6 @@ public class ValidationEmail {
                 if (Strings.isNullOrEmpty(title)) {
                     error.rejectValue("title", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
                 }
-                if (Strings.isNullOrEmpty(type)) {
-                    if (Strings.isNullOrEmpty(recipient)) {
-                        error.rejectValue("recipient", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
-                    }
-                }
                 if (Strings.isNullOrEmpty(content)) {
                     error.rejectValue("content", MessageResponse.EXCEPTION_FIELD_INVALID.getMessage());
                 }
