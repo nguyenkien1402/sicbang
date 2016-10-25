@@ -213,7 +213,7 @@ public class PublicApi extends AbstractController {
         logger.info("estateid : " + estateid);
         FormEstate form = new FormEstate();
         form.setEstateId(estateid);
-
+        form.setIsApproved("1");
         Page<Estate> page = serviceEstate.filter(form);
         if (!page.iterator().hasNext()) {
             return new Response(MessageResponse.EXCEPTION_NOT_FOUND);
