@@ -98,6 +98,7 @@ public class ControllerEstate extends AbstractController {
         FormEstate estateForm = new FormEstate();
         estateForm.setIsApproved("1");
         estateForm.setEstateId(estateId);
+        System.out.println(estateId);
         Authentication auth = serviceAuthorized.isAuthenticated();
         Estate estate = serviceEstate.findOne(estateForm);
         Collection<Attachment> listAttach = estate.getAttachments();
@@ -217,7 +218,7 @@ public class ControllerEstate extends AbstractController {
             formEstate.setCity(null);
             formEstate.setTown(null);
         }
-        List<Estate> estates = serviceEstate.filterBy(0,formEstate.getCity(),formEstate.getDistrict(),formEstate.getTown(),formEstate.getEstateType(),formEstate.getSubwayStation());
+        List<Estate> estates = serviceEstate.filterBy(0,formEstate.getCity(),formEstate.getDistrict(),formEstate.getTown(),formEstate.getEstateType(),formEstate.getSubwayStation(),"1");
 
         return new ResponseEntity(estates,HttpStatus.OK);
     }
