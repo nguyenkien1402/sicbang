@@ -118,9 +118,12 @@ public class FormEstate extends BaseFormSearch<Estate> {
             List<Predicate> predicates = new ArrayList<>();
             Optional<Long> _estateId = ConvertUtils.toLongNumber(estateId);
             Optional<Long> _userId = ConvertUtils.toLongNumber(userId);
-            Optional<Double> _depositeCost = ConvertUtils.toDoubleNumber(depositeCost);
-            Optional<Double> _rentCost = ConvertUtils.toDoubleNumber(rentCost);
-            Optional<Double> _premiumCost = ConvertUtils.toDoubleNumber(premiumCost);
+            Optional<Double> _depositeCostFrom = ConvertUtils.toDoubleNumber(depositeCostFrom);
+            Optional<Double> _depositeCostTo = ConvertUtils.toDoubleNumber(depositeCostTo);
+            Optional<Double> _rentCostFrom = ConvertUtils.toDoubleNumber(rentFrom);
+            Optional<Double> _rentCostTo = ConvertUtils.toDoubleNumber(rentTo);
+            Optional<Double> _premiumCostTo = ConvertUtils.toDoubleNumber(premiumCostTo);
+            Optional<Double> _premiumCostFrom = ConvertUtils.toDoubleNumber(premiumCostFrom);
             Optional<Boolean> _isAdvertised = ConvertUtils.toBoolean(isAdvertised);
 
             logger.info("estateId : "+estateId);
@@ -250,21 +253,53 @@ public class FormEstate extends BaseFormSearch<Estate> {
 ////                        criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), town)
 ////                );
 //            }
-            if (_depositeCost.isPresent()) {
+            if (_depositeCostTo.isPresent() && _depositeCostFrom.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.depositeCost), _depositeCost.get())
+                        criteriaBuilder.between(root.get(Estate_.depositeCost), _depositeCostFrom.get(), _depositeCostTo.get())
                 );
             }
-            if (_rentCost.isPresent()) {
+            if (_rentCostFrom.isPresent() && _rentCostTo.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.rentCost), _rentCost.get())
+                        criteriaBuilder.between(root.get(Estate_.rentCost), _rentCostFrom.get(), _rentCostTo.get())
                 );
             }
-            if (_premiumCost.isPresent()) {
+            if (_premiumCostFrom.isPresent() && _premiumCostTo.isPresent()) {
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.premiumCost), _premiumCost.get())
+                        criteriaBuilder.between(root.get(Estate_.premiumCost), _premiumCostFrom.get(), _premiumCostTo.get())
                 );
             }
+            if(_depositeCostFrom.isPresent() && !_depositeCostTo.isPresent()){
+                predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.depositeCost), _depositeCostFrom.get())
+                );
+            }
+            if(!_depositeCostFrom.isPresent() && _depositeCostTo.isPresent()){
+                predicates.add(
+                        criteriaBuilder.lessThanOrEqualTo(root.get(Estate_.depositeCost), _depositeCostTo.get())
+                );
+            }
+            if(_rentCostFrom.isPresent() && !_rentCostTo.isPresent()){
+                predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.rentCost), _rentCostFrom.get())
+                );
+            }
+            if(!_rentCostFrom.isPresent() && _rentCostTo.isPresent()){
+                predicates.add(
+                        criteriaBuilder.lessThanOrEqualTo(root.get(Estate_.rentCost), _rentCostTo.get())
+                );
+            }
+
+            if(_premiumCostFrom.isPresent() && !_premiumCostTo.isPresent()){
+                predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get(Estate_.premiumCost), _premiumCostFrom.get())
+                );
+            }
+            if(!_premiumCostFrom.isPresent() && _premiumCostTo.isPresent()){
+                predicates.add(
+                        criteriaBuilder.lessThanOrEqualTo(root.get(Estate_.premiumCost), _premiumCostTo.get())
+                );
+            }
+
             if (_isAdvertised.isPresent()) {
                 predicates.add(
                         criteriaBuilder.equal(root.get(Estate_.isAdvertised), _isAdvertised.get())
