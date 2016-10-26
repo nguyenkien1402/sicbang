@@ -40,8 +40,8 @@ public class ControllerRecents extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String lately(@ModelAttribute FormRecent form, ModelMap map) throws IOException {
-        isSession();
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+        User user = getUserSession();
         form.setUserId(user.getId().toString());
         Page<Recent> recents = serviceRecent.filter(form);
         map.put("recents",recents);

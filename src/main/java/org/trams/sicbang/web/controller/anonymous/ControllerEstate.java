@@ -107,8 +107,8 @@ public class ControllerEstate extends AbstractController {
         map.put("sizeattach", listAttach.size());
         //if logged as member
         if(auth != null){
-            isSession();
-            User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+            User user = getUserSession();
             FormWishlist formWishlist = new FormWishlist();
             formWishlist.setUserId(user.getId().toString());
             formWishlist.setEstateId(estateId);

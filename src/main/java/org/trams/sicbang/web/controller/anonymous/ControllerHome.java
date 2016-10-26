@@ -34,7 +34,7 @@ public class ControllerHome extends AbstractController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) throws IOException {
-        isSession();
+
         FormBoard formBoard = new FormBoard();
         formBoard.setPageIndex(0);
         formBoard.setPageSize(5);

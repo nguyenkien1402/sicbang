@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
     <title>Insert title here</title>
@@ -26,9 +26,9 @@
         <div th:if="${@serviceAuthorized.isAuthenticated()}">
             <a th:href="@{/logout}"><li> 로그아웃</li></a>
             <a th:href="@{/member/user}"><li id="setting">설정</li></a>
-            <a th:href="@{/member/lately}"><li th:if="${session.type} == 'NON_BROKER'" id="lately"> 최근 살펴본 매물</li></a>
-            <a th:if="${session.type} == 'NON_BROKER'" th:href="@{/member/estate/wishlist}"><li  id="wishlist">찜목록</li></a>
-            <a th:if="${session.type == 'BROKER' || session.type == 'TRUSTED_BROKER'}" th:href="@{/member/estate}"><li >매물 관리</li></a>
+            <a sec:authorize="hasAuthority('MEMBERSHIP')" th:href="@{/member/lately}"><li id="lately"> 최근 살펴본 매물</li></a>
+            <a sec:authorize="hasAuthority('MEMBERSHIP')" th:href="@{/member/estate/wishlist}"><li  id="wishlist">찜목록</li></a>
+            <a sec:authorize="hasAnyAuthority('BROKER','TRUSTED_BROKER')" th:href="@{/member/estate}"><li >매물 관리</li></a>
             <a th:href="@{/member/estate/sell-upload}"> <li>매물 올리기</li></a>
         </div>
 

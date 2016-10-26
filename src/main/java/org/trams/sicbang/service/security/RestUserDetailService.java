@@ -52,6 +52,9 @@ public class RestUserDetailService implements UserDetailsService {
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permission.getName());
             grantedAuthorities.add(authority);
         }
+        if(user.getPermission() != null){
+            grantedAuthorities.add(new SimpleGrantedAuthority(user.getPermission().getName()));
+        }
         grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), true, true, true, true, grantedAuthorities);
     }

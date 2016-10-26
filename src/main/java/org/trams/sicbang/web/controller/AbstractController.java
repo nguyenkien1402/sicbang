@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.trams.sicbang.model.dto.CustomUserDetail;
 import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.service.*;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
@@ -102,15 +103,10 @@ public class AbstractController {
         }
     }
 
-    protected void isSession(){
+    protected User getUserSession(){
         Authentication auth = serviceAuthorized.isAuthenticated();
-        if(auth != null) {
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            User user = serviceUser.findUserByEmail(userDetails.getUsername());
-            HttpSession session = httpRequest.getSession();
-            session.setAttribute("type", user.getType().name());
-            session.setAttribute("USER_SESSION", user);
-
-        }
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = serviceUser.findUserByEmail(userDetails.getUsername());
+        return user;
     }
 }
