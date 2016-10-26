@@ -95,6 +95,8 @@ public class FormEstate extends BaseFormSearch<Estate> {
     private String premiumCostTo;
     private String isApproved;
     private String typeTrust;
+    private String userPermission;
+
 
 
     public static Specification<Estate> dongLike(final String keyword) {
@@ -154,6 +156,12 @@ public class FormEstate extends BaseFormSearch<Estate> {
                     }
                 }
                 predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[]{})));
+            }
+            if(!Strings.isNullOrEmpty(userPermission)){
+                System.out.println("permission :" + userPermission);
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.user).get(User_.permission).get(UserPermission_.name), userPermission)
+                );
             }
             if (!Strings.isNullOrEmpty(estateType)) {
                 String[] types = estateType.split(",");
@@ -277,10 +285,12 @@ public class FormEstate extends BaseFormSearch<Estate> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );
-            predicates.add(
-                    criteriaBuilder.equal(root.get(Estate_.isApproved),isApproved)
-            );
-
+            if(!Strings.isNullOrEmpty(isApproved)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
+                );
+            }
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Estate_.id));
             } else {
@@ -443,9 +453,11 @@ public class FormEstate extends BaseFormSearch<Estate> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );
-            predicates.add(
-                    criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
-            );
+            if(!Strings.isNullOrEmpty(isApproved)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
+                );
+            }
 
 
             if (predicates.isEmpty()) {
@@ -842,6 +854,14 @@ public class FormEstate extends BaseFormSearch<Estate> {
 
     public void setTypeTrust(String typeTrust) {
         this.typeTrust = typeTrust;
+    }
+
+    public String getUserPermission() {
+        return userPermission;
+    }
+
+    public void setUserPermission(String userPermission) {
+        this.userPermission = userPermission;
     }
 
     public static Estate convertEstateFormToEstate(FormEstate form, Estate estate){

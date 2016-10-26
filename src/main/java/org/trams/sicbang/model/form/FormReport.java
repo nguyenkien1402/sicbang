@@ -116,7 +116,7 @@ public class FormReport extends BaseFormSearch<ReportInformation> {
             predicates.add(
                     criteriaBuilder.equal(root.get(ReportInformation_.isDelete), isDelete)
             );
-
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(ReportInformation_.id));
             } else {

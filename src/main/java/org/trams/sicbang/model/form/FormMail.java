@@ -71,7 +71,7 @@ public class FormMail extends BaseFormSearch<Mail> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Mail_.isDelete), isDelete)
             );
-
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Mail_.id));
             } else {

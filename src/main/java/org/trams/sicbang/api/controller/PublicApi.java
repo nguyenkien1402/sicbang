@@ -187,6 +187,7 @@ public class PublicApi extends AbstractController {
 
         Page<Estate> estates;
         System.out.println("subway in form: "+form.getSubwayStation());
+        System.out.println("");
         if (!Strings.isNullOrEmpty(authorization)) {
             logger.info("isLogin : " + true);
             form.setIsApproved("1");

@@ -66,6 +66,7 @@ public class FormNotice extends BaseFormSearch<Notice> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Notice_.isDelete), isDelete)
             );
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Notice_.id));
             } else {

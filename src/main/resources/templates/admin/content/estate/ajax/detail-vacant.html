@@ -50,8 +50,8 @@
                 <img class="basicImg" th:src="${user.avatar == null ? '/admin/assets/images/no_image.jpg' : user.avatar.thumbnail}"/>
 
                 <div class="infoText">
-                    <p th:inline="text"><strong>담당자:</strong>[[${user.email}]]</p>
-                    <p th:inline="text"><strong>연락처:</strong>[[${user.cellphoneNumber}]]</p>
+                    <p th:text="${user.email != null ? user.email : ''}"><strong>담당자:</strong></p>
+                    <p th:text="${user.cellphoneNumber != null ? user.cellphoneNumber : ''}"><strong>연락처:</strong></p>
 
                 </div>
 
@@ -60,8 +60,8 @@
 
         <div class="block-estate-table">
             <div class="block-header sb-dp-table align-bottom sb-mb-10">
-                <div class="sb-dp-table-cell sb-f-22" th:text="${estate.name}"><strong>흥부 부대찌개 뱅뱅사거리점</strong></div>
-                <div class="sb-dp-table-cell sb-f-16 text-right" th:text="${estate.availableDate}">등록일: <strong>2016.04.01</strong></div>
+                <div class="sb-dp-table-cell sb-f-22" th:text="${estate.name != null ? estate.name : '' }"><strong>흥부 부대찌개 뱅뱅사거리점</strong></div>
+                <div class="sb-dp-table-cell sb-f-16 text-right" th:text="${estate.availableDate != null ? estate.availableDate : ''}">등록일: <strong>2016.04.01</strong></div>
             </div>
             <div class="block-body">
                 <div class="table-wrapper table-responsive">
@@ -75,49 +75,49 @@
                         <tbody>
                         <tr>
                             <td class="paddingLeft strong" style="width:25%;">매물번호</td>
-                            <td class="center" style="width:25%;" th:text="${estate.estateCode}">201601011121212102</td>
+                            <td class="center" style="width:25%;" th:text="${estate.estateCode != null ? estate.estateCode : ''}">201601011121212102</td>
                             <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
-                            <td style="width:25%;" class="center" th:text="${estate.depositeCost}">10,000</td>
+                            <td style="width:25%;" class="center" th:text="${estate.depositeCost != null ? estate.depositeCost : ''}">10,000</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">매물유형</td>
                             <td class="center" th:text="${estate.estateType == 'STARTUP' ? '인수창업' : '공실매물' }">창업인수</td>
                             <td class="paddingLeft strong">월세(만원)</td>
-                            <td class="center" th:text="${estate.rentCost}">800</td>
+                            <td class="center" th:text="${estate.rentCost != null ? estate.rentCost : ''}">800</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">현재업종</td>
-                            <td class="center" th:text="${estate.currentBusiness}">일반음식점</td>
+                            <td class="center" th:text="${estate.currentBusiness != null ? estate.currentBusiness : ''}">일반음식점</td>
                             <td class="paddingLeft strong">권리금(만원)</td>
-                            <td class="center" th:text="${estate.premiumCost}">20,000</td>
+                            <td class="center" th:text="${estate.premiumCost != null ? estate.premiumCost : ''}">20,000</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">상권</td>
-                            <td class="center" th:text="${estate.businessZone}">한식점</td>
+                            <td class="center" th:text="${estate.businessZone != null ? estate.businessZone : ''}">한식점</td>
                             <td class="paddingLeft strong">융자금(만원)</td>
-                            <td class="center" th:text="${estate.loan}">2,322</td>
+                            <td class="center" th:text="${estate.loan != null ? estate.loan : ''}">2,322</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">인근지하철역</td>
-                            <td class="center" th:text="${estate.subwayStation}">서울시 관악구 신림동</td>
+                            <td class="center" th:text="${estate.subwayStation != null ? estate.subwayStation : ''}">서울시 관악구 신림동</td>
                             <td class="paddingLeft strong">계약면적</td>
-                            <td class="center" th:text="${estate.contractArea}">4,000</td>
+                            <td class="center" th:text="${estate.contractArea != null ? estate.contractArea : ''}">4,000</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">층</td>
-                            <td class="center" th:text="${estate.floor}">신림역</td>
+                            <td class="center" th:text="${estate.floor != null ? estate.floor : '' }">신림역</td>
                             <td class="paddingLeft strong">전용면적</td>
-                            <td class="center" th:text="${estate.exclusiveArea}">878</td>
+                            <td class="center" th:text="${estate.exclusiveArea != null ? estate.exclusiveArea : ''}">878</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">준공년월</td>
-                            <td class="center" th:text="${estate.constructDate}">2</td>
+                            <td class="center" th:text="${estate.constructDate != null ? estate.constructDate : ''}">2</td>
                             <td class="paddingLeft strong">전용률(%)</td>
-                            <td class="center" th:text="${estate.exclusiveRate}">22</td>
+                            <td class="center" th:text="${estate.exclusiveRate != null ? estate.exclusiveRate : '' }">22</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">입주가능일</td>
-                            <td class="center" th:text="${estate.availableDate}">99(30)</td>
+                            <td class="center" th:text="${estate.availableDate != null ? estate.availableDate : '' }">99(30)</td>
                             <td class="paddingLeft strong">주차여부</td>
                             <td class="center" th:text="${estate.parking == '0' ? 'N' : 'Y'}">2355</td>
                         </tr>
@@ -125,7 +125,7 @@
                             <th colspan="4">상세설명</th>
                         </tr>
                         <tr>
-                            <td colspan="4" th:text="${estate.detail}" style="color:#666;">
+                            <td colspan="4" th:text="${estate.detail != null ? estate.detail : ''}" style="color:#666;">
                                 <div id="map" style="width:330px;height:265px;display:inline-block;margin-right:20px;"></div>
                                 <div id="roadView" style="width:330px;height:265px;display:inline-block;"></div>
                             </td>

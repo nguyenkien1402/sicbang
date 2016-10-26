@@ -10,4 +10,5 @@ public interface RepositoryUserPermission extends CrudRepository<UserPermission,
 
     UserPermission findByName(String name);
 
+
 }
