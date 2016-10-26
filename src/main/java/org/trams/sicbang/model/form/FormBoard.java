@@ -48,6 +48,7 @@ public class FormBoard extends BaseFormSearch<Board> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Board_.isDelete), isDelete)
             );
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Board_.id));
             } else {

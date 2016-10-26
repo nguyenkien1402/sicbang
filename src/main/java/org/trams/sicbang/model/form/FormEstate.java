@@ -285,10 +285,12 @@ public class FormEstate extends BaseFormSearch<Estate> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );
-            predicates.add(
-                    criteriaBuilder.equal(root.get(Estate_.isApproved),isApproved)
-            );
-
+            if(!Strings.isNullOrEmpty(isApproved)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
+                );
+            }
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Estate_.id));
             } else {
@@ -451,9 +453,11 @@ public class FormEstate extends BaseFormSearch<Estate> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );
-            predicates.add(
-                    criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
-            );
+            if(!Strings.isNullOrEmpty(isApproved)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.isApproved), isApproved)
+                );
+            }
 
 
             if (predicates.isEmpty()) {

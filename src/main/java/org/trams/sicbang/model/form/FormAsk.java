@@ -96,7 +96,7 @@ public class FormAsk extends BaseFormSearch<Ask> {
             predicates.add(
                     criteriaBuilder.equal(root.get(Ask_.isDelete), isDelete)
             );
-
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(Ask_.id));
             } else {

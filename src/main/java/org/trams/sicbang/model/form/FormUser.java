@@ -12,6 +12,7 @@ import org.trams.sicbang.model.entity.UserRole_;
 import org.trams.sicbang.model.entity.User_;
 import org.trams.sicbang.model.enumerate.CommonStatus;
 import org.trams.sicbang.model.enumerate.UserType;
+import org.trams.sicbang.model.enumerate.UserTypePermission;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -237,7 +238,16 @@ public class FormUser extends BaseFormSearch<User> {
             }
 
             if(!Strings.isNullOrEmpty(permission)){
-                predicates.add(criteriaBuilder.equal(root.get(User_.permission).get(UserPermission_.name),permission));
+                String[] permiss = permission.split(",");
+                List<Predicate> subPredicates = new ArrayList<>();
+                for (String t : permiss) {
+                    Predicate p = criteriaBuilder.equal(root.get(User_.permission).get(UserPermission_.name),t);
+                    subPredicates.add(p);
+                }
+                predicates.add(criteriaBuilder.or(subPredicates.toArray(new Predicate[] {})));
+//                predicates.add(
+//                        criteriaBuilder.equal(root.get(User_.permission).get(UserPermission_.name),permission)
+//                );
             }
 
             if (!Strings.isNullOrEmpty(phoneNumber)) {
@@ -285,6 +295,7 @@ public class FormUser extends BaseFormSearch<User> {
             predicates.add(
                     criteriaBuilder.equal(root.get(User_.isDelete), isDelete)
             );
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
             if (predicates.isEmpty()) {
                 return criteriaBuilder.isNotNull(root.get(User_.id));
             } else {

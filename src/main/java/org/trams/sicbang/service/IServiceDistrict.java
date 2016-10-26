@@ -29,4 +29,6 @@ public interface IServiceDistrict {
     District findOne(FormDistrict form);
 
     List<District> findAll();
+
+    List<District> findByCityId(int cityId);
 }

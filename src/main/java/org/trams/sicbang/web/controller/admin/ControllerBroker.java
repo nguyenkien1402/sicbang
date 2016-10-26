@@ -57,7 +57,7 @@ public class ControllerBroker extends AbstractController {
 
         System.out.println("go to broker");
         form.setType(UserType.BROKER.name());
-        form.setPermission(UserTypePermission.BROKER.name());
+        form.setPermission(UserTypePermission.BROKER.name()+","+UserTypePermission.TRUSTED_BROKER.name());
 //        if (typeBroker != null) {
 //            form.setPermission(UserType.BROKER.name());
 //        }
@@ -79,15 +79,9 @@ public class ControllerBroker extends AbstractController {
             @ModelAttribute FormUser form,
             @PathVariable(value = "userId") String userId,
             ModelMap map) {
-        System.out.println("user id load: "+userId);
-        System.out.println("reload");
         form.setUserId(userId);
         User user = serviceUser.findOne(form);
-        System.out.println("attach: "+user.getAvatar().getThumbnail());
-        System.out.println("permission: "+user.getPermission().getName());
         if(user.getDueDate() != null){
-            System.out.println("due_date: "+user.getDueDate());
-            System.out.println("create_date: "+user.getCreatedDate());
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
             SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
             Date dueDate = user.getDueDate();
@@ -106,7 +100,6 @@ public class ControllerBroker extends AbstractController {
                 user = serviceUser.update(form);
             }
         }
-        System.out.println("permission: "+user.getPermission().getName());
         map.put("user", user);
         return BASE_TEMPLATE + "detail_list";
     }
@@ -177,8 +170,6 @@ public class ControllerBroker extends AbstractController {
         User user = estate.getUser();
         Collection<Attachment> listAttach = new ArrayList<Attachment>();
         listAttach = estate.getAttachments();
-        System.out.println("list attach: " +listAttach.size());
-        System.out.println("id: "+formEstate.getEstateId());
         map.put("attachments", listAttach);
         map.put("estate",estate);
         map.put("sizeattach", listAttach.size());
@@ -207,12 +198,10 @@ public class ControllerBroker extends AbstractController {
         estateForm.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
         Collection<Attachment> listAttach = estate.getAttachments();
-        System.out.println("list attach: " +listAttach.size());
         map.put("attachments", listAttach);
         map.put("estate",estate);
         System.out.println("estate id: " + estateId);
         map.put("sizeattach", listAttach.size());
-
         System.out.println("go for content repair");
         return BASE_TEMPLATE +"ajax/content_repair_2";
 
@@ -303,18 +292,6 @@ public class ControllerBroker extends AbstractController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-//    /**
-//     * Update
-//     * @param form
-//     * @return
-//     */
-//    @RequestMapping(value = "/{userId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ResponseBody
-//    public ResponseEntity update(
-//            @ModelAttribute FormUser form) {
-//        serviceUser.update(form);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
 
     @RequestMapping(value = "/update/type", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody

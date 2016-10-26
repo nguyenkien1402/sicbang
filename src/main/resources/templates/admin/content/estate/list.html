@@ -103,23 +103,58 @@
     </div>
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
-//            var cities = /*[[${listcity}]]*/null;
-//            console.log("list city: "+cities);
-            var city = document.getElementById("city");
-            var city_id = 0;
+
+        var listDistrict = [];
+        var listTown = [];
+        var city = document.getElementById("city");
+        var city_id = 0;
             var district_id = 0;
             var town_id = 0;
             $('#city').change(function () {
                 console.log("haha");
                 city_id = city.options[city.selectedIndex].value;
                 console.log("city_id "+city_id  );
+                $.ajax({
+                   type: "POST",
+                    url: "/admin/estate/city",
+                    data:{'city' : city_id},
+                    success: function (data) {
+                        listDistrict = data;
+                        $('#district')
+                                .empty()
+                                .append('<option selected="selected" value="0">--All--</option>')
+                        ;
+                        for(var i = 0 ; i < listDistrict.length ; i++){
+                            $('#district').append($('<option/>',{
+                                value : listDistrict[i].id,
+                                text : listDistrict[i].name
+                            }));
+                        }
+                        console.log(data);
+                    }
+                });
             });
-
             var district = document.getElementById("district");
             $('#district').change(function () {
                 console.log("haha");
-                district_id = district.options[district.selectedIndex].value;
                 console.log("district_id "+district_id  );
+                $('#town')
+                        .empty()
+                        .append('<option selected="selected" value="0">--All--</option>')
+                ;
+                district_id = district.options[district.selectedIndex].value;
+                for(var i = 0 ; i < listDistrict.length ; i++){
+                    if(listDistrict[i].id == district_id){
+                        listTown = listDistrict[i].towns;
+                        break;
+                    }
+                }
+                for(var i = 0 ; i < listTown.length ; i++){
+                    $('#town').append($('<option/>',{
+                        value : listTown[i].id,
+                        text : listTown[i].name
+                    }));
+                }
             });
 
             var town = document.getElementById("town");
@@ -344,7 +379,6 @@
                 $(selector).html(html);
             };
         });
-
         /*]]>*/
     </script>
 </div>

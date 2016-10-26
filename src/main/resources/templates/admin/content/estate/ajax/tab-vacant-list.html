@@ -14,7 +14,7 @@
           <div data-sb-href="content.html" class="item sb-mb-30 sb-bg-gray" th:each="item : ${items}">
             <div class="row item-inner">
               <div class="col-xs-2">
-                <a th:href="@{/admin/estate/detail/{id}(id=${item.id})}">
+                <a class="tab-detail-vacant" th:href="@{/admin/estate/detail/{id}(id=${item.id})}">
                   <img th:src="${not #lists.isEmpty(item.attachments) ? item.attachments[0].thumbnail : '/admin/assets/images/no_image.jpg'}"/>
                 </a>
               </div>
@@ -34,7 +34,7 @@
                       </div>
                     </div>
                     <div class="col-md-3">
-                      <div class="form-control-static" th:inline="text">[[${item.businessType.name}]]</div>
+                      <div class="form-control-static" th:text="${item.businessType != null ? item.businessType.name : ''}"></div>
                     </div>
 
                   </div>

@@ -33,4 +33,9 @@ public class ServiceDistrict extends BaseService implements IServiceDistrict {
     public List<District> findAll() {
         return repositoryDistrict.findAll();
     }
+
+    @Override
+    public List<District> findByCityId(int cityId) {
+        return repositoryDistrict.findByCityId(cityId);
+    }
 }

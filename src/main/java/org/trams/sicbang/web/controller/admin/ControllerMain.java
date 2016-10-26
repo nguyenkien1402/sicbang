@@ -253,26 +253,7 @@ public class ControllerMain extends AbstractController {
         return BASE_TEMPLATE + "main_email_2";
     }
 
-    /**
-     *
-     * @return
-     */
-//    @RequestMapping(value = "/create/popup/{type}", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
-//    public String createPopup(
-//            @ModelAttribute FormSlide formSlide,
-//            @PathVariable(value="type") String type,
-//            ModelMap map
-//    ){
-//        System.out.println("====================================");
-//        System.out.println("come here first");
-//        System.out.println("type:"+type);
-//        System.out.println("link: "+formSlide.getLink());
-//        System.out.println("attachment: "+formSlide.getAttachments().getOriginalFilename());
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        int checkUpload = serviceSlide.uploadSlide(formSlide, username);
-//        System.out.println("====================================");
-//        return "redirect:/admin/main/popup";
-//    }
+
 
     /**
      *
@@ -300,66 +281,6 @@ public class ControllerMain extends AbstractController {
         System.out.println("====================================");
         return new ResponseEntity(HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "/create/mainImg", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ResponseBody
-//    public ResponseEntity createMainImg(
-//            @ModelAttribute FormSlide formSlide,
-//            ModelMap map
-//    ){
-//        System.out.println("====================================");
-//        System.out.println("upload main image");
-//        System.out.println("link: "+formSlide.getLink());
-//        System.out.println("attachment: "+formSlide.getAttachments().getOriginalFilename());
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        int checkUpload = serviceSlide.uploadMainImg(formSlide, username);
-//        if(checkUpload == 1){
-//            System.out.println("upload successfully");
-//        }else{
-//            System.out.println("cannot upload image");
-//        }
-//        System.out.println("====================================");
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-//    /**
-//     *
-//     * @param form
-//     * @param map
-//     * @return
-//     */
-//    @RequestMapping(value = "/{boardId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-//    public String detail(
-//            @ModelAttribute FormBoard form,
-//            ModelMap map) {
-//        Board board = serviceBoard.findOne(form);
-//        map.put("board", board);
-//        return BASE_TEMPLATE + "update";
-//    }
-//
-//    /**
-//     *
-//     * @param form
-//     * @return
-//     */
-//    @RequestMapping(value = "/{boardId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ResponseBody
-//    public ResponseEntity update(
-//            @ModelAttribute FormBoard form) {
-//        serviceBoard.update(form);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-//
-//    /**
-//     *
-//     * @param form
-//     * @return
-//     */
-//    @RequestMapping(value = "/{boardId}", method = RequestMethod.DELETE, produces = MediaType.TEXT_HTML_VALUE)
-//    public ResponseEntity delete(
-//            @ModelAttribute FormBoard form) {
-//        serviceBoard.delete(form);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
 
 
     // --------------------------------------------------------

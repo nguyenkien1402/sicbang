@@ -1,8 +1,13 @@
 package org.trams.sicbang.web.controller.admin;
 
+import com.fasterxml.jackson.databind.JsonSerializable;
 import com.google.common.base.Strings;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.apache.commons.validator.Form;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
+import org.trams.sicbang.model.form.FormDistrict;
 import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.web.controller.AbstractController;
 
@@ -37,25 +43,42 @@ public class ControllerEstate extends AbstractController {
     private static Logger logger = Logger.getLogger(ControllerEstate.class);
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String index(ModelMap map
-//                        @RequestParam(value = "pageIndex", defaultValue = "0") String pageIndex,
-//                        @RequestParam(value = "city", defaultValue = "") String city,
-//                        @RequestParam(value = "district", defaultValue = "") String district,
-//                        @RequestParam(value = "town", defaultValue = "") String town
-    ) {
+    public String index(ModelMap map) {
         System.out.println("========================");
         System.out.println("all estate from start");
         List<City> cities = serviceCity.findAll();
-        List<District> districts = serviceDistrict.findAll();
-        List<Town> towns = serviceTown.findAll();
-
+//        List<District> districts = serviceDistrict.findAll();
+//        List<Town> towns = serviceTown.findAll();
         map.put("cities",cities);
-        map.put("districts",districts);
-        map.put("towns",towns);
+//        map.put("districts",districts);
+//        map.put("towns",towns);
         System.out.println("========================");
 
         return BASE_TEMPLATE + "list";
 
+    }
+
+    @RequestMapping(value = "/city", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<District> filterCity(
+            @RequestParam(value = "city", defaultValue = "0") String cityId,
+            ModelMap map
+    ){
+        System.out.println("city id: "+cityId);
+        List<District> districts = serviceDistrict.findByCityId(Integer.parseInt(cityId));
+        System.out.println("size district: "+districts.size());
+        map.addAttribute("districts",districts);
+        return districts;
+    }
+
+    @RequestMapping(value = "/district", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<Town> filterDistrict(
+            @RequestParam(value = "district", defaultValue = "0") String districtId,
+            ModelMap map
+    ){
+        List<Town> towns = serviceTown.findAll();
+        return towns;
     }
 
     /**
@@ -155,12 +178,13 @@ public class ControllerEstate extends AbstractController {
             ModelMap map) {
         FormEstate estateForm = new FormEstate();
         estateForm.setEstateId(estateId);
-        estateForm.setIsApproved("1");
+//        estateForm.setIsApproved("1");
         Estate estate = serviceEstate.findOne(estateForm);
-        System.out.println("estate name: "+estate.getName());
         User user = estate.getUser();
-        System.out.println("user email: "+estate.getUser().getEmail());
-        Collection<Attachment> listAttach = estate.getAttachments();
+        Collection<Attachment> listAttach = new ArrayList<Attachment>();
+        if(estate.getAttachments()!= null){
+            listAttach = estate.getAttachments();
+        }
         System.out.println("list attach: " +listAttach.size());
         map.put("attachments", listAttach);
         map.put("estate",estate);
@@ -223,27 +247,11 @@ public class ControllerEstate extends AbstractController {
         formEstate.setIsApproved("1");
         Estate estate = serviceEstate.findOne(formSearch);
         serviceEstate.updateEstate(formEstate,estate);
-//        Collection<Attachment> listAttach = estate.getAttachments();
-//        System.out.println("list attach type: " +listAttach.size());
-//        map.put("attachments", listAttach);
         map.put("estate",estate);
-//        map.put("sizeattach", listAttach.size());
         return "redirect:/admin/estate";
     }
 
 
-//    /**
-//     *
-//     * @param form
-//     * @return
-//     */
-//    @RequestMapping(value = "/{boardId}", method = RequestMethod.POST)
-//    @ResponseBody
-//    public ResponseEntity update(
-//            @ModelAttribute FormBoard form) {
-//        serviceBoard.update(form);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
 
     /**
      * Delete
