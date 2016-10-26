@@ -63,12 +63,15 @@ $(document).ready(function(){
             alert("비빌번호를 입력해주세요.");
             return false;
         }
-
+		
+		
         if(passConf == ""){
             alert("비밀번호확인을 입력해주세요.");
             return false;
         }
 
+		
+		
         if(policy == false){
             alert("이용약관에 동의해주세요.");
             return false;
@@ -82,7 +85,10 @@ $(document).ready(function(){
             alert("위치기반서비스 이용약관에 동의해주세요.");
             return false;
         }
-
+		if(password != passConf){
+			$("#passwordMessage").html("Password do not match");
+			return false;
+		}
         //TODO : Ajax 통신
         $.ajax({
             url : "/member-join",
