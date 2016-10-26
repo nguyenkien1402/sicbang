@@ -58,7 +58,12 @@ $(document).ready(function(){
         var $selectOption = $("<option disabled selected></option>");
         $selectOption.text("선택");
         $selectOption.appendTo($parent.find(".districtSelect"));
+		$parent.find(".townSelect").text("");
 
+        var $townOption = $("<option disabled selected></option>");
+        $townOption.text("선택");
+        $townOption.appendTo($parent.find(".townSelect"));
+		
         districts[index].forEach(function(item,index){
             var $option = $("<option value='"+item.id+"' ></option>");
             $option.data("index",index);
