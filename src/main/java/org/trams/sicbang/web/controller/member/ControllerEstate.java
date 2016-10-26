@@ -51,8 +51,8 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(@ModelAttribute FormEstate formEstate, ModelMap map) {
-        isSession();
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+        User user = getUserSession();
         formEstate.setIsApproved("1");
         formEstate.setUserId(user.getId().toString());
         Page<Estate> estates = serviceEstate.filter(formEstate);
@@ -76,8 +76,8 @@ public class ControllerEstate extends AbstractController {
 
     @RequestMapping(value="/advertised",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getAdvertised(@ModelAttribute FormEstate formEstate, ModelMap map) {
-        isSession();
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+        User user = getUserSession();
         formEstate.setUserId(user.getId().toString());
         formEstate.setIsAdvertised("true");
         Page<Estate> estates = serviceEstate.filter(formEstate);
@@ -122,8 +122,8 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(value = "/sell-upload", method = RequestMethod.POST)
     public Object create(@ModelAttribute FormEstate form,ModelMap map) {
-        isSession();
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+        User user = getUserSession();
         form.setUserId(user.getId().toString());
         form.setAll_addr(form.getCity()+" "+form.getDistrict()+" "+form.getTown()+" "+form.getAll_addr());
         form.setIsAdvertised("0");
@@ -192,8 +192,8 @@ public class ControllerEstate extends AbstractController {
      */
     @RequestMapping(value="/wishlist",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String wishlist(@ModelAttribute FormWishlist form, ModelMap map) throws IOException {
-        isSession();
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+        User user = getUserSession();
         form.setUserId(user.getId().toString());
         Page<Wishlist> wishlists = serviceWishlist.filter(form);
         map.put("wishlists",wishlists);
@@ -228,8 +228,8 @@ public class ControllerEstate extends AbstractController {
     @RequestMapping(value="/changeAdv",method = RequestMethod.POST,produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public Object changeAdv(@ModelAttribute FormEstate formEstate) {
-        isSession();
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+
+        User user = getUserSession();
         formEstate.setUserId(user.getId().toString());
         formEstate.setIsApproved("1");
         String advertised = formEstate.getIsAdvertised();

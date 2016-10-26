@@ -42,7 +42,7 @@ public class ControllerUser extends AbstractController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String index(ModelMap map) {
-        User user = (User) httpRequest.getSession().getAttribute("USER_SESSION");
+        User user = getUserSession();
         map.put("user",user);
         return BASE_TEMPLATE + "setting";
     }
