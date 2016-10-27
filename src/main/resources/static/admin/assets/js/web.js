@@ -153,7 +153,7 @@ $(document).ready(function(){
                 }else{
                     $("#username").val("");
                     $("#password").val("");
-                    $(".error-message").html("Invalid user name or password");
+                    $(".error-message").html("이메일과 비밀번호를 다시 확인해 주세요");
                 }
             }
         });

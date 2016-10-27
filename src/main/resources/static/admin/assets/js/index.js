@@ -127,12 +127,14 @@ $(document).ready(function(){
                 $("#registryNo").val("");
                 $(".citySelect").val("선택");
                 $(".districtSelect").val("선택");
+                $(".townSelect").val("선택");
                 break;
             case "3":         //등록번호로 찾기
                 $(".searchMethodArea").removeClass("active");
                 $(".numberSearch").addClass("active");
                 $(".citySelect").val("선택");
                 $(".districtSelect").val("선택");
+                $(".townSelect").val("선택");
                 $(".subwayInput").val("");
                 break;
         }

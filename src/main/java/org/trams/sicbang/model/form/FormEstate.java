@@ -485,6 +485,11 @@ public class FormEstate extends BaseFormSearch<Estate> {
                         criteriaBuilder.equal(root.get(Estate_.subwayStation), subwayStation)
                 );
             }
+            if (!Strings.isNullOrEmpty(estateCode)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Estate_.estateCode), estateCode)
+                );
+            }
             predicates.add(
                     criteriaBuilder.equal(root.get(Estate_.isDelete), isDelete)
             );

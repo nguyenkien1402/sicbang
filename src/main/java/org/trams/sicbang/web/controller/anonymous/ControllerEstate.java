@@ -60,6 +60,7 @@ public class ControllerEstate extends AbstractController {
         map.put("district",formEstate.getDistrict());
         map.put("town",formEstate.getTown());
         map.put("subway",formEstate.getSubwayStation());
+        map.put("registryNo",formEstate.getEstateCode());
         return BASE_TEMPLATE + "map-all";
     }
 
@@ -237,12 +238,23 @@ public class ControllerEstate extends AbstractController {
         if(formEstate.getSubwayStation().equals("")){
             formEstate.setSubwayStation(null);
         }
+        if(formEstate.getEstateCode().equals("")){
+            formEstate.setEstateCode(null);
+        }
         if(formEstate.getSubwayStation() != null){
             System.out.println("Subway");
             formEstate.setCity(null);
             formEstate.setDistrict(null);
             formEstate.setTown(null);
-        }else{
+            formEstate.setEstateCode(null);
+        }else if(formEstate.getEstateCode() != null){
+            System.out.println("RegistyNo");
+            formEstate.setCity(null);
+            formEstate.setDistrict(null);
+            formEstate.setTown(null);
+            formEstate.setSubwayStation(null);
+        }
+        else{
             if(formEstate.getCity().equals("")){
                 formEstate.setCity(null);
             }
