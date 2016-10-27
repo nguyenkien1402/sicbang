@@ -254,11 +254,14 @@ $(document).ready(function(){
                 $.each(data,function(key,val){
                     var imageSrc = "/static/admin/include/images/map/";
                     var category = parseInt(val.category);
+                    if(val.estateType == 'VACANT'){
+                        imageSrc = imageSrc+'shop.png';
+                    }else{
                     switch(category){
                         case 1:  {imageSrc = imageSrc+'food.png'; break;}
                         case 2:  {imageSrc = imageSrc+'restaurant.png'; break;}
                         case 3:  {imageSrc = imageSrc+'liquor.png'; break;}
-                        default: {imageSrc = imageSrc+'shop.png'; break;}
+                    }
                     }
                     imageSize = new daum.maps.Size(72, 72), // 마커이미지의 크기입니다
                         imageOption = {offset: new daum.maps.Point(36.5, 36.5)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
@@ -293,7 +296,7 @@ $(document).ready(function(){
                     });
                 });
                 var str = (city == null ? "" : city) + " " + (district == null ? "" : district) + (town == null ? "" : town);
-                map.setLevel(7);
+                map.setLevel(8);
                 if(subway != null) {
                     str = subway + "역";
                     places.keywordSearch(str, callback);
@@ -451,11 +454,14 @@ $(document).ready(function(){
                 $.each(data,function(key,val){
                     var imageSrc = "/static/admin/include/images/map/";
                     var category = parseInt(val.category);
-                    switch(category){
-                        case 1:  {imageSrc = imageSrc+'food.png'; break;}
-                        case 2:  {imageSrc = imageSrc+'restaurant.png'; break;}
-                        case 3:  {imageSrc = imageSrc+'liquor.png'; break;}
-                        default: {imageSrc = imageSrc+'shop.png'; break;}
+                    if(val.estateType == 'VACANT'){
+                        imageSrc = imageSrc+'shop.png';
+                    }else{
+                        switch(category){
+                            case 1:  {imageSrc = imageSrc+'food.png'; break;}
+                            case 2:  {imageSrc = imageSrc+'restaurant.png'; break;}
+                            case 3:  {imageSrc = imageSrc+'liquor.png'; break;}
+                        }
                     }
                     imageSize = new daum.maps.Size(72, 72), // 마커이미지의 크기입니다
                         imageOption = {offset: new daum.maps.Point(36.5, 36.5)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
@@ -513,7 +519,7 @@ $(document).ready(function(){
 
                 var str = (city == null ? "" : cityName) + " " + (district == null ? "" : districtName) + (town == null ? "" : townName);
 
-                map.setLevel(5);
+                map.setLevel(8);
                 if(subway != null) {
                     str = subway + "역";
                     places.keywordSearch(str, callback);
