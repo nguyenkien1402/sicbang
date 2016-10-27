@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.trams.sicbang.model.entity.ReportInformation;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.exception.FormError;
 import org.trams.sicbang.model.form.FormReport;
 import org.trams.sicbang.model.form.FormUser;
@@ -84,15 +85,18 @@ public class ControllerReport extends AbstractController {
      * @param form
      * @return
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public ResponseEntity create(@ModelAttribute FormReport form ) {
+        User user = getUserSession();
+        form.setUserId(user.getId().toString());
         FormError error = validationReport.validateCreateReport(form);
         if(error != null){
-            return new ResponseEntity(error, HttpStatus.OK);
+            return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
         }
+
         serviceReport.create(form);
-        return new ResponseEntity("{\"errors\":{}}",HttpStatus.OK);
+        return new ResponseEntity("{\"errors\":\"SUCCESS\"}",HttpStatus.OK);
     }
 
 }

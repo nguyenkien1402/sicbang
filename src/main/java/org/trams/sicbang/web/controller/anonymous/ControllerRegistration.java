@@ -73,7 +73,7 @@ public class ControllerRegistration extends AbstractController{
     @ResponseBody
     public ResponseEntity create(
             @ModelAttribute FormUser form) {
-        form.setStatus("INACTIVE");
+        form.setStatus("ACTIVE");
         form.setType("BROKER");
         form.setRole("MEMBER");
         FormError error = validationUser.validateJoin(form);

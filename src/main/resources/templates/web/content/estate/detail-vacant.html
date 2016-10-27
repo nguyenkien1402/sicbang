@@ -46,14 +46,15 @@
                         </div>
                         <button th:if="${@serviceAuthorized.isAuthenticated()}" class="btn primary wide" id="wishList">
                         </button>
-                        <button th:unless="${@serviceAuthorized.isAuthenticated()}" class="btn primary wide" id="alertMessage">찜하기</button>
+                        <button th:unless="${@serviceAuthorized.isAuthenticated()}" class="btn primary wide alertMessage1" id="alertMessage">찜하기</button>
                     </div>
                 </div>
             <div  th:replace="web/fragment/common-login :: estateVacant(estate=${estate})"></div>
             <div th:replace="web/fragment/common-login :: reportModal"></div>
             <div class="row report">
-                    <span class="right reportButton">잘못된 정보 신고</span>
-                </div>
+                <span th:if="${@serviceAuthorized.isAuthenticated()}" class="right reportButton">잘못된 정보 신고</span>
+                <span th:unless="${@serviceAuthorized.isAuthenticated()}" class="right alertMessage1">잘못된 정보 신고</span>
+            </div>
             </div>
     <script th:src="@{../../static/admin/assets/js/broker.js}"></script>
     </div>

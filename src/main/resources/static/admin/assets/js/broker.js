@@ -102,7 +102,7 @@ $(document).ready(function() {
     $("#reportConfirmButton").click(function (e) {
         var name = $("input[name=reportName]").val();
         var phone = $("input[name=reportPhone]").val();
-        var contents = $("input[name=reportContents]").val();
+        var contents = $("#reportContentArea").val();
 
         if (name == "" || phone == "" || contents == "") {
             alert("모든 정보를 입력해주세요.");
@@ -113,19 +113,21 @@ $(document).ready(function() {
             type:"POST",
             dataType:"json",
             data:{
-                "userId" : userId,
                 "estateId" : estateId,
                 "name" : name,
+                "content" : contents,
                 "cellphone" : phone,
-                "content" : contents
+
             },success:function (data) {
-                if(data.errors != null){
-                    alert("false");
+                if(data.errors == "SUCCESS"){
+                    alert("신고가 접수되었습니다.");
+                    location.reload();
+                    overlay.removeClass("active");
+                    reportModal.removeClass("active");
                     return;
                 }
-                alert("신고가 접수되었습니다.");
-                overlay.removeClass("active");
-                reportModal.removeClass("active");
+                alert("Can't send report, try later!.");
+                return;
             }
         });
 
@@ -195,7 +197,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#alertMessage").click(function(){
+    $(".alertMessage1").click(function(e){
+        e.preventDefault();
         alert("Members only; please login.(로그인해주세요)");
     });
 
