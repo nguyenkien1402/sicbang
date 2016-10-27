@@ -552,7 +552,7 @@ $(document).ready(function(){
         var redirect = $("#redirect").val();
         //init map
         if (redirect != 'true') {
-            search("서울",null,null,null, estateType);
+            searchByBusinessType("9", null,null, null, null, estateType);
         } else {
             var cityValue = $("#cityValue").val();
             var districtValue = $("#districtValue").val();
@@ -565,7 +565,6 @@ $(document).ready(function(){
                 }
             }
             if (subwayValue == '') {
-                console.log("town"+townValue);
                 searchByBusinessType(cityValue, districtValue,townValue, null, attr, estateType);
             } else {
                 $(".searchBox .searchMethodArea").removeClass("active");

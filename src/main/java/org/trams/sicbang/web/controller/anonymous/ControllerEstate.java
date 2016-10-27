@@ -231,6 +231,9 @@ public class ControllerEstate extends AbstractController {
     @RequestMapping(value = "/search/business", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity searchEstateByBusiness(@ModelAttribute FormEstate formEstate){
+        if(formEstate.getBusinessType().equals("")){
+            formEstate.setBusinessType(null);
+        }
         if(formEstate.getSubwayStation().equals("")){
             formEstate.setSubwayStation(null);
         }
@@ -252,7 +255,11 @@ public class ControllerEstate extends AbstractController {
         }
         if(formEstate.getEstateType().equals("%%")){
             formEstate.setEstateType("");
+        }else if(formEstate.getEstateType().equals("VACANT")){
+            formEstate.setBusinessType(null);
+            formEstate.setCategory(null);
         }
+        formEstate.setIsApproved("1");
         List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
         return new ResponseEntity(estates,HttpStatus.OK);
     }
