@@ -132,6 +132,7 @@ $(document).ready(function(){
     });
     // function rend top 10 estate when load page.
     function rendEstate(param,div){
+        $(div).empty();
         $.each(param,function(key,val){
             var src = '';
             var button = '';
@@ -164,7 +165,7 @@ $(document).ready(function(){
 
 
     // call api to get estate
-    $.ajax({
+    /*$.ajax({
         url: "/estate/map",
         type:"GET",
         dataType:"json",
@@ -184,7 +185,7 @@ $(document).ready(function(){
 
         }
     });
-
+    */
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 
     daum.maps.event.addListener(map, 'click', function(mouseEvent) {
@@ -340,6 +341,10 @@ $(document).ready(function(){
 
     function searchByBusinessType(city,district,town,subway,businessType,estateType,registryNo){
 
+        var trusted = [];
+        var broker = [];
+        var member = [];
+
         $.ajax({
             url:"/estate/search/business",
             type:"POST",
@@ -365,6 +370,11 @@ $(document).ready(function(){
                 var latitude = 37.50819396972656;
                 var longitude = 126.741943359375 ;
                 $.each(data,function(key,val){
+                    switch (val.typeTrust){
+                        case "TRUSTED_STARTUP": trusted.push(val); break;
+                        case "REALTOR":  broker.push(val); break;
+                        case "DIRECT_DEAL" :  member.push(val); break;
+                    }
                     var imageSrc = "/static/admin/include/images/map/";
                     var category = parseInt(val.category);
                     if(val.estateType == 'VACANT'){
@@ -409,6 +419,11 @@ $(document).ready(function(){
                         yAnchor: 1
                     });
                 });
+
+                rendEstate(trusted,'#trusted_broker');
+                rendEstate(broker,'#broker');
+                rendEstate(member,'#member');
+
                 var cityName = "서울";
                 var districtName = "";
                 var townName = "";
