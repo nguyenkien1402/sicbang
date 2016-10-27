@@ -57,7 +57,7 @@
                         <th class="paddingLeft" style="text-align:left;">주소</th>
                         <td>
                             <div class="formControlGroup horizontal">
-                                <label class="narrow">읍/면/동</label>
+                                <label class="narrow">기본 주소</label>
                                 <input type="text" name="townAddress" class="formControl wide" style="height:30px;" placeholder="서울시 관악구 신대방동" />
                             </div>
                             
@@ -84,7 +84,7 @@
                 <div class="waitCheck">
                     <input id="wait" type="checkbox" class="formControl primary" required="required"/>
                     <label for="wait"></label>
-                    <label><strong>이용약관, 개인정보 취급방침</strong> 및 <strong>위치기반서비스 이용약관</strong>에 동의합니다.</label>
+                    <label><strong><a target="_blank" th:href="@{/use-policy}">이용약관</a>,<a target="_blank" th:href="@{/privacy-policy}"> 개인정보 취급방침</a></strong> 및 <strong><a target="_blank" th:href="@{/lbs-policy}">위치기반서비스 이용약관</a></strong>에 동의합니다.</label>
                 </div>
                 <div class="btnGroup">
                     <button id="approvalButton" type="submit" class="btn primary wide">승인요청</button>

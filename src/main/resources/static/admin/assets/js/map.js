@@ -234,96 +234,6 @@ $(document).ready(function(){
         }
     };
 
-    // function search map.
-    function search(city,district,town,subway,estateType){
-        $.ajax({
-            url:"/estate/search",
-            type:"POST",
-            dataType:"json",
-            data:{
-                city: city,
-                district: district,
-                town:town,
-                subwayStation:subway,
-                estateType: estateType,
-            },success : function(data){
-                map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-                var zoomControl = new daum.maps.ZoomControl();
-                map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
-
-                $.each(data,function(key,val){
-                    var imageSrc = "/static/admin/include/images/map/";
-                    var category = parseInt(val.category);
-                    if(val.estateType == 'VACANT'){
-                        imageSrc = imageSrc+'shop.png';
-                    }else{
-                    switch(category){
-                        case 1:  {imageSrc = imageSrc+'food.png'; break;}
-                        case 2:  {imageSrc = imageSrc+'restaurant.png'; break;}
-                        case 3:  {imageSrc = imageSrc+'liquor.png'; break;}
-                    }
-                    }
-                    imageSize = new daum.maps.Size(72, 72), // 마커이미지의 크기입니다
-                        imageOption = {offset: new daum.maps.Point(36.5, 36.5)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-                    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                    var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption),
-                        markerPosition = new daum.maps.LatLng(val.latitude, val.longitude); // 마커가 표시될 위치입니다
-
-                    // 마커를 생성합니다
-                    var marker = new daum.maps.Marker({
-                        position: markerPosition,
-                        image: markerImage // 마커이미지 설정
-                    });
-
-                    // 마커가 지도 위에 표시되도록 설정합니다
-                    marker.setMap(map);
-                    // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                    var content = '<a target="_blank" href="/estate/detail/'+val.id+'">' +
-                        '<div class="detailOverlay">' +
-                        '    <span class="title">'+val.name+'</span>' +
-                        '</div>' +
-                        '</a>';
-
-                    // 커스텀 오버레이가 표시될 위치입니다
-                    var position = new daum.maps.LatLng(parseFloat(val.latitude) + parseFloat(0.000150),val.longitude);
-
-                    // 커스텀 오버레이를 생성합니다
-                    var customOverlay = new daum.maps.CustomOverlay({
-                        map: map,
-                        position: position,
-                        content: content,
-                        yAnchor: 1
-                    });
-                });
-                var str = (city == null ? "" : city) + " " + (district == null ? "" : district) + (town == null ? "" : town);
-                map.setLevel(8);
-                if(subway != null) {
-                    str = subway + "역";
-                    places.keywordSearch(str, callback);
-                }else{
-                // 주소-좌표 변환 객체를 생성합니다
-                var geocoder = new daum.maps.services.Geocoder();
-                // 주소로 좌표를 검색합니다
-                geocoder.addr2coord(str, function(status, result) {
-                    // 정상적으로 검색이 완료됐으면
-                    console.log(result);
-                    if (status === daum.maps.services.Status.OK) {
-                        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
-                        // 결과값으로 받은 위치를 마커로 표시합니다
-                        var marker = new daum.maps.Marker({
-                            map: map,
-                            position: coords
-                        });
-                        map.setCenter(coords);
-                    }else{
-                        alert("검색에 실패하였습니다. 주소를 다시 확인하여주세요.\n검색 주소 : "+str);
-                    }
-                });
-                }
-            }
-        });
-
-    }
     var remember = 'businessZone';
     var depositeCostFrom = 'all';
     var depositeCostTo = 'all';
@@ -384,7 +294,7 @@ $(document).ready(function(){
         getDepositeCost();
         getRentCost();
         getPremiumCost();
-        searchByBusinessType(city,district,town,null,attr,estateType);
+        searchByBusinessType(city,district,town,null,attr,estateType,null);
 
         remember = 'businessZone';
     });
@@ -400,7 +310,7 @@ $(document).ready(function(){
         getDepositeCost();
         getRentCost();
         getPremiumCost();
-        searchByBusinessType(null,null,null,subway,attr,estateType);
+        searchByBusinessType(null,null,null,subway,attr,estateType,null);
         remember = 'subway';
     });
 
@@ -418,17 +328,18 @@ $(document).ready(function(){
         if(remember == 'subway'){
             console.log(attr);
             var subway = $('.subwayInput').val();
-            searchByBusinessType(null,null,null,subway,attr,estateType);
+            searchByBusinessType(null,null,null,subway,attr,estateType,null);
         }else{
             var district = $(".districtSelect").val();
             var city = $(".citySelect").val();
             var town = $(".townSelect").val();
-            searchByBusinessType(city,district,town,null,attr,estateType);
+            searchByBusinessType(city,district,town,null,attr,estateType,null);
         }
 
     });
 
-    function searchByBusinessType(city,district,town,subway,businessType,estateType){
+    function searchByBusinessType(city,district,town,subway,businessType,estateType,registryNo){
+
         $.ajax({
             url:"/estate/search/business",
             type:"POST",
@@ -443,6 +354,7 @@ $(document).ready(function(){
                 rentTo : rentCostTo,
                 premiumCostFrom : premiumCostFrom,
                 premiumCostTo : premiumCostTo,
+                estateCode: registryNo,
                 subwayStation:subway,
                 estateType: estateType,
                 businessType: businessType},
@@ -450,7 +362,8 @@ $(document).ready(function(){
                 map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
                 var zoomControl = new daum.maps.ZoomControl();
                 map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
-
+                var latitude = 37.50819396972656;
+                var longitude = 126.741943359375 ;
                 $.each(data,function(key,val){
                     var imageSrc = "/static/admin/include/images/map/";
                     var category = parseInt(val.category);
@@ -468,7 +381,8 @@ $(document).ready(function(){
                     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
                     var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption),
                         markerPosition = new daum.maps.LatLng(val.latitude, val.longitude); // 마커가 표시될 위치입니다
-
+                    longitude = val.longitude;
+                    latitude = val.latitude;
                     // 마커를 생성합니다
                     var marker = new daum.maps.Marker({
                         position: markerPosition,
@@ -523,7 +437,11 @@ $(document).ready(function(){
                 if(subway != null) {
                     str = subway + "역";
                     places.keywordSearch(str, callback);
-                }else{
+                }else if(registryNo!= null){
+                    var coords = new daum.maps.LatLng(latitude, longitude);
+                    map.setCenter(coords);
+                }
+                else{
                     // 주소-좌표 변환 객체를 생성합니다
                     var geocoder = new daum.maps.services.Geocoder();
                     // 주소로 좌표를 검색합니다
@@ -552,28 +470,32 @@ $(document).ready(function(){
         var redirect = $("#redirect").val();
         //init map
         if (redirect != 'true') {
-            searchByBusinessType("9", null,null, null, null, estateType);
+            searchByBusinessType("9", null,null, null, null, estateType,null);
         } else {
             var cityValue = $("#cityValue").val();
             var districtValue = $("#districtValue").val();
             var townValue = $("#townValue").val();
             var subwayValue = $("#subwayStationValue").val();
+            var registryNo = $("#registryNoValue").val();
+
             var attr = '';
             for (var i = 0; i <= 30; i++) {
                 if ($('#c' + i).prop('checked')) {
                     attr = attr + $('#c' + i).val() + ',';
                 }
             }
-            if (subwayValue == '') {
-                searchByBusinessType(cityValue, districtValue,townValue, null, attr, estateType);
-            } else {
+            if (subwayValue == '' && registryNo == '') {
+                searchByBusinessType(cityValue, districtValue,townValue, null, attr, estateType,null);
+            }else if(registryNo != ''){
+                searchByBusinessType(null, null,null, null, attr, estateType,registryNo);
+            }else {
                 $(".searchBox .searchMethodArea").removeClass("active");
                 $(".searchBox .buttonArea button").removeClass("active");
                 $(".searchBox .storeSearch").removeClass("active");
                 $(".searchBox .subwaySearch").addClass("active");
                 $("#subwaySearchButton").addClass("active");
                 $(".subwayInput").val(subwayValue);
-                searchByBusinessType(null, null,null, subwayValue, attr, estateType);
+                searchByBusinessType(null, null,null, subwayValue, attr, estateType,null);
             }
 
         }

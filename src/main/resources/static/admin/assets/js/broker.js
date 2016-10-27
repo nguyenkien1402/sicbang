@@ -126,7 +126,7 @@ $(document).ready(function() {
                     reportModal.removeClass("active");
                     return;
                 }
-                alert("Can't send report, try later!.");
+                alert("보고서를 보낼 수 없습니다, 나중에 시도!.");
                 return;
             }
         });
@@ -199,7 +199,7 @@ $(document).ready(function() {
 
     $(".alertMessage1").click(function(e){
         e.preventDefault();
-        alert("Members only; please login.(로그인해주세요)");
+        alert("로그인해주세요");
     });
 
     $("#changeAdvertised").click(function(){
