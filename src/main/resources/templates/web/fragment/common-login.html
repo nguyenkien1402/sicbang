@@ -117,7 +117,7 @@
 </tr>
 <tr>
     <td class="paddingLeft strong">매물유형</td>
-    <td class="center"><span th:text="${estate.estateType}"></span></td>
+    <td class="center"><span th:text="${estate.estateType == 'STARTUP' ? '인수창업':'공실매물'}"></span></td>
     <td class="paddingLeft strong">월세(만원)</td>
     <td class="center"><span th:text="${estate.rentCost}"></span></td>
 </tr>
@@ -208,7 +208,7 @@
 </tr>
 <tr>
     <td class="paddingLeft strong">매물유형</td>
-    <td class="center" ><span th:text="${estate.estateType}"></span></td>
+    <td class="center" ><span th:text="${estate.estateType == 'STARTUP' ? '인수창업':'공실매물'}"></span></td>
     <td class="paddingLeft strong">월세(만원)</td>
     <td class="center" ><span th:text="${estate.rentCost}"></span></td>
 </tr>
@@ -288,12 +288,12 @@
 
                 <div class="formControlGroup horizontal">
                     <label class="narrow">휴대폰번호</label>
-                    <input name="reportPhone" type="password" class="formControl wide warning" />
+                    <input name="reportPhone" type="text" class="formControl wide warning" />
                 </div>
 
                 <div class="formControlGroup horizontal">
                     <label class="narrow">신고내용</label>
-                    <textarea id="reportContentArea" name="reportContents" class="formControl wide warning">사진이랑 너무 다릅니다.</textarea>
+                    <textarea id="reportContentArea" name="reportContents" class="formControl wide warning"></textarea>
 
                 </div>
 

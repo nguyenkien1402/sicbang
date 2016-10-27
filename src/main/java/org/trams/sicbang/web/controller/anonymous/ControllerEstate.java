@@ -265,14 +265,25 @@ public class ControllerEstate extends AbstractController {
                 formEstate.setTown(null);
             }
         }
+        formEstate.setIsApproved("1");
+        List<Estate> estates = null;
         if(formEstate.getEstateType().equals("%%")){
-            formEstate.setEstateType("");
+            formEstate.setEstateType(null);
+            if(formEstate.getBusinessType()!= null){
+                estates = serviceEstate.filterEstateOnMap(formEstate);
+                formEstate.setBusinessType(null);
+                formEstate.setEstateType("VACANT");
+                List<Estate> estate2 = serviceEstate.filterEstateOnMap(formEstate);
+                estates.addAll(estate2);
+            }else{
+                estates = serviceEstate.filterEstateOnMap(formEstate);
+            }
+            return new ResponseEntity(estates,HttpStatus.OK);
         }else if(formEstate.getEstateType().equals("VACANT")){
             formEstate.setBusinessType(null);
             formEstate.setCategory(null);
         }
-        formEstate.setIsApproved("1");
-        List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
+        estates = serviceEstate.filterEstateOnMap(formEstate);
         return new ResponseEntity(estates,HttpStatus.OK);
     }
 
