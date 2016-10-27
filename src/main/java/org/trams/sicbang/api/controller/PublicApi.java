@@ -306,7 +306,8 @@ public class PublicApi extends AbstractController {
             @ModelAttribute FormSlide form
     ){
         Slide slide = null;
-        slide = serviceSlide.fileterPopup(form);
+        form.setType("POPUP");
+        slide = serviceSlide.findOne(form);
         if (slide == null) {
             return new Response(MessageResponse.EXCEPTION_NOT_FOUND);
         } else {

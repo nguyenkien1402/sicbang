@@ -101,11 +101,23 @@ public class ServiceSlide implements IServiceSlide {
                         return 1;
                     }
                 }else{
-                    file.setImgUrl(fileUrl);
-                    file.setName(form.getAttachments().getOriginalFilename());
-                    file.setType("POPUP");
-                    file.setIsDelete(0);
-                    file.setUser(user);
+                    FormSlide search = new FormSlide();
+                    search.setType("POPUP");
+                    Slide s = findOne(search);
+                    if(s == null) {
+                        file.setImgUrl(fileUrl);
+                        file.setName(form.getAttachments().getOriginalFilename());
+                        file.setType("POPUP");
+                        file.setIsDelete(0);
+                        file.setUser(user);
+                        file.setLink(form.getLink());
+                    }else{
+                        s.setImgUrl(fileUrl);
+                        s.setName(form.getAttachments().getOriginalFilename());
+                        s.setLink(form.getLink());
+                        repositorySlide.save(s);
+                        return 1;
+                    }
                 }
                 repositorySlide.save(file);
                 check = 1;

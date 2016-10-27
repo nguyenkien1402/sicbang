@@ -85,6 +85,12 @@ public class ControllerMain extends AbstractController {
             ModelMap map) {
         System.out.println("==========================");
         System.out.println("call popup");
+        Slide slide = new Slide();
+        formSlide.setType("POPUP");
+        if(serviceSlide.findOne(formSlide) != null){
+            slide = serviceSlide.findOne(formSlide);
+            map.put("slide",slide);
+        }
         System.out.println("==========================");
         return BASE_TEMPLATE + "main_popup";
     }
