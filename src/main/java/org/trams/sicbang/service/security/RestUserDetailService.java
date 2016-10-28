@@ -46,7 +46,9 @@ public class RestUserDetailService implements UserDetailsService {
             logger.error("user is inactive");
             throw new ApplicationException(MessageResponse.EXCEPTION_NOT_AVAILABLE);
         }
-        if(user.getPermission().getId() == 2 && !user.getType().equals("1")){
+        if(user.getPermission() != null &&
+                user.getPermission().getId() == 2 &&
+                user.getType() != null && !user.getType().equals("1")){
             logger.error("user is inactive");
             throw new ApplicationException(MessageResponse.EXCEPTION_BROKER_NOT_AVAILABLE);
         }
