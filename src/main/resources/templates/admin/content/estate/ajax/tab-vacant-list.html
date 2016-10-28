@@ -102,8 +102,8 @@
                 URL = URL+"?id="+id+"&status=2";
                 console.log("not");
               }
-              admin.showPopupConfirm(null, function() {
-                admin.updateStatus(URL);
+              admin.showPopupConfirm('상태를 변경하시겠습니까?', function() {
+//                admin.updateStatus(URL);
                 requestDetail(URL,SELECTED_TAB);
               });
               function requestDetail(url, selected_tab) {
