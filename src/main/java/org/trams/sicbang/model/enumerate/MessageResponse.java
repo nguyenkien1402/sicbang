@@ -13,7 +13,7 @@ public enum MessageResponse {
     EXCEPTION_NOT_FOUND(2, "Resource not found"),
     EXCEPTION_NOT_AVAILABLE(3, "Resource not available"),
     EXCEPTION_EXISTED(4, "Resource existed"),
-
+    EXCEPTION_BROKER_NOT_AVAILABLE(7,"Resource Broker not available"),
     EXCEPTION_FILEUPLOAD_FAILED(500, "Failed to upload file"),
 
     EXCEPTION_UNAUTHORIZED(996, "Unauthorized request"),

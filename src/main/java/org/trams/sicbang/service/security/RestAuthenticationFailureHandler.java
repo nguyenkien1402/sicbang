@@ -22,6 +22,10 @@ public class RestAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
             response.sendRedirect("/admin?login_error=" + "Invalid user name or password");
         }
         else {
+            if(exception.getMessage().equals("Resource Broker not available")) {
+                response.getWriter().write("broker_not_available");
+                return;
+            }
             response.getWriter().write("login_error");
         }
     }

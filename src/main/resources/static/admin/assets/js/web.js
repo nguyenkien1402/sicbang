@@ -100,7 +100,7 @@ $(document).ready(function(){
             },
             success: function(data){
                 if(data == "SUCCESS"){
-                    alert("Success!");
+                    alert("회원가입이 정상 처리되었습니다.");
                     $.ajax({
                         url:"/login",
                         type:"POST",
@@ -150,7 +150,10 @@ $(document).ready(function(){
             success: function(data){
                 if(data == 'login_success'){
                     top.location.href="/";
-                }else{
+                }else if(data == 'broker_not_available'){
+                    location.href="/broker-join-waiting";
+                }
+                else{
                     $("#username").val("");
                     $("#password").val("");
                     $(".error-message").html("이메일과 비밀번호를 다시 확인해 주세요");
