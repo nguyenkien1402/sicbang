@@ -32,7 +32,7 @@
                                     <thead>
                                     <tr>
                                         <th>제목</th>
-                                        <th>작성일시</th>
+                                        <th>URL</th>
                                         <th colspan="2">도구</th>
                                     </tr>
                                     </thead>
@@ -48,7 +48,7 @@
                                             <a  th:href="@{__${#httpServletRequest.getRequestURI()}__/{id}(id=${item.id})}" th:text="수정">Repair</a>
                                         </td>
                                         <td>
-                                            <a href="javascript:;" class="text-danger btn-action-delete" th:attr="data-url=@{__${#httpServletRequest.getRequestURI()}__/__${item.id}__}" th:text="탈퇴">Delete</a>
+                                            <a href="javascript:;" class="text-danger btn-action-delete" th:attr="data-url=@{__${#httpServletRequest.getRequestURI()}__/__${item.id}__}" th:text="삭제">Delete</a>
                                         </td>
                                     </tr>
                                     </tbody>

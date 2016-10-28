@@ -382,6 +382,7 @@ function Admin() {
         $popupConfirm.modal('toggle');
         if (callback) {
             $popupConfirm.find('#btn-confirm-action').on('click', function() {
+                $popupConfirm.modal('hide');
                 callback();
             });
         } else {
