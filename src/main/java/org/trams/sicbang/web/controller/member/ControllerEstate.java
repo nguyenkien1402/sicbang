@@ -128,7 +128,7 @@ public class ControllerEstate extends AbstractController {
         form.setAll_addr(form.getCity()+" "+form.getDistrict()+" "+form.getTown()+" "+form.getAll_addr());
         form.setIsAdvertised("0");
         form.setIsApproved("0");
-        form.setBusinessZone(form.getTown()+" "+form.getDistrict()+" "+form.getCity());
+        form.setBusinessZone(form.getCity()+" "+form.getDistrict()+" "+form.getTown());
         List<String> attachments = new ArrayList<>();
         for(MultipartFile multipartFile: form.getAttachmentFiles()){
             if(!multipartFile.getOriginalFilename().equals("")) {
