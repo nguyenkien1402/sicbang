@@ -141,10 +141,12 @@
                 }
                 if(townAddress == ""){
                     $("input[name=townAddress]").focus();
+                    alert("기본 주소 입력.");
                     return;
                 }
                 if(addressDetail == ""){
                     $("input[name=addressDetail]").focus();
+                    alert("상세 주소 입력.");
                     return;
                 }
                 if($("#wait").prop("checked") == false){
