@@ -22,7 +22,7 @@
                         <tbody>
                             <tr th:each="item,idStat : ${items}">
                                 <td class="center" th:text="${idStat.index+1}"></td>
-                                <td class="paddingLeft"><a th:text="${item.title}" th:href="@{'http://'+${item.content}}"></a></td>
+                                <td class="paddingLeft"><a  th:href="@{'http://'+${item.content}}" target="_blank"><p th:text="${item.title}"></p></a></td>
                                 <td class="center"><span th:if="${item.createdDate != null}" th:text="${#dates.format(item.createdDate, 'dd/MM/YYYY')}"></span></td>
                             </tr>
                         </tbody>

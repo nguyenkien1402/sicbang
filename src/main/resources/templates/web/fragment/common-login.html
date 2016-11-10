@@ -16,6 +16,9 @@
         <a th:href="@{/estate}"><li id="liEstate">전체매물보기</li></a>
         <a th:href="@{/estate/startup}"><li id="liStartup" >인수창업</li></a>
         <a th:href="@{/estate/vacant}"><li id="liVacancy">공실매물</li></a>
+        <a th:href="@{/board}"><li>외식 창업 소식</li></a>
+        <a th:href="@{/notice}"><li>공지사항</li></a>
+
     </ul>
     <ul class="headerRightList">
         <div th:unless="${@serviceAuthorized.isAuthenticated()}">
@@ -153,7 +156,7 @@
 </tr>
 <tr>
     <td class="paddingLeft strong">면적</td>
-    <td class="center"><span th:text="${estate.area}"></span></td>
+    <td class="center"><span th:text="${estate.area}"></span><span> m²(<span th:text="${T(Math).round(estate.area/3.30875*1000)/1000}"></span><span>평)</span></span></td>
     <td class="paddingLeft strong">실수익률(%)</td>
     <td class="center"><span th:text="${estate.gainRatio}"></span></td>
 </tr>
