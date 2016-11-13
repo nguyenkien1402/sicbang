@@ -143,6 +143,14 @@ $(document).ready(function(){
             if(val.name == "" || val.name == null)
                 button = '<button>'+val.user.companyName+'</button>';
 
+            var area = 0;
+            if(val.estateType == "STARTUP")
+            area = parseFloat(val.area);
+            else
+            area = parseFloat(val.contractArea);
+
+            var areaKorean = Math.round(area/3.30875* 1000)/1000;
+
             $(div).append("<a target='_blank' href='/estate/detail/"+val.id+"'><li>"+
                 "<div class='imgArea'>"
                 +"<img src='"+src+"' class='basicImg'/>"
@@ -155,7 +163,7 @@ $(document).ready(function(){
                 +"<span>권리금 "+val.premiumCost+"</span>"
                 +"</div><div class='location'>"
                 +"<span>"+val.businessZone+"</span>"
-                +"<span>"+val.area+"m²(8평)</span>"
+                +"<span>"+area+"m²("+areaKorean+"평)</span>"
                 +"</div><span class='explain'>"+val.onelineComment+"</span>"
                 +"</div></li></a>");
 

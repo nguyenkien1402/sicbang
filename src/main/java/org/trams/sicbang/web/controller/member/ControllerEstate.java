@@ -220,11 +220,6 @@ public class ControllerEstate extends AbstractController {
         return new ResponseEntity(categories,HttpStatus.OK);
     }
 
-    @RequestMapping(value="/paid",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String paid() {
-        return "web/content/policy/paid";
-    }
-
     @RequestMapping(value="/changeAdv",method = RequestMethod.POST,produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public Object changeAdv(@ModelAttribute FormEstate formEstate) {

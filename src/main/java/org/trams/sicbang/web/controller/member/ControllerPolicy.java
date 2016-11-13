@@ -3,8 +3,12 @@ package org.trams.sicbang.web.controller.member;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.trams.sicbang.model.entity.User;
+import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.web.controller.AbstractController;
 
 /**
@@ -32,6 +36,11 @@ public class ControllerPolicy extends AbstractController {
     public String lbs(ModelMap map) {
 
         return BASE_TEMPLATE + "lbs";
+    }
+    @RequestMapping(value="/paid",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String paid() {
+
+        return BASE_TEMPLATE + "paid";
     }
 
 
