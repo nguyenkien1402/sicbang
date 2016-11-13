@@ -19,7 +19,7 @@
         <!--<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=be8e3356c4e2c2fd885f16dd14db4b5e"></script>-->
 
         <div class="block-button-top text-right sb-mb-20">
-            <a th:href="@{/admin/broker/repair/{id}(id=${estate.id})}" class="btn green tab-repair">수정</a>
+            <a th:href="@{/admin/estate/repair/{id}(id=${estate.id})}" class="btn green tab-estate-repair">수정</a>
             <a href="javascript:;" th:attr="data-url=@{'/admin/estate/' + ${estate.id}}" class="btn warning littleWide btn-action-estate-delete red">삭제</a>
             <a href="" class="btn btn-default">목록</a></div>
         <!-- .block-button-top-->
@@ -141,80 +141,7 @@
             </div>
         </div>
 
-        <!--<div class="form">-->
-        <!--<div class="form-horizontal">-->
-        <!--<div class="form-body">-->
-        <!--<div data-sb-href="content.html" class="item sb-mb-30 sb-bg-gray">-->
-        <!--<div class="" style="margin-bottom:40px;">-->
-        <!--<a class="tab-repair" th:href="@{/admin/broker/repair/{id}(id=${estate.id})}">-->
-        <!--<button class="btn warning littleWide">수정</button>-->
-        <!--</a>-->
-        <!--&lt;!&ndash;<button id="deleteMarket" class="btn warning littleWide">삭제</button>&ndash;&gt;-->
-        <!--<a
-        href="javascript:;" th:attr="data-url=@{'/admin/estate/' + ${estate.id}}" class="btn warning littleWide btn-action-estate-delete">-->
-        <!--삭제-->
-        <!--</a>-->
-        <!--<a href="" ><button class="btn warning littleWide">목록</button></a>-->
-        <!--</div>-->
-        <!--<div class="slideBox">-->
-        <!--<div class="slideArea">-->
-        <!--<div class="sideBox">-->
-        <!--<div class="arrow leftArrow"></div>-->
-        <!--</div>-->
-        <!--<div class="centerBox">-->
-        <!--<div class="viewImage">-->
-        <!--<img th:src="${sizeattach > 0 ? attachments[0].origin : '/admin/assets/images/no_image.jpg'}"/>-->
-        <!--</div>-->
-        <!--<div class="thumbImage">-->
-        <!--<div th:if="${sizeattach > 0}">-->
-        <!--<img class="active" th:each="item : ${attachments}" th:src="${item.origin}"/>-->
-        <!--</div>-->
-        <!--<span class="thumbNum">1/<span th:text="${sizeattach}"></span></span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="sideBox">-->
-        <!--<div class="arrow rightArrow"></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="infoArea">-->
-        <!--<h3>담당자 정보</h3>-->
-        <!--<img class="basicImg" th:src="@{/admin/assets/images/no_image.jpg}"/>-->
 
-        <!--<div class="infoText">-->
-        <!--<p><strong>담당자:</strong> 김중개</p>-->
-        <!--<p><strong>연락처:</strong> 010-1234-5678</p>-->
-        <!--<p>-->
-        <!--<strong>담당자 정보:</strong><br/>-->
-        <!--<span>-->
-        <!--이 매물은 공인중개사가 등록한 중개매물입니다. 공인중개사를 통해 안전하게 계약할수 있으며 법정중개보수가 발생합니다.-->
-        <!--</span>-->
-        <!--</p>-->
-        <!--</div>-->
-
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-
-
-
-
-        <!--<div class="tableArea">-->
-        <!--<span class="date right" >등록일:-->
-        <!--<span th:text="${estate.availableDate}">YYYY.MM.DD hh:mm</span>-->
-        <!--</span>-->
-        <!--<h2 class="title" th:text="${estate.name}">흥부 부대찌개 뱅뱅사거리점</h2>-->
-        <!--<table class="table full">-->
-
-        <!--</table>-->
-        <!--</div>-->
-
-        <!--&lt;!&ndash;<div class="row report">&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="right reportButton">잘못된 정보 신고</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
 
         <script th:inline="javascript">
 

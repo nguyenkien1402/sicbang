@@ -7,10 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.trams.sicbang.model.entity.Attachment;
+import org.trams.sicbang.model.entity.Estate;
 import org.trams.sicbang.model.entity.ReportInformation;
+import org.trams.sicbang.model.entity.User;
 import org.trams.sicbang.model.exception.FormError;
+import org.trams.sicbang.model.form.FormEstate;
 import org.trams.sicbang.model.form.FormReport;
 import org.trams.sicbang.web.controller.AbstractController;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by voncount on 15/04/2016.
@@ -99,4 +106,78 @@ public class ControllerReport extends AbstractController {
         }
     }
 
+    @RequestMapping(value = "/estate/{estateId}", method = RequestMethod.GET)
+    public String detailEstate(
+            @PathVariable(value = "estateId") String estateId,
+            ModelMap map
+    ){
+        FormEstate estateForm = new FormEstate();
+        estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
+        Estate estate = serviceEstate.findOne(estateForm);
+        User user = estate.getUser();
+        Collection<Attachment> listAttach = new ArrayList<Attachment>();
+        listAttach = estate.getAttachments();
+        map.put("attachments", listAttach);
+        map.put("estate",estate);
+        map.put("sizeattach", listAttach.size());
+        map.put("user",user);
+
+        if(estate.getEstateType().equals("STARTUP")){
+            System.out.println("go for startup");
+            return BASE_TEMPLATE +"detail_startup";
+        }else{
+            System.out.println("go for vacant");
+            return BASE_TEMPLATE +"detail_vacant";
+        }
+    }
+
+    @RequestMapping(value = "/estate/repair/{estateId}", method = RequestMethod.GET)
+    public String repairEstate(
+            @PathVariable(value = "estateId") String estateId,
+//            @RequestParam(value = "dataType", defaultValue = "tab-estates-registered") String dataType,
+            ModelMap map) {
+        System.out.println("Go estate repair");
+        FormEstate estateForm = new FormEstate();
+        estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
+        Estate estate = serviceEstate.findOne(estateForm);
+        Collection<Attachment> listAttach = estate.getAttachments();
+        System.out.println("list attach: " +listAttach.size());
+        map.put("attachments", listAttach);
+        map.put("estate",estate);
+        System.out.println("estate id: " + estateId);
+        map.put("sizeattach", listAttach.size());
+        System.out.println("go for content repair");
+        return BASE_TEMPLATE +"detail_repair";
+
+    }
+
+    @RequestMapping(value = "/eatate/change/{estateId}/{type}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String changeEstateType(
+            @PathVariable(value = "estateId") String estateId,
+            @PathVariable(value = "type") String type,
+            @ModelAttribute FormEstate form,
+//            @RequestParam(value = "dataType", defaultValue = "tab-estates-registered") String dataType,
+            ModelMap map) {
+        System.out.println("======================================");
+        System.out.println("type:" +type);
+        System.out.println("name: "+form.getName());
+        FormEstate estateForm = new FormEstate();
+        estateForm.setEstateId(estateId);
+        estateForm.setIsApproved("1");
+        Estate estate = new Estate();
+        serviceEstate.updateEstateType(estateForm,type);
+        estate = serviceEstate.findOne(estateForm);
+        Collection<Attachment> listAttach = estate.getAttachments();
+        System.out.println("list attach type: " +listAttach.size());
+        map.put("attachments", listAttach);
+        map.put("estate",estate);
+        System.out.println("estate id type: " + estateId);
+        map.put("sizeattach", listAttach.size());
+        System.out.println("========================================");
+        System.out.println("go for content repari");
+        return "redirect:/admin/report/estate/repair/"+estateId;
+
+    }
 }
