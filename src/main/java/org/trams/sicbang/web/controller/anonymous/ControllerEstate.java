@@ -204,7 +204,7 @@ public class ControllerEstate extends AbstractController {
         }
     }
     /**
-     * Search startup
+     * Search estate
      * @param formEstate
      * @return
      */
@@ -241,20 +241,20 @@ public class ControllerEstate extends AbstractController {
         if(formEstate.getEstateCode().equals("")){
             formEstate.setEstateCode(null);
         }
+
+        //If subway station not null, search by subway.
         if(formEstate.getSubwayStation() != null){
-            System.out.println("Subway");
             formEstate.setCity(null);
             formEstate.setDistrict(null);
             formEstate.setTown(null);
             formEstate.setEstateCode(null);
-        }else if(formEstate.getEstateCode() != null){
-            System.out.println("RegistyNo");
+        }else if(formEstate.getEstateCode() != null){ // If Registry No not null, search by Registry No.
             formEstate.setCity(null);
             formEstate.setDistrict(null);
             formEstate.setTown(null);
             formEstate.setSubwayStation(null);
         }
-        else{
+        else{ // search by City,District,Town
             if(formEstate.getCity().equals("")){
                 formEstate.setCity(null);
             }
@@ -267,6 +267,10 @@ public class ControllerEstate extends AbstractController {
         }
         formEstate.setIsApproved("1");
         List<Estate> estates = null;
+
+        /*
+         - Check estate type, if estateType = %%, search all estate not by estateType.
+        */
         if(formEstate.getEstateType().equals("%%")){
             formEstate.setEstateType(null);
             if(formEstate.getBusinessType()!= null){
@@ -279,10 +283,11 @@ public class ControllerEstate extends AbstractController {
                 estates = serviceEstate.filterEstateOnMap(formEstate);
             }
             return new ResponseEntity(estates,HttpStatus.OK);
-        }else if(formEstate.getEstateType().equals("VACANT")){
+        }else if(formEstate.getEstateType().equals("VACANT")){ // if estateType == Vacant, search estate by VACANT
             formEstate.setBusinessType(null);
             formEstate.setCategory(null);
         }
+        // Search Estate by StartUp
         estates = serviceEstate.filterEstateOnMap(formEstate);
         return new ResponseEntity(estates,HttpStatus.OK);
     }
@@ -323,7 +328,12 @@ public class ControllerEstate extends AbstractController {
         }
         return new ResponseEntity(cities,HttpStatus.OK);
     }
-
+    /**
+     *
+     * Get all town
+     * @Param districtId
+     * @return
+     */
     @RequestMapping(value = "/getAllTown/{districtId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity getAllTown(@PathVariable(value = "districtId") int id){
@@ -331,7 +341,7 @@ public class ControllerEstate extends AbstractController {
         return new ResponseEntity(towns,HttpStatus.OK);
     }
     /**
-     * Filter
+     * redirect to startup map
      * @param map
      * @return
      */
@@ -343,7 +353,7 @@ public class ControllerEstate extends AbstractController {
     }
 
     /**
-     * Filter
+     * redirect to vacant map
      * @param map
      * @return
      */

@@ -20,23 +20,38 @@ public class ControllerPolicy extends AbstractController {
     final String BASE_URL = "/policy/";
     final String BASE_TEMPLATE = "web/content/policy/";
 
-
+    /**
+     * redirect to privacy-policy page
+     * @return
+     */
     @RequestMapping(value="/privacy-policy",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String privacy(ModelMap map) {
+    public String privacy() {
 
         return BASE_TEMPLATE + "privacy";
     }
+    /**
+     * redirect to use-policy page
+     * @return
+     */
     @RequestMapping(value="/use-policy",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String use(ModelMap map) {
+    public String use() {
 
         return BASE_TEMPLATE + "use";
     }
-
+    /**
+     * redirect to lbs-policy page
+     * @return
+     */
     @RequestMapping(value="/lbs-policy",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String lbs(ModelMap map) {
+    public String lbs() {
 
         return BASE_TEMPLATE + "lbs";
     }
+
+    /**
+     * redirect to paid-policy page
+     * @return
+     */
     @RequestMapping(value="/paid",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String paid() {
 

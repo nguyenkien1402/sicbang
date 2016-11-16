@@ -115,7 +115,7 @@ public class ControllerEstate extends AbstractController {
     }
 
     /**
-     * Create
+     * Create estate
      * @param form
      * @param map
      * @return
@@ -210,19 +210,19 @@ public class ControllerEstate extends AbstractController {
     }
 
     /**
-     * getALlCategory
+     * getAllCategory
      *
      * @return
      */
     @RequestMapping(value="/getAllCategory",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity findBusinessType(){
+    public ResponseEntity getAllCategory(){
         List<Category> categories = serviceBusinessType.findAllCategory();
         return new ResponseEntity(categories,HttpStatus.OK);
     }
 
     @RequestMapping(value="/changeAdv",method = RequestMethod.POST,produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public Object changeAdv(@ModelAttribute FormEstate formEstate) {
+    public Object changeAdvertised(@ModelAttribute FormEstate formEstate) {
 
         User user = getUserSession();
         formEstate.setUserId(user.getId().toString());

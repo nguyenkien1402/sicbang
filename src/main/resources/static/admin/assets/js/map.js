@@ -31,6 +31,8 @@ $(document).ready(function(){
         }
     })
 
+
+    // get All City when load page.
     function getAllCity(){
         $.ajax({
             url: "/estate/getAllCity",
@@ -62,7 +64,7 @@ $(document).ready(function(){
       
     }
 
-
+    // city selectBox change event handler
     $(".citySelect").change(function(e){
         var $parent = $(this).parent();
         var index = parseInt($(this).find("option:selected").data("index"));
@@ -84,6 +86,9 @@ $(document).ready(function(){
             $option.appendTo($parent.find(".districtSelect"));
         });
     });
+
+
+    // district selectBox change event handler
     $(".districtSelect").change(function(e){
         var $parent = $(this).parent();
         var index = parseInt($(this).find("option:selected").data("index"));
@@ -172,28 +177,7 @@ $(document).ready(function(){
     }
 
 
-    // call api to get estate
-    /*$.ajax({
-        url: "/estate/map",
-        type:"GET",
-        dataType:"json",
-        data:{
-            estateType: estateType
-        },
-        success:function (data) {
-            $('#trusted_broker').empty();
-            $('#broker').empty();
-            $('#member').empty();
-            var trusted = data.trusted;
-            var broker = data.broker;
-            var member = data.member;
-            rendEstate(trusted,'#trusted_broker');
-            rendEstate(broker,'#broker');
-            rendEstate(member,'#member');
 
-        }
-    });
-    */
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 
     daum.maps.event.addListener(map, 'click', function(mouseEvent) {
@@ -251,6 +235,7 @@ $(document).ready(function(){
     var premiumCostFrom = 'all';
     var premiumCostTo = 'all';
 
+    // get DepositeCost value ( depositeCostFrom - depositeCostTo)
     function getDepositeCost(){
         var strDepositeCost = $("#depositeCost").val();
         if(strDepositeCost != 'all'){
@@ -262,6 +247,7 @@ $(document).ready(function(){
             depositeCostTo = 'all';
         }
     }
+    // get RentCost value ( rentCostFrom - rentCostTo)
     function getRentCost() {
         var strRentCost = $("#rentCost").val();
         if(strRentCost != 'all'){
@@ -274,6 +260,7 @@ $(document).ready(function(){
         }
     }
 
+    // get PremiumCost value ( premiumCostFrom - premiumCostTo)
     function getPremiumCost() {
         var strPremiumCost = $("#premiumCost").val();
         if(strPremiumCost != 'all'){
@@ -290,6 +277,7 @@ $(document).ready(function(){
             premiumCostTo = 'all';
         }
     }
+    //Search by city,district,town click event
     $("#searchByStore").click(function(){
         var district = $(".districtSelect").val();
         var city = $(".citySelect").val();
@@ -307,6 +295,8 @@ $(document).ready(function(){
 
         remember = 'businessZone';
     });
+
+    //Search by subway click event
     $("#searchBySubway").click(function(){
         var subway = $('.subwayInput').val();
         var attr = '';
@@ -323,6 +313,7 @@ $(document).ready(function(){
         remember = 'subway';
     });
 
+    // Button Search by Business Click event
     $('.littleWide').click(function () {
         var attr = '';
 
