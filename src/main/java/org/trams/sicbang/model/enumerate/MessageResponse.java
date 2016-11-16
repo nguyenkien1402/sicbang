@@ -9,7 +9,8 @@ public enum MessageResponse {
     OK(0, "OK"),
 
     // EXCEPTION
-    EXCEPTION_FIELD_INVALID(1, "Field not found or invalid"),
+   /// EXCEPTION_FIELD_INVALID(1, "Field not found or invalid"),
+    EXCEPTION_FIELD_INVALID(1, "찾을 수 없습니다 또는 잘못 된 필드"),
     EXCEPTION_NOT_FOUND(2, "Resource not found"),
     EXCEPTION_NOT_AVAILABLE(3, "Resource not available"),
     EXCEPTION_EXISTED(4, "Resource existed"),

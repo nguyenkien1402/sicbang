@@ -53,25 +53,20 @@ $(document).ready(function(){
         var policy = $("#c1").prop("checked");
         var privacy = $("#c2").prop("checked");
         var place = $("#c3").prop("checked");
-
+        $("#passwordMessage").html("");
+        $("#passBlockMessage").html("");
         if(email == ""){
             alert("이메일을 입력해주세요.");
             return false;
         }
-
         if(password == ""){
             alert("비빌번호를 입력해주세요.");
             return false;
         }
-		
-		
         if(passConf == ""){
             alert("비밀번호확인을 입력해주세요.");
             return false;
         }
-
-		
-		
         if(policy == false){
             alert("이용약관에 동의해주세요.");
             return false;
@@ -86,7 +81,8 @@ $(document).ready(function(){
             return false;
         }
 		if(password != passConf){
-			$("#passwordMessage").html("Password do not match");
+			$("#passwordMessage").html("암호가 일치 하지 않습니다.");
+            $("input[name=joinPassConf]").focus();
 			return false;
 		}
         //TODO : Ajax 통신
