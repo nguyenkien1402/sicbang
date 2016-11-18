@@ -379,7 +379,13 @@ $(document).ready(function(){
                 var longitude = 126.741943359375 ;
                 $.each(data,function(key,val){
                     switch (val.typeTrust){
-                        case "TRUSTED_STARTUP": trusted.push(val); break;
+                        case "TRUSTED_STARTUP": {
+                            if( val.advertised == true)
+                                trusted.push(val);
+                            else
+                                broker.push(val);
+                            break;
+                        }
                         case "REALTOR":  broker.push(val); break;
                         case "DIRECT_DEAL" :  member.push(val); break;
                     }
