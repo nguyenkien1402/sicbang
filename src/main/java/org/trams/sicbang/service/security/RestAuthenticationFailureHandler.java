@@ -3,6 +3,7 @@ package org.trams.sicbang.service.security;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Service;
+import org.trams.sicbang.model.enumerate.MessageResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class RestAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
             response.sendRedirect("/admin?login_error=" + "Invalid user name or password");
         }
         else {
-            if(exception.getMessage().equals("Resource Broker not available")) {
+            if(exception.getMessage().equals(MessageResponse.EXCEPTION_BROKER_NOT_AVAILABLE.getMessage())) {
                 response.getWriter().write("broker_not_available");
                 return;
             }

@@ -17,11 +17,11 @@
                                  src="/admin/assets/images/no_image.jpg"/>
                         </div>
                         <div class="textArea">
-                            <h3 class="title primary">흥부 부대찌개 중앙점</h3>
+                            <h3 class="title primary" th:text="${recent.estate.name}"></h3>
                             <div class="priceArea">
-                                <span class="strong">보증금 <span class="strong" th:text="${recent.estate.depositeCost}"></span> 만원 </span>
-                                <span class="strong">월세 <span class="strong" th:text="${recent.estate.rentCost}"></span> 만원 </span>
-                                <span class="strong">권리금 <span class="strong" th:text="${recent.estate.premiumCost}"></span> 만원</span>
+                                <span class="strong">보증금 <span class="strong" th:text="${T(Math).round(recent.estate.depositeCost)}"></span>만원 </span>
+                                <span class="strong">월세 <span class="strong" th:text="${T(Math).round(recent.estate.rentCost)}"></span>만원 </span>
+                                <span class="strong">권리금 <span class="strong" th:text="${T(Math).round(recent.estate.premiumCost)}"></span>만원</span>
                             </div>
                             <span class="location" th:text="${recent.estate.all_addr}">서울시 관악구 신대방동</span>
                         </div>

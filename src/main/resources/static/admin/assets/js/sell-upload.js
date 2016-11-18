@@ -6,7 +6,7 @@ $(document).ready(function(){
 
     var constructDate=$('input[name="constructDate"]'); //our date input has the name "date"
     constructDate.datepicker({
-        format: 'mm/dd/yyyy',
+        format: "yyyy/mm/dd",
         container: constructDate.parent(),
         todayHighlight: true,
         autoclose: true,
@@ -14,7 +14,7 @@ $(document).ready(function(){
     });
     var availableDate=$('input[name="availableDate"]');//our date input has the name "date"
     availableDate.datepicker({
-        format: 'mm/dd/yyyy',
+        format: "yyyy/mm/dd",
         container: availableDate.parent(),
         todayHighlight: true,
         autoclose: true,

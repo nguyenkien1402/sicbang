@@ -82,7 +82,7 @@ function Admin() {
         if (!_this.validateForm($form)) {
             return false;
         }
-        _this.convertForm($form);
+        _this.convertFormWeb($form);
         var formData = new FormData($form[0]);
         console.log("data:"+formData);
         $.ajax({
@@ -259,6 +259,27 @@ function Admin() {
         $form.find('.date-picker').each(function(idx, elem) {
             var dateVal = $(this).val();
             var momentObj = moment(dateVal, 'M/D/YYYY');
+            if (momentObj.isValid()) {
+                $(this).val(momentObj.valueOf());
+            } else {
+                // clear invalid value
+                $(this).val('');
+            }
+        });
+        $form.find('.data-currency').each(function(idx, elem) {
+            $(this).val($(this).val().replace(/,/g, ''));
+        });
+        $form.find('.data-number').each(function(idx, elem) {
+            $(this).val($(this).val().replace(/\./g, ''));
+        });
+    };
+
+    this.convertFormWeb = function($form) {
+        // convert String to timestamp
+        console.log("go convert form");
+        $form.find('.date-picker').each(function(idx, elem) {
+            var dateVal = $(this).val();
+            var momentObj = moment(dateVal, 'YYYY/M/D');
             if (momentObj.isValid()) {
                 $(this).val(momentObj.valueOf());
             } else {

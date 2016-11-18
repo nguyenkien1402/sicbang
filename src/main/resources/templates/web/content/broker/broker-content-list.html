@@ -10,28 +10,42 @@
                     <h2>내가 올린 매물 목록</h2>
                 </div>
                 <div class="marketButtonArea">
-                    <span id="normal"><a th:href="@{/member/estate}">인수창업</a></span>
-                    <span id="advertise"><a th:href="@{/member/estate/advertised}">공실매물</a></span>
+                    <span id="tabStartup"><a th:href="@{/member/estate/startup}">인수창업</a></span>
+                    <span id="tabVacant"><a th:href="@{/member/estate/vacant}">공실매물</a></span>
                 </div>
                 <ul class="marketList">
                     <li class="market clearFix" th:each="estate : ${estates}">
-                        <a class="tab-detail-all" th:href="@{/estate/detail/{id}(id=${estate.id})}">
-                        <div class="imageArea">
+                        <a class="tab-detail-all" th:if="${estate.isApproved == 1}" th:href="@{/estate/detail/{id}(id=${estate.id})}">
+                            <div class="imageArea">
+                                <img th:src="${not #lists.isEmpty(estate.attachments) ? estate.attachments[0].origin : '/static/admin/assets/images/no_image.jpg'}"/>
+                            </div>
+                            <div class="textArea">
+                                <h3 class="title primary" th:text="${estate.name}">흥부 부대찌개 중앙점</h3>
+                                <div class="priceArea">
+                                    <span class="strong" >보증금 <span th:text="${T(Math).round(estate.depositeCost)}"></span>만원</span>
+                                    <span class="strong">월세 <span th:text="${T(Math).round(estate.rentCost)}"></span>만원</span>
+                                    <span class="strong">권리금 <span th:text="${T(Math).round(estate.premiumCost)}"></span>만원</span>
+                                </div>
+                                <span class="location" th:text="${estate.all_addr}"></span>
+                            </div>
+                        </a>
+                        <a class="tab-detail-all" th:unless ="${estate.isApproved == 1}" th:href="@{/member/estate/estate-waiting}">
+                            <div class="imageArea">
                             <img th:src="${not #lists.isEmpty(estate.attachments) ? estate.attachments[0].origin : '/static/admin/assets/images/no_image.jpg'}"/>
                         </div>
                         <div class="textArea">
                             <h3 class="title primary" th:text="${estate.name}">흥부 부대찌개 중앙점</h3>
                             <div class="priceArea">
-                                <span class="strong" >보증금 <span th:text="${estate.depositeCost}"></span>만원</span>
-                                <span class="strong">월세 <span th:text="${estate.rentCost}"></span>만원</span>
-                                <span class="strong">권리금 <span th:text="${estate.premiumCost}"></span>만원</span>
+                                <span class="strong" >보증금 <span th:text="${T(Math).round(estate.depositeCost)}"></span>만원</span>
+                                <span class="strong">월세 <span th:text="${T(Math).round(estate.rentCost)}"></span>만원</span>
+                                <span class="strong">권리금 <span th:text="${T(Math).round(estate.premiumCost)}"></span>만원</span>
                             </div>
                             <span class="location" th:text="${estate.all_addr}"></span>
                         </div>
                         </a>
                     </li>
                 </ul>
-                <input type="hidden" id = "advertised" th:value="${advertised}">
+                <input type="hidden" id = "estateType" th:value="${estateType}">
             <div class = "pagination" th:replace="web/fragment/common-login :: pagination(items=${estates})"></div>
                 
             </div>
@@ -39,12 +53,12 @@
             <script>
         $(document).ready(function() {
             //초기 변수 설정
-            var advertised = $("#advertised").val();
-            if(advertised == "true"){
-                $("#advertise").addClass("active");
+            var estateType = $("#estateType").val();
+            if(estateType == "VACANT"){
+                $("#tabVacant").addClass("active");
             }
             else{
-                $("#normal").addClass("active");
+                $("#tabStartup").addClass("active");
             }
             $(".marketButtonArea span").click(function (e) {
                 $(".marketButtonArea span").removeClass("active");

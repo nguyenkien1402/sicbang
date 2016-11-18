@@ -74,15 +74,25 @@ public class ControllerEstate extends AbstractController {
         return BASE_TEMPLATE + "detail";
     }
 
-    @RequestMapping(value="/advertised",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getAdvertised(@ModelAttribute FormEstate formEstate, ModelMap map) {
-
+    @RequestMapping(value="/vacant",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getVacantUploadByUser(@ModelAttribute FormEstate formEstate, ModelMap map) {
         User user = getUserSession();
         formEstate.setUserId(user.getId().toString());
-        formEstate.setIsAdvertised("true");
+        formEstate.setEstateType("VACANT");
         Page<Estate> estates = serviceEstate.filter(formEstate);
         map.put("estates",estates);
-        map.put("advertised","true");
+        map.put("estateType","VACANT");
+        return BASE_TEMPLATE + "broker-content-list";
+    }
+
+    @RequestMapping(value="/startup",method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getStartupUploadByUser(@ModelAttribute FormEstate formEstate, ModelMap map) {
+        User user = getUserSession();
+        formEstate.setUserId(user.getId().toString());
+        formEstate.setEstateType("STARTUP");
+        Page<Estate> estates = serviceEstate.filter(formEstate);
+        map.put("estates",estates);
+        map.put("estateType","STARTUP");
         return BASE_TEMPLATE + "broker-content-list";
     }
     /**
@@ -130,6 +140,8 @@ public class ControllerEstate extends AbstractController {
         form.setIsApproved("0");
         form.setBusinessZone(form.getCity()+" "+form.getDistrict()+" "+form.getTown());
         List<String> attachments = new ArrayList<>();
+        System.out.println(form.getAvailableDate() + " "+form.getConstructDate());
+
         for(MultipartFile multipartFile: form.getAttachmentFiles()){
             if(!multipartFile.getOriginalFilename().equals("")) {
                 String file = "";

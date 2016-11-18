@@ -54,17 +54,21 @@ $(document).ready(function(){
         var privacy = $("#c2").prop("checked");
         var place = $("#c3").prop("checked");
         $("#passwordMessage").html("");
-        $("#passBlockMessage").html("");
+        $("#passwordCfmMessage").html("");
+        $("#helpBlockMessage").html("");
         if(email == ""){
             alert("이메일을 입력해주세요.");
+            $("input[name=joinEmail]").focus();
             return false;
         }
         if(password == ""){
             alert("비빌번호를 입력해주세요.");
+            $("input[name=joinPassword]").focus();
             return false;
         }
         if(passConf == ""){
             alert("비밀번호확인을 입력해주세요.");
+            $("input[name=joinPassConf]").focus();
             return false;
         }
         if(policy == false){
@@ -80,8 +84,18 @@ $(document).ready(function(){
             alert("위치기반서비스 이용약관에 동의해주세요.");
             return false;
         }
+        if(password.length < 4){
+            $("#passwordMessage").html("비밀번호 4자 이상 입력");
+            $("input[name=joinPassword]").focus();
+            return false;
+        }
+        if(passConf.length < 4){
+            $("#passwordCfmMessage").html("비밀번호 확인 4자 이상 입력");
+            $("input[name=joinPassConf]").focus();
+            return false;
+        }
 		if(password != passConf){
-			$("#passwordMessage").html("암호가 일치 하지 않습니다.");
+			$("#passwordCfmMessage").html("암호가 일치 하지 않습니다.");
             $("input[name=joinPassConf]").focus();
 			return false;
 		}
@@ -117,7 +131,8 @@ $(document).ready(function(){
                     $("#helpBlockMessage").html(data);
                     $("input[name=joinPassword]").val("");
                     $("input[name=joinPassConf]").val("");
-                    $("#passBlockMessage").html("");
+                    $("#passwordMessage").html("");
+                    $("#passwordCfmMessage").html("");
                     $("input[name=joinEmail]").focus();
                 }
             }

@@ -484,7 +484,7 @@ $(document).ready(function(){
         var redirect = $("#redirect").val();
         //init map
         if (redirect != 'true') {
-            searchByBusinessType("9", null,null, null, null, estateType,null);
+            searchByBusinessType(null, null,null, null, null, estateType,null);
         } else {
             var cityValue = $("#cityValue").val();
             var districtValue = $("#districtValue").val();

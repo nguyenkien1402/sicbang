@@ -101,7 +101,7 @@
     </div>
 </div>
 <div th:fragment="estateStartup" class="tableArea">
-    <span class="date right" >등록일: <span th:if="${estate.createdDate != null}" th:text="${#dates.format(estate.createdDate, 'dd/MM/YYYY')}"></span></span>
+    <span class="date right" >등록일: <span th:if="${estate.createdDate != null}" th:text="${#dates.format(estate.createdDate, 'YYYY.MM.dd')}"></span></span>
     <h2 class="title" th:text="${estate.name}"></h2>
 
     <table class="table full">
@@ -116,43 +116,43 @@
     <td class="paddingLeft strong" style="width:25%;">매물번호</td>
     <td class="center" style="width:25%;"><span th:text="${estate.estateCode}"></span></td>
     <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
-    <td style="width:25%;" class="center"><span th:text="${estate.depositeCost}"></span></td>
+    <td style="width:25%;" class="center"><span th:text="${T(Math).round(estate.depositeCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">매물유형</td>
     <td class="center"><span th:text="${estate.estateType == 'STARTUP' ? '인수창업':'공실매물'}"></span></td>
     <td class="paddingLeft strong">월세(만원)</td>
-    <td class="center"><span th:text="${estate.rentCost}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.rentCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">현재업종</td>
     <td class="center"><span th:text="${estate.category.name}"></span></td>
     <td class="paddingLeft strong">관리비(만원)</td>
-    <td class="center"><span th:text="${estate.serviceCost}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.serviceCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">업종</td>
     <td class="center"><span th:text="${estate.businessType.name}"></span></td>
     <td class="paddingLeft strong">권리금(만원)</td>
-    <td class="center"><span th:text="${estate.premiumCost}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.premiumCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">상권</td>
     <td class="center"><span th:text="${estate.businessZone}"></span></td>
     <td class="paddingLeft strong">기타경비(만원)</td>
-    <td class="center"><span th:text="${estate.otherCost}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.otherCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">인근지하철역</td>
     <td class="center"><span th:text="${estate.subwayStation}"></span></td>
     <td class="paddingLeft strong">월매출(만원)</td>
-    <td class="center"><span th:text="${estate.monthlyIncome}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.monthlyIncome)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">층</td>
     <td class="center"><span th:text="${estate.floor}"></span></td>
     <td class="paddingLeft strong">세전월수입(만원)</td>
-    <td class="center"><span th:text="${estate.monthlyTax}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.monthlyTax)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">면적</td>
@@ -191,15 +191,15 @@
 
 
 <div th:fragment="estateVacant" class="tableArea">
-    <span class="date right" >등록일: <span th:if="${estate.createdDate != null}" th:text="${#dates.format(estate.createdDate, 'dd/MM/YYYY')}"></span></span>
+    <span class="date right" >등록일: <span th:if="${estate.createdDate != null}" th:text="${#dates.format(estate.createdDate, 'YYYY.MM.dd')}"></span></span>
     <h2 class="title" th:text="${estate.name}"></h2>
 
 
     <table class="table full">
         <thead>
         <tr>
-            <th colspan="2" style="width:50%;">기본정보</th>
-            <th colspan="2" style="width:50%;">수익비용구조</th>
+            <th colspan="4" style="width:100%;">기본정보</th>
+
         </tr>
         </thead>
 <tbody >
@@ -207,43 +207,43 @@
     <td class="paddingLeft strong" style="width:25%;">매물번호</td>
     <td class="center" style="width:25%;"><span th:text="${estate.estateCode}"></span></td>
     <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
-    <td style="width:25%;" class="center"><span th:text="${estate.depositeCost}"></span></td>
+    <td style="width:25%;" class="center"><span th:text="${T(Math).round(estate.depositeCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">매물유형</td>
     <td class="center" ><span th:text="${estate.estateType == 'STARTUP' ? '인수창업':'공실매물'}"></span></td>
     <td class="paddingLeft strong">월세(만원)</td>
-    <td class="center" ><span th:text="${estate.rentCost}"></span></td>
+    <td class="center" ><span th:text="${T(Math).round(estate.rentCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">현재업종</td>
-    <td class="center"><span th:text="${estate.all_addr}"></span></td>
+    <td class="center"><span th:text="${estate.currentBusiness}"></span></td>
     <td class="paddingLeft strong">권리금(만원)</td>
-    <td class="center"><span th:text="${estate.premiumCost}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.premiumCost)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">상권</td>
     <td class="center"><span th:text="${estate.businessZone}"></span></td>
     <td class="paddingLeft strong">융자금(만원)</td>
-    <td class="center"><span th:text="${estate.loan}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.loan)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">인근지하철역</td>
     <td class="center"><span th:text="${estate.subwayStation}"></span></td>
     <td class="paddingLeft strong">계약면적</td>
-    <td class="center"><span th:text="${estate.contractArea}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.contractArea)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">층</td>
     <td class="center"><span th:text="${estate.floor}"></span></td>
     <td class="paddingLeft strong">전용면적</td>
-    <td class="center"><span th:text="${estate.exclusiveArea}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.exclusiveArea)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">준공년월</td>
     <td class="center" ><span th:if="${estate.constructDate != null}"  th:text="${#dates.format(estate.constructDate, 'dd/MM/YYYY')}"></span></td>
     <td class="paddingLeft strong">전용률(%)</td>
-    <td class="center"><span th:text="${estate.exclusiveRate}"></span></td>
+    <td class="center"><span th:text="${T(Math).round(estate.exclusiveRate)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">입주가능일</td>

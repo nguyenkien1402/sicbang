@@ -41,8 +41,8 @@
     <!-- need to change apikey when deploy to server -->
     <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=c9c7856aa9e7dc5360302561c643e940&libraries=services"></script>
 
-    <script type="text/javascript" th:src="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js}"></script>
-    <script type="text/javascript" th:src="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/admin/include/js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/admin/include/js//bootstrap-datepicker.kr.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css}" />
     <script th:src="@{../../static/admin/assets/js/init.js}"></script>
 </head>
@@ -97,11 +97,12 @@
         <div class="formControlGroup horizontal">
             <label class="">비밀번호</label>
             <input name="joinPassword" type="password" class="formControl wide warning" />
+            <span id="passwordMessage" class="helpBlock primary"></span>
         </div>
         <div class="formControlGroup horizontal">
             <label class="">비밀번호확인</label>
             <input name="joinPassConf" type="password" class="formControl wide warning" />
-		    <span id="passwordMessage" class="helpBlock primary"></span>
+		    <span id="passwordCfmMessage" class="helpBlock primary"></span>
     
         </div>
         <div class="formControlGroup">

@@ -108,7 +108,6 @@
             }
 
             $("#approvalButton").click(function(){
-
                 var email = $("input[name=email]").val();
                 var password =  $("input[name=password]").val();
                 var passwordConf = $("input[name=passwordConfirm]").val();
@@ -129,6 +128,16 @@
                 if(password == ""){
                     $("#passwordMessage").html("* 암호는 비워 둘 수 없습니다")
                     $("input[name=password]").focus();
+                    return false;
+                }
+                if(password.length < 4){
+                    $("#passwordMessage").html("* 비밀번호 4자 이상 입력")
+                    $("input[name=password]").focus();
+                    return false;
+                }
+                if(passwordConf.length < 4){
+                    $("#passwordConfirmMessage").html("* 비밀번호 확인 4자 이상 입력")
+                    $("input[name=passwordConfirm]").focus();
                     return false;
                 }
                 if(passwordConf != password){

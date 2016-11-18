@@ -11,10 +11,14 @@ public enum MessageResponse {
     // EXCEPTION
    /// EXCEPTION_FIELD_INVALID(1, "Field not found or invalid"),
     EXCEPTION_FIELD_INVALID(1, "찾을 수 없습니다 또는 잘못 된 필드"),
+    //EXCEPTION_NOT_FOUND(2, "Resource not found"),
     EXCEPTION_NOT_FOUND(2, "Resource not found"),
+
     EXCEPTION_NOT_AVAILABLE(3, "Resource not available"),
-    EXCEPTION_EXISTED(4, "Resource existed"),
-    EXCEPTION_BROKER_NOT_AVAILABLE(7,"Resource Broker not available"),
+//    EXCEPTION_EXISTED(4, "Resource existed"),
+    EXCEPTION_EXISTED(4, "이미 사용 중인 이메일 주소입니다"),
+
+    EXCEPTION_BROKER_NOT_AVAILABLE(7,"Resource broker not available"),
     EXCEPTION_FILEUPLOAD_FAILED(500, "Failed to upload file"),
 
     EXCEPTION_UNAUTHORIZED(996, "Unauthorized request"),
