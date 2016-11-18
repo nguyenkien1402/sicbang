@@ -195,7 +195,7 @@
 
 .mapArea .infoBox .listBox .storeList ul li .textArea{
     display: inline-block;
-    max-width:230px;
+    max-width:220px;
     position:relative;
     bottom:10px;
 }
