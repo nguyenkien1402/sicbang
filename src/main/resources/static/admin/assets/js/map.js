@@ -154,8 +154,8 @@ $(document).ready(function(){
             else
             area = parseFloat(val.contractArea);
 
-            var areaKorean = Math.round(area/3.30875* 1000)/1000;
-
+            var areaKorean = Math.round(area/3.30875);
+            var onelineComment = TextAbstract(val.onelineComment,15);
             $(div).append("<a target='_blank' href='/estate/detail/"+val.id+"'><li>"+
                 "<div class='imgArea'>"
                 +"<img src='"+src+"' class='basicImg'/>"
@@ -169,14 +169,23 @@ $(document).ready(function(){
                 +"</div><div class='location'>"
                 +"<span>"+val.businessZone+"</span>"
                 +"<span>"+area+"m²("+areaKorean+"평)</span>"
-                +"</div><span class='explain'>"+val.onelineComment+"</span>"
+                +"</div><span class='explain'>"+onelineComment+"</span>"
                 +"</div></li></a>");
 
         });
 
     }
 
-
+    function TextAbstract(text, length) {
+        if (text == null) {
+            return "";
+        }
+        if (text.length <= length) {
+            return text;
+        }
+        text = text.substring(0, length);
+        return text + "...";
+    }
 
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 

@@ -335,6 +335,10 @@ $(document).ready(function(){
         $('#formStartup').append($(inputLongitude));
         $('#formStartup').append($(inputLatitude));
         //     self.submit();
+        var text = $("#detailStartup").val();
+        text = text.replace(/\r?\n/g, '<br />');
+        console.log(text);
+        $("#detailStartup").val(text);
         _this.submitFormEstateWeb($(self));
         return false; //is superfluous, but I put it here as a fallback
     });
@@ -354,6 +358,10 @@ $(document).ready(function(){
         //   _this.convertForm($(self));
         $('#formVacant').append($(inputLongitude));
         $('#formVacant').append($(inputLatitude));
+        var text = $("#detailVacant").val();
+        text = text.replace(/\r?\n/g, '<br/>');
+        $("#detailVacant").val(text);
+        console.log(text);
         //   self.submit();
         _this.submitFormEstateWeb($(self));
         return false; //is superfluous, but I put it here as a fallback
