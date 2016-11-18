@@ -348,7 +348,6 @@ public class FormEstate extends BaseFormSearch<Estate> {
             Optional<Double> _rentCostTo = ConvertUtils.toDoubleNumber(rentTo);
             Optional<Double> _premiumCostFrom = ConvertUtils.toDoubleNumber(premiumCostFrom);
             Optional<Double> _premiumCostTo = ConvertUtils.toDoubleNumber(premiumCostTo);
-
             Optional<Boolean> _isAdvertised = ConvertUtils.toBoolean(isAdvertised);
 
             logger.info("depositeCost : "+depositeCost);
@@ -459,18 +458,35 @@ public class FormEstate extends BaseFormSearch<Estate> {
                         criteriaBuilder.equal(root.get(Estate_.town).get(Town_.id), town)
                 );
             }
-            if (_depositeCostFrom.isPresent() && _depositeCostTo.isPresent()) {
+            if(depositeCostFrom.equals(">20000")){
+                depositeCostFrom = depositeCostFrom.substring(1);
+                Optional<Double> _depositeCost = ConvertUtils.toDoubleNumber(depositeCostFrom);
+                predicates.add(
+                        criteriaBuilder.greaterThan(root.get(Estate_.depositeCost),_depositeCost.get())
+                );
+            }else if (_depositeCostFrom.isPresent() && _depositeCostTo.isPresent()) {
                 predicates.add(
                         criteriaBuilder.between(root.get(Estate_.depositeCost),_depositeCostFrom.get(),_depositeCostTo.get())
                 );
             }
-
-            if (_rentCostFrom.isPresent() && _rentCostTo.isPresent()) {
+            if(rentFrom.equals(">1000")){
+                rentFrom = rentFrom.substring(1);
+                Optional<Double> _rentCost = ConvertUtils.toDoubleNumber(rentFrom);
+                predicates.add(
+                        criteriaBuilder.greaterThan(root.get(Estate_.rentCost),_rentCost.get())
+                );
+            }else if (_rentCostFrom.isPresent() && _rentCostTo.isPresent()) {
                 predicates.add(
                         criteriaBuilder.between(root.get(Estate_.rentCost), _rentCostFrom.get(),_rentCostTo.get())
                 );
             }
-            if (_premiumCostFrom.isPresent() && _premiumCostTo.isPresent()) {
+            if(premiumCostFrom.equals(">10000")){
+                premiumCostFrom = premiumCostFrom.substring(1);
+                Optional<Double> _premiumCost = ConvertUtils.toDoubleNumber(premiumCostFrom);
+                predicates.add(
+                        criteriaBuilder.greaterThan(root.get(Estate_.premiumCost),_premiumCost.get())
+                );
+            }else if (_premiumCostFrom.isPresent() && _premiumCostTo.isPresent()) {
                 predicates.add(
                         criteriaBuilder.between(root.get(Estate_.premiumCost), _premiumCostFrom.get(),_premiumCostTo.get())
                 );
