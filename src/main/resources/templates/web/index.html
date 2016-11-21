@@ -50,7 +50,7 @@
                     <table class="boardContents">
                         <tr th:each="board : ${boards}">
                             <td><a th:href="@{'http://'+${board.content}}" target="_blank" th:text="${board.title}"></a></td>
-                            <td ><span th:if="${board.createdDate != null}" th:text="${#dates.format(board.createdDate, 'dd/MM/YYYY')}"></span></td>
+                            <td ><span th:if="${board.createdDate != null}" th:text="${#dates.format(board.createdDate, 'YYYY/MM/dd')}"></span></td>
                         </tr>
                     </table>
                 </div>
@@ -62,7 +62,7 @@
                     <table class="boardContents">
                         <tr th:each="notice : ${notices}">
                             <td><a th:href="@{'http://'+${notice.content}}" target="_blank" th:text="${notice.title}"></a></td>
-                            <td ><span th:if="${notice.createdDate != null}" th:text="${#dates.format(notice.createdDate, 'dd/MM/YYYY')}"></span></td>
+                            <td ><span th:if="${notice.createdDate != null}" th:text="${#dates.format(notice.createdDate, 'YYYY/MM/dd')}"></span></td>
                         </tr>
                     </table>
                 </div>

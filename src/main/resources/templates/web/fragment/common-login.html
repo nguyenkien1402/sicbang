@@ -242,13 +242,13 @@
 </tr>
 <tr>
     <td class="paddingLeft strong">준공년월</td>
-    <td class="center" ><span th:if="${estate.constructDate != null}"  th:text="${#dates.format(estate.constructDate, 'dd/MM/YYYY')}"></span></td>
+    <td class="center" ><span th:if="${estate.constructDate != null}"  th:text="${#dates.format(estate.constructDate, 'YYYY/MM/dd')}"></span></td>
     <td class="paddingLeft strong">전용률(%)</td>
     <td class="center"><span th:text="${T(Math).round(estate.exclusiveRate)}"></span></td>
 </tr>
 <tr>
     <td class="paddingLeft strong">입주가능일</td>
-    <td class="center"><span th:if="${estate.availableDate != null}" th:text="${#dates.format(estate.availableDate, 'dd/MM/YYYY')}"></span></td>
+    <td class="center"><span th:if="${estate.availableDate != null}" th:text="${#dates.format(estate.availableDate, 'YYYY/MM/dd')}"></span></td>
     <td class="paddingLeft strong">주차여부</td>
     <td class="center"><span th:text="${estate.parking}?'가능':'불가'"></span></td>
 </tr>
