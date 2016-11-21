@@ -148,7 +148,41 @@ $(document).ready(function(){
         $(".error-message").html("");
         overlay.removeClass("active");
     });
+    var myTimer;
+    $.ajax({
+        url: "/getAllSlide",
+        dataType:"json",
+        type:"GET",
+        success:function(data){
+            $("div.centerBox").empty();
+            $.each(data.content,function(key,val){
+               $("div.centerBox").append("<img class='mySlides' src='"+val.imgUrl+"' />")
+            });
+            $('.centerBox img:gt(0)').hide();
+            myTimer = setInterval(sliderNext, 5000);
+        }
+    });
 
+    function sliderPrev(){
+            $('.centerBox :first-child').fadeOut();
+            $('.centerBox :last-child').fadeIn().prependTo('.centerBox');
+    }
+    function sliderNext(){
+        $('.centerBox :first-child').fadeOut()
+            .next('img').fadeIn()
+            .end().appendTo('.centerBox');
+    }
+    $(".sideBox").click(function (e) {
+        var arrow = $(this).find(".arrow");
+        if (arrow.hasClass("leftArrow")) {
+            sliderPrev();
+        } else {
+            sliderNext();
+        }
+        clearInterval(myTimer);
+        myTimer = setInterval(sliderNext, 5000);
+
+    });
 
 
 });
