@@ -149,6 +149,7 @@ $(document).ready(function(){
         overlay.removeClass("active");
     });
     var myTimer;
+    var imageLength = 0;
     $.ajax({
         url: "/getAllSlide",
         dataType:"json",
@@ -156,21 +157,30 @@ $(document).ready(function(){
         success:function(data){
             $("div.centerBox").empty();
             $.each(data.content,function(key,val){
-               $("div.centerBox").append("<img class='mySlides' src='"+val.imgUrl+"' />")
+                imageLength+=1;
+               $("div.centerBox").append("<a href='http://"+val.link+"'  class='mySlides' id='image"+key+"' target='_blank' ><img  src='"+val.imgUrl+"' /></a>")
             });
-            $('.centerBox img:gt(0)').hide();
+            $('.centerBox a:gt(0)').hide();
             myTimer = setInterval(sliderNext, 5000);
         }
     });
 
+    var imageIndex = 0;
     function sliderPrev(){
-            $('.centerBox :first-child').fadeOut();
-            $('.centerBox :last-child').fadeIn().prependTo('.centerBox');
+        $(".mySlides").hide();
+        if(imageIndex == 0) {
+            imageIndex = imageLength-1;
+        }else
+        imageIndex -= 1;
+        $("#image"+imageIndex).fadeIn();
     }
     function sliderNext(){
-        $('.centerBox :first-child').fadeOut()
-            .next('img').fadeIn()
-            .end().appendTo('.centerBox');
+        $(".mySlides").hide();
+        if(imageIndex == imageLength-1) {
+            imageIndex = 0;
+        }else
+        imageIndex += 1;
+        $("#image"+imageIndex).fadeIn();
     }
     $(".sideBox").click(function (e) {
         var arrow = $(this).find(".arrow");
