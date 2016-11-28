@@ -140,7 +140,8 @@
 }
 
 .mapArea .infoBox .detailBox .storeBox h5{
-    margin-bottom: 15px;
+    margin-top: 15px;
+    margin-left:10px;
 }
 .mapArea .infoBox .detailBox .storeBox label{
     margin-right:3px;
@@ -150,6 +151,59 @@
     font-size:12px;
 }
 
+.mapArea .mapBox .searchbox-btn {
+    position: absolute;
+    left: 50px;
+    top: 45px;
+    z-index: 111;
+    width: 40px;
+    height: 40px;
+}
+.storeBox .storeArea img{
+    width:45px;
+    height:45px;
+    float:left;
+    margin-bottom: 10px;
+}
+
+.mapArea .mapBox .loading{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 9999;
+}
+
+.storeBox .storeArea h5{
+    float:left;
+}
+.mapArea .mapBox  .searchbox-btn.close #serach-close {
+    display: none;
+}
+.mapArea .mapBox  .searchbox-btn.close #serach-open {
+    display: block;
+}
+.mapArea .mapBox  .searchbox-btn #serach-open {
+    display: none;
+}
+.mapArea .mapBox .searchbox-btn #serach-close {
+    display: block;
+}
+
+.mapArea .mapBox .searchbox-btn button {
+    width: 40px;
+    height: 40px;
+    display: none;
+    background: none;
+    border: 0;
+}
+.mapArea .mapBox .searchBox.close{
+    display:none;
+}
+.mapArea .mapBox .searchbox-btn button img {
+    display: block;
+    width: 100%;
+}
+i
 .mapArea .infoBox .listBox{
     background-color: white;
 

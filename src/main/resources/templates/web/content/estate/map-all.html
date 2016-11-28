@@ -47,28 +47,38 @@
                         </div>
                         <div class="storeBox">
                             <div class="storeArea">
-                                <h5>휴게음식점</h5>
+
+                                <img th:src="@{../../static/admin/include/images/map/food.png}"/><h5>휴게음식점</h5>
+
+                                <div style="clear:both">
                                 <div class="store" th:each="eatery,eateryStat : ${eatery}">
                                      <input th:id="'c'+${eateryStat.index}" type="checkbox" th:value="${eatery.id}" checked  >
                                      <span th:text="${eatery.name}"></span>
                                 </div>
-
+                                </div>
                             </div>
 
                             <div class="storeArea">
-                                <h5>일반음식점</h5>
+
+                                <img th:src="@{../../static/admin/include/images/map/restaurant.png}"/><h5>일반음식점</h5>
+
+                                <div style="clear:both">
                                 <div class="store" th:each="restaurant,restaurantStat : ${restaurants}">
                                     <input th:id="'c1'+${restaurantStat.index}" type="checkbox" th:value="${restaurant.id}" checked  >
                                     <span th:text="${restaurant.name}"></span>
                                 </div>
+                                    </div>
                             </div>
 
                             <div class="storeArea">
-                                <h5>주류</h5>
+                                <img th:src="@{../../static/admin/include/images/map/liquor.png}"/><h5>주류</h5>
+
+                                <div style="clear:both">
                                 <div class="store" th:each="liquor,liquorStat : ${liquors}">
                                     <input th:id="'c2'+${liquorStat.index}" type="checkbox" th:value="${liquor.id}" checked >
                                     <span th:text="${liquor.name}"></span>
                                 </div>
+                                    </div>
                             </div>
                             
                             <div class="btnGroup">
@@ -125,7 +135,15 @@
                             <button class="btn primary" id ="searchBySubway" style="height:35px;">조회</button>
                         </div>
                     </div>
-
+                    <div class="searchbox-btn" id="searchbox-btn">
+                        <button type="button" id="serach-open">
+                            <img th:src="@{../../static/admin/assets/images/icon/btn_search_open.png}">
+                        </button>
+                        <button type="button" id="serach-close" class="on">
+                            <img th:src="@{../../static/admin/assets/images/icon/btn_search_close.png}">
+                        </button>
+                    </div>
+                    <img th:src="@{../../static/admin/assets/images/icon/loading.gif}" id="loading" class="loading" alt="" >
                     <input type="hidden" id="estateType" th:value="${estateType}"/>
                     <input type="hidden" id="cityValue" th:value="${city}"/>
                     <input type="hidden" id="districtValue" th:value="${district}"/>

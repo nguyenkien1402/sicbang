@@ -363,4 +363,83 @@ public class ControllerEstate extends AbstractController {
         map.put("estateType","VACANT");
         return BASE_TEMPLATE + "map-all";
     }
+
+    @RequestMapping(value = "/search/getDataDragEndOrZoomChange", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity getDataWhenDragEnd(@ModelAttribute FormEstate formEstate,int zoomLevel){
+        List<Estate> estates = new ArrayList<>();
+        if(formEstate.getEstateType().equals("%%")){
+            formEstate.setEstateType(null);
+            if(formEstate.getBusinessType()!= null){
+                estates = serviceEstate.filterEstateOnMap(formEstate);
+                formEstate.setBusinessType(null);
+                formEstate.setEstateType("VACANT");
+                List<Estate> estate2 = serviceEstate.filterEstateOnMap(formEstate);
+                estates.addAll(estate2);
+            }else{
+                estates = serviceEstate.filterEstateOnMap(formEstate);
+            }
+            estates = filterEstateByRadius(estates,formEstate.getLongitude(),formEstate.getLatitude(),zoomLevel);
+            return new ResponseEntity(estates,HttpStatus.OK);
+        }else if(formEstate.getEstateType().equals("VACANT")){ // if estateType == Vacant, search estate by VACANT
+            formEstate.setBusinessType(null);
+            formEstate.setCategory(null);
+        }
+        // Search Estate by StartUp
+        estates = serviceEstate.filterEstateOnMap(formEstate);
+        estates = filterEstateByRadius(estates,formEstate.getLongitude(),formEstate.getLatitude(),zoomLevel);
+        return new ResponseEntity(estates,HttpStatus.OK);
+    }
+
+    private List<Estate> filterEstateByRadius(List<Estate> estates,String longitude,String latitude,int zoomLevel){
+        List<Estate> estateFilter = new ArrayList<>();
+        double lat = Double.parseDouble(latitude);
+        double lng = Double.parseDouble(longitude);
+        double radius = getDistanceByZoomLevel(zoomLevel);
+        for(Estate estate: estates){
+            double lat2 = Double.parseDouble(estate.getLatitude());
+            double lng2 = Double.parseDouble(estate.getLongitude());
+            if(getDistanceFromLatLonInKm(lat,lng,lat2,lng2) <= radius){
+                estateFilter.add(estate);
+            }
+        }
+        return estateFilter;
+    }
+
+    private double getDistanceFromLatLonInKm(double lat1,double lng1,double lat2,double lng2) {
+        long R = 6371; // Radius of the earth in km
+        double dLat = deg2rad(lat2-lat1);  // deg2rad below
+        double dLon = deg2rad(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                                Math.sin(dLon/2) * Math.sin(dLon/2)
+                ;
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = R * c; // Distance in km
+        return d;
+    }
+
+    private double deg2rad(double deg) {
+        return deg * (Math.PI/180);
+    }
+
+    private double getDistanceByZoomLevel(int zoomLevel){
+        switch (zoomLevel){
+            case 1: return 0.3;
+            case 2: return 0.45;
+            case 3: return 0.75;
+            case 4: return 1.5;
+            case 5: return 3;
+            case 6: return 6;
+            case 7: return 10;
+            case 8: return 20;
+            case 9: return 50;
+            case 10: return 80;
+            case 11: return 140;
+            case 12: return 288;
+            case 13: return 400;
+            case 14: return 500;
+            default:return 0;
+        }
+    }
 }
