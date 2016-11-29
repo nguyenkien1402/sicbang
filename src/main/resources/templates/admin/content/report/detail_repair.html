@@ -84,25 +84,25 @@
                                                             <div class="col-md-12 text-center">
                                                                 <div style="vertical-align: middle;" class="help-inline"> <strong class="sb-f-20">매물 유형을 선택해주세요.</strong></div>
                                                                 <div data-toggle="buttons" class="sb-btn-checkbox-group btn-group btn-group-lg btn-group-solid">
-                                                                    <div th:switch="${estate.estateType}">
-                                                                        <div th:case="'STARTUP'">
-                                                                            <a class="btn default " th:href="@{/admin/report/estate/change/{id}/{type}(id=${estate.id}, type='VACANT')}">
-                                                                                <input type="radio" name="test1256" class="toggle"/>안심회원
-                                                                            </a>
-                                                                            <a class="btn default active " th:href="@{/admin/report/estate/change/{id}/{type}(id=${estate.id}, type='STARTUP')}">
-                                                                                <input type="radio" name="test1256" class="toggle"/>무료로 변경
-                                                                            </a>
-                                                                        </div>
+                                                                    <!--<div th:switch="${estate.estateType}">-->
+                                                                        <!--<div th:case="'STARTUP'">-->
+                                                                            <!--<a class="btn default " th:href="@{/admin/report/estate/change/{id}/{type}(id=${estate.id}, type='VACANT')}">-->
+                                                                                <!--<input type="radio" name="test1256" class="toggle"/>안심회원-->
+                                                                            <!--</a>-->
+                                                                            <!--<a class="btn default active " th:href="@{/admin/report/estate/change/{id}/{type}(id=${estate.id}, type='STARTUP')}">-->
+                                                                                <!--<input type="radio" name="test1256" class="toggle"/>무료로 변경-->
+                                                                            <!--</a>-->
+                                                                        <!--</div>-->
 
-                                                                        <div th:case="'VACANT'">
-                                                                            <a class="btn default active " th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='VACANT')}">
-                                                                                <input type="radio" name="test1256" class="toggle"/>안심회원
-                                                                            </a>
-                                                                            <a class="btn default " th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='STARTUP')}">
-                                                                                <input type="radio" name="test1256" class="toggle"/>무료로 변경
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
+                                                                        <!--<div th:case="'VACANT'">-->
+                                                                            <!--<a class="btn default active " th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='VACANT')}">-->
+                                                                                <!--<input type="radio" name="test1256" class="toggle"/>안심회원-->
+                                                                            <!--</a>-->
+                                                                            <!--<a class="btn default " th:href="@{/admin/estate/change/{id}/{type}(id=${estate.id}, type='STARTUP')}">-->
+                                                                                <!--<input type="radio" name="test1256" class="toggle"/>무료로 변경-->
+                                                                            <!--</a>-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
                                                                 </div>
                                                             </div>
                                                         </div>

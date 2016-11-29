@@ -44,7 +44,7 @@
                                                                 <input type="radio"  name="user_type" class="toggle"> 안심회원
                                                             </label>
                                                             <label class="btn btn-default btn_change_type" th:attr="data-user-id=${user.id}" name='BROKER' th:classappend="${user.permission.getName() eq 'BROKER' ? 'active' : ''}">
-                                                                <input type="radio"  name="user_type" class="toggle"> 무료로 변경
+                                                                <input type="radio"  name="user_type" class="toggle"> 무료회원
                                                             </label>
                                                         </div>
                                                     </div>
@@ -61,7 +61,7 @@
                                                         <div class="form-group">
                                                             <label class="col-md-3 control-label"><strong>대표자</strong></label>
                                                             <div class="col-md-9">
-                                                                <input type="text" th:value="${user.corporationRegistration}" value="김철수" class="form-control input-medium">
+                                                                <input type="text" th:value="${user.username}" value="김철수" class="form-control input-medium">
                                                             </div>
                                                         </div>
 
@@ -84,6 +84,9 @@
                                                             <div class="col-md-9">
                                                                 <div class="form-control-static" th:text="${user.dueDate}">YYYY.MM.DD hh:mm</div>
                                                             </div>
+                                                            <button class="btn btn-default btn_change_type" th:attr="data-user-id=${user.id}" name='EXTEND'>
+                                                                 Extend
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>

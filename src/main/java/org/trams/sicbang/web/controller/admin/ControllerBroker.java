@@ -297,15 +297,29 @@ public class ControllerBroker extends AbstractController {
     public ResponseEntity updateTypeUser(@RequestParam("userId") int userId,
                                          @RequestParam("userType") String type,
                                          @ModelAttribute FormUser form) {
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
         if(type.equals(UserTypePermission.BROKER)){
             form.setDueDate(null);
-        }else {
+        }
+        if(type.equals(UserTypePermission.TRUSTED_BROKER)){
             System.out.println("user type: " + type);
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MONTH, 1);
             Date d = calendar.getTime();
-            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
             form.setDueDate(ft.format(d));
+        }
+        if(type.equals("EXTEND")){
+            System.out.println("go to extend");
+            FormUser search = new FormUser();
+            search.setUserId(userId+"");
+            User user = serviceUser.findOne(search);
+            Date date = user.getDueDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.MONTH,1);
+            date = calendar.getTime();
+            form.setDueDate(ft.format(date));
+            type = "TRUSTED_BROKER";
         }
         form.setPermission(type);
         serviceUser.update(form);

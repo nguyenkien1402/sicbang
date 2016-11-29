@@ -77,25 +77,25 @@
                             <td class="paddingLeft strong" style="width:25%;">매물번호</td>
                             <td class="center" style="width:25%;" th:text="${estate.estateCode}">201601011121212102</td>
                             <td class="paddingLeft strong" style="width:25%;">보증금(만원)</td>
-                            <td style="width:25%;" class="center" th:text="${estate.depositeCost}">10,000</td>
+                            <td style="width:25%;" class="center" th:text="${#numbers.formatDecimal(estate.depositeCost,0,'DEFAULT',0,'DEFAULT')}">10,000</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">매물유형</td>
                             <td class="center" th:text="${estate.estateType == 'STARTUP' ? '인수창업' : '공실매물' }">창업인수</td>
                             <td class="paddingLeft strong">월세(만원)</td>
-                            <td class="center" th:text="${estate.rentCost}">800</td>
+                            <td class="center" th:text="${#numbers.formatDecimal(estate.rentCost,0,'DEFAULT',0,'DEFAULT')}">800</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">현재업종</td>
                             <td class="center" th:text="${estate.currentBusiness}">일반음식점</td>
                             <td class="paddingLeft strong">권리금(만원)</td>
-                            <td class="center" th:text="${estate.premiumCost}">20,000</td>
+                            <td class="center" th:text="${#numbers.formatDecimal(estate.premiumCost,0,'DEFAULT',0,'DEFAULT')}">20,000</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">상권</td>
                             <td class="center" th:text="${estate.businessZone}">한식점</td>
                             <td class="paddingLeft strong">융자금(만원)</td>
-                            <td class="center" th:text="${estate.loan}">2,322</td>
+                            <td class="center" th:text="${#numbers.formatDecimal(estate.loan,0,'DEFAULT',0,'DEFAULT')}">2,322</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">인근지하철역</td>
@@ -113,7 +113,7 @@
                             <td class="paddingLeft strong">준공년월</td>
                             <td class="center" th:text="${estate.constructDate}">2</td>
                             <td class="paddingLeft strong">전용률(%)</td>
-                            <td class="center" th:text="${estate.exclusiveRate}">22</td>
+                            <td class="center" th:text="${#numbers.formatDecimal(estate.exclusiveRate,0,'DEFAULT',0,'DEFAULT')}">22</td>
                         </tr>
                         <tr>
                             <td class="paddingLeft strong">입주가능일</td>

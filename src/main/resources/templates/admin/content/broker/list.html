@@ -30,7 +30,7 @@
                                         <select class="form-control sel-nav">
                                             <option value="companyName">업체명</option>
                                             <option value="addressDetail">주소</option>
-                                            <option value="corporationRegistration">대표자</option>
+                                            <option value="username">대표자</option>
                                             <option value="phoneNumber">대표전화</option>
                                             <option value="date">가입일시</option>
                                             <option value="type-broker">안심</option>
@@ -69,7 +69,7 @@
                                             <a th:href="@{__${#httpServletRequest.getRequestURI()}__/{id}(id=${user.id})}" th:text="${user.companyName}">companyName</a>
                                         </td>
                                         <td th:text="${user.addressDetail}">Address</td>
-                                        <td th:text="${user.corporationRegistration}">Representator</td>
+                                        <td th:text="${user.username}">Representator</td>
                                         <td th:text="${user.phoneNumber}">Phone</td>
                                         <td th:text="${user.createdDate}">Joined date</td>
                                         <td th:text="${user.permission.name eq 'TRUSTED_BROKER' ? '안심' : '무료'}">Paid/Free</td>

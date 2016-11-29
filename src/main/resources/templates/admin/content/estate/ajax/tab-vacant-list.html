@@ -25,7 +25,7 @@
                     <div class="col-md-2">
                       <div class="form-control-static">
                         <strong>보</strong>
-                        <strong th:text="${item.depositeCost}">3000</strong>
+                        <strong th:text="${#numbers.formatDecimal(item.depositeCost,0,'DEFAULT',0,'DEFAULT')}">3000</strong>
                       </div>
                     </div>
                     <div class="col-md-7">
@@ -43,7 +43,7 @@
                     <div class="col-md-2">
                       <div class="form-control-static">
                         <strong>임</strong>
-                        <strong th:text="${item.rentCost}"></strong>
+                        <strong th:text="${#numbers.formatDecimal(item.rentCost,0,'DEFAULT',0,'DEFAULT')}"></strong>
                       </div>
                     </div>
                     <div class="col-md-7">
@@ -58,7 +58,7 @@
                     <div class="col-md-2">
                       <div class="form-control-static">
                         <strong>권</strong>
-                        <strong th:text="${item.premiumCost}"></strong>
+                        <strong th:text="${#numbers.formatDecimal(item.premiumCost,0,'DEFAULT',0,'DEFAULT')}"></strong>
                       </div>
                     </div>
                     <div class="col-md-7">

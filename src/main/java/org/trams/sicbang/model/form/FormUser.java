@@ -286,6 +286,11 @@ public class FormUser extends BaseFormSearch<User> {
                 );
             }
 
+            if(!Strings.isNullOrEmpty(username)){
+                predicates.add(
+                        criteriaBuilder.like(root.get(User_.username), "%"+username+"%")
+                );
+            }
             if(!Strings.isNullOrEmpty(emailAbsolute)){
                 predicates.add(
                         criteriaBuilder.equal(root.get(User_.email), emailAbsolute)
