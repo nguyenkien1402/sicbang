@@ -98,4 +98,6 @@ public interface IServiceEstate {
     Integer changeStatus(String id, String status);
 
     Estate changeAdvertisedEstate(FormEstate formEstate,String isAdvertised);
+
+    List<Estate> filterWithZoom(FormEstate formEstate,String zoomLevel);
 }

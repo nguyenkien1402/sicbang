@@ -3,6 +3,7 @@ package org.trams.sicbang.api.controller;
 import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -198,6 +199,28 @@ public class PublicApi extends AbstractController {
             form.setIsApproved("1");
             estates = serviceEstate.filter(form);
         }
+        logger.info(estates);
+        return new Response(MessageResponse.OK, estates);
+    }
+
+
+    // --------------------------------------------------------
+    // ---------------------- Estate --------------------------
+    // --------------------------------------------------------
+    @ApiOperation(
+            value = "Estate filter with zoom level",
+            notes = "using for both anonymous & authenticated user")
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/zoomestate/{zoomLevel}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Response estateFilterZoom(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
+            @ModelAttribute FormEstate form,
+            @PathVariable(value = "zoomLevel") String zoomLevel) {
+        List<Estate> estates;
+        System.out.println("filter with zoom:  "+form.getSubwayStation());
+        form.setIsApproved("1");
+        estates = serviceEstate.filterWithZoom(form,zoomLevel);
         logger.info(estates);
         return new Response(MessageResponse.OK, estates);
     }

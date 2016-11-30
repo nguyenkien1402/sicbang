@@ -488,6 +488,84 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         }
         return repositoryEstate.save(estate);
     }
+
+    @Override
+    public List<Estate> filterWithZoom(FormEstate formEstate,String zoomLevel) {
+        List<Estate> estates = repositoryEstate.findAll(formEstate.getSpecification());
+        List<Estate> estateWithZoom = new ArrayList<Estate>();
+        Iterator<Estate> iterator = estates.iterator();
+        while (iterator.hasNext()) {
+            Estate estate = iterator.next();
+            Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", estate.getId());
+            estate.setAttachments(attachments);
+        }
+        double latitude = Double.parseDouble(formEstate.getLatitude());
+        double longitude = Double.parseDouble(formEstate.getLongitude());
+
+        switch (zoomLevel){
+            case "14":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("384"),latitude, longitude);
+                break;
+            case "13":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("192"),latitude, longitude);
+                break;
+            case "12":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("96"),latitude, longitude);
+                break;
+            case "11":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("48"),latitude, longitude);
+                break;
+            case "10":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("24"),latitude, longitude);
+                break;
+            case "9":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("12"),latitude, longitude);
+                break;
+            case "8":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("6"),latitude, longitude);
+                break;
+            case "7":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("3"),latitude, longitude);
+                break;
+            case "6":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("1.5"),latitude, longitude);
+                break;
+            case "5":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("0.75"),latitude, longitude);
+                break;
+            case "4":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("0.3"),latitude, longitude);
+                break;
+            case "3":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("0.17"),latitude, longitude);
+                break;
+            case "2":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("0.09"),latitude, longitude);
+                break;
+            case "1":
+                estateWithZoom = getEstateWithZoomLevel(estates,Double.parseDouble("0.06"),latitude, longitude);
+                break;
+
+        }
+        return estateWithZoom;
+    }
+
+    public List<Estate> getEstateWithZoomLevel(List<Estate> estates, Double zoomLevel, double latitude_1, double longitude_1){
+        List<Estate> estateWithZoom = new ArrayList<Estate>();
+        for(int i = 0 ; i < estates.size() ; i ++){
+            double latitude_2 = Double.parseDouble(estates.get(i).getLatitude());
+            double longitude_2 = Double.parseDouble(estates.get(i).getLongitude());
+            double dLat = Math.abs(latitude_2 - latitude_1);
+            double dLong = Math.abs(longitude_2 - longitude_1);
+            int r = 6371;
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(latitude_1) * Math.cos(latitude_2) * Math.sin(dLong/2) * Math.sin(dLong/2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            double d = r * c;
+            if(d > 0 && d < zoomLevel)
+                estateWithZoom.add(estates.get(i));
+        }
+        return estateWithZoom;
+    }
 }
 
 
