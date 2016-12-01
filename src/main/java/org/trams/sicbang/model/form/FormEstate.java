@@ -96,7 +96,7 @@ public class FormEstate extends BaseFormSearch<Estate> {
     private String isApproved;
     private String typeTrust;
     private String userPermission;
-
+    private int zoomLevel;
 
 
     public static Specification<Estate> dongLike(final String keyword) {
@@ -918,6 +918,14 @@ public class FormEstate extends BaseFormSearch<Estate> {
 
     public void setUserPermission(String userPermission) {
         this.userPermission = userPermission;
+    }
+
+    public int getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(int zoomLevel) {
+        this.zoomLevel = zoomLevel;
     }
 
     public static Estate convertEstateFormToEstate(FormEstate form, Estate estate){

@@ -57,4 +57,40 @@ public class ConvertUtils {
         }
     }
 
+    public static double getDistanceFromLatLonInKm(double lat1,double lng1,double lat2,double lng2) {
+        long R = 6371; // Radius of the earth in km
+        double dLat = deg2rad(lat2-lat1);  // deg2rad below
+        double dLon = deg2rad(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2)
+                ;
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = R * c; // Distance in km
+        return d;
+    }
+
+    public static double deg2rad(double deg) {
+        return deg * (Math.PI/180);
+    }
+
+    public static double getDistanceByZoomLevel(int zoomLevel){
+        switch (zoomLevel){
+            case 1: return 0.3;
+            case 2: return 0.45;
+            case 3: return 0.75;
+            case 4: return 1.5;
+            case 5: return 3;
+            case 6: return 6;
+            case 7: return 10;
+            case 8: return 20;
+            case 9: return 50;
+            case 10: return 80;
+            case 11: return 140;
+            case 12: return 288;
+            case 13: return 400;
+            case 14: return 500;
+            default:return 0;
+        }
+    }
 }

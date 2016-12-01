@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.dto.CustomUserDetail;
 import org.trams.sicbang.model.entity.*;
 import org.trams.sicbang.model.exception.FormError;
@@ -19,6 +20,7 @@ import org.trams.sicbang.model.form.FormWishlist;
 import org.trams.sicbang.service.implement.ServiceAuthorized;
 import org.trams.sicbang.web.controller.AbstractController;
 
+import javax.persistence.Convert;
 import java.util.*;
 
 /**
@@ -292,25 +294,6 @@ public class ControllerEstate extends AbstractController {
         return new ResponseEntity(estates,HttpStatus.OK);
     }
 
-    /**
-     * Get top 10 estate per type when load map-all page
-     * @param formEstate
-     * @return
-     */
-    @RequestMapping(value = "/map", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ResponseEntity estateMap(@ModelAttribute FormEstate formEstate){
-
-        List<Estate> trusted = serviceEstate.filterEstateByType(10,"TRUSTED_STARTUP",formEstate.getEstateType());
-        List<Estate> broker = serviceEstate.filterEstateByType(10,"REALTOR",formEstate.getEstateType());
-        List<Estate> member = serviceEstate.filterEstateByType(10,"DIRECT_DEAL",formEstate.getEstateType());
-
-        Map<String,List> estates = new HashMap<>();
-        estates.put("trusted",trusted);
-        estates.put("broker",broker);
-        estates.put("member",member);
-        return new ResponseEntity(estates,HttpStatus.OK);
-    }
 
     /**
      *
@@ -367,79 +350,93 @@ public class ControllerEstate extends AbstractController {
     @RequestMapping(value = "/search/getDataDragEndOrZoomChange", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity getDataWhenDragEnd(@ModelAttribute FormEstate formEstate,int zoomLevel){
-        List<Estate> estates = new ArrayList<>();
+        return new ResponseEntity(filterEstateByType(formEstate),HttpStatus.OK);
+    }
+
+    /**
+     * Search By Store
+     * @param formEstate
+     * @return
+     */
+    @RequestMapping(value = "/search/searchByStore", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity searchEstateByStore(@ModelAttribute FormEstate formEstate){
+        if(formEstate.getBusinessType().equals("")){
+            formEstate.setBusinessType(null);
+        }
+        if(formEstate.getCity().equals("")){
+                formEstate.setCity(null);
+        }
+        if(formEstate.getDistrict().equals("")){
+                formEstate.setDistrict(null);
+        }
+        if(formEstate.getTown().equals("")){
+                formEstate.setTown(null);
+        }
+        formEstate.setIsApproved("1");
+        return new ResponseEntity(filterEstateByType(formEstate),HttpStatus.OK);
+
+    }
+    @RequestMapping(value = "/search/searchBySubway", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity searchEstateBySubway(@ModelAttribute FormEstate formEstate){
+        if(formEstate.getBusinessType().equals("")){
+            formEstate.setBusinessType(null);
+        }
+        formEstate.setIsApproved("1");
+        return new ResponseEntity(filterEstateByType(formEstate),HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/search/searchByRegistryNo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity searchEstateByRegistryNo(@ModelAttribute FormEstate formEstate){
+        formEstate.setIsApproved("1");
+        List<Estate> estates = serviceEstate.filterEstateOnMap(formEstate);
+        return new ResponseEntity(estates,HttpStatus.OK);
+
+    }
+    /*
+     - Check estate type, if estateType = %%, search all estate not by estateType.
+    */
+
+    private List<Estate> filterEstateByType(FormEstate formEstate){
+        List<Estate> estates = null;
         if(formEstate.getEstateType().equals("%%")){
             formEstate.setEstateType(null);
             if(formEstate.getBusinessType()!= null){
                 estates = serviceEstate.filterEstateOnMap(formEstate);
                 formEstate.setBusinessType(null);
                 formEstate.setEstateType("VACANT");
-                List<Estate> estate2 = serviceEstate.filterEstateOnMap(formEstate);
-                estates.addAll(estate2);
+                List<Estate> estateVacant = serviceEstate.filterEstateOnMap(formEstate);
+                estates.addAll(estateVacant);
             }else{
                 estates = serviceEstate.filterEstateOnMap(formEstate);
             }
-            estates = filterEstateByRadius(estates,formEstate.getLongitude(),formEstate.getLatitude(),zoomLevel);
-            return new ResponseEntity(estates,HttpStatus.OK);
+            estates = filterEstateByRadius(estates,formEstate.getLongitude(),formEstate.getLatitude(),formEstate.getZoomLevel());
+            return estates;
         }else if(formEstate.getEstateType().equals("VACANT")){ // if estateType == Vacant, search estate by VACANT
             formEstate.setBusinessType(null);
             formEstate.setCategory(null);
         }
         // Search Estate by StartUp
         estates = serviceEstate.filterEstateOnMap(formEstate);
-        estates = filterEstateByRadius(estates,formEstate.getLongitude(),formEstate.getLatitude(),zoomLevel);
-        return new ResponseEntity(estates,HttpStatus.OK);
+        estates = filterEstateByRadius(estates,formEstate.getLongitude(),formEstate.getLatitude(),formEstate.getZoomLevel());
+        return estates;
     }
 
     private List<Estate> filterEstateByRadius(List<Estate> estates,String longitude,String latitude,int zoomLevel){
         List<Estate> estateFilter = new ArrayList<>();
         double lat = Double.parseDouble(latitude);
         double lng = Double.parseDouble(longitude);
-        double radius = getDistanceByZoomLevel(zoomLevel);
+        double radius = ConvertUtils.getDistanceByZoomLevel(zoomLevel);
         for(Estate estate: estates){
             double lat2 = Double.parseDouble(estate.getLatitude());
             double lng2 = Double.parseDouble(estate.getLongitude());
-            if(getDistanceFromLatLonInKm(lat,lng,lat2,lng2) <= radius){
+            if(ConvertUtils.getDistanceFromLatLonInKm(lat,lng,lat2,lng2) <= radius){
                 estateFilter.add(estate);
             }
         }
         return estateFilter;
-    }
-
-    private double getDistanceFromLatLonInKm(double lat1,double lng1,double lat2,double lng2) {
-        long R = 6371; // Radius of the earth in km
-        double dLat = deg2rad(lat2-lat1);  // deg2rad below
-        double dLon = deg2rad(lng2-lng1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                                Math.sin(dLon/2) * Math.sin(dLon/2)
-                ;
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double d = R * c; // Distance in km
-        return d;
-    }
-
-    private double deg2rad(double deg) {
-        return deg * (Math.PI/180);
-    }
-
-    private double getDistanceByZoomLevel(int zoomLevel){
-        switch (zoomLevel){
-            case 1: return 0.3;
-            case 2: return 0.45;
-            case 3: return 0.75;
-            case 4: return 1.5;
-            case 5: return 3;
-            case 6: return 6;
-            case 7: return 10;
-            case 8: return 20;
-            case 9: return 50;
-            case 10: return 80;
-            case 11: return 140;
-            case 12: return 288;
-            case 13: return 400;
-            case 14: return 500;
-            default:return 0;
-        }
     }
 }
