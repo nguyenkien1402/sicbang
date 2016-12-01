@@ -217,7 +217,7 @@ public class PublicApi extends AbstractController {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorization,
             @ModelAttribute FormEstate form,
             @PathVariable(value = "zoomLevel") String zoomLevel) {
-        List<Estate> estates;
+        Page<Estate> estates;
         System.out.println("filter with zoom:  "+form.getSubwayStation());
         form.setIsApproved("1");
         estates = serviceEstate.filterWithZoom(form,zoomLevel);

@@ -99,5 +99,5 @@ public interface IServiceEstate {
 
     Estate changeAdvertisedEstate(FormEstate formEstate,String isAdvertised);
 
-    List<Estate> filterWithZoom(FormEstate formEstate,String zoomLevel);
+    Page<Estate> filterWithZoom(FormEstate formEstate,String zoomLevel);
 }
