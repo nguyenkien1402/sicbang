@@ -554,7 +554,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
     }
 
     public Page<Estate> getEstateWithZoomLevel(int page,List<Estate> estates, Double zoomLevel, double latitude_1, double longitude_1){
-        Page<Estate> estateWithZoom ;
+        Page<Estate> estateWithZoom = null; ;
         List<Estate> tempEstate = new ArrayList<Estate>();
         for(int i = 0 ; i < estates.size() ; i ++){
             double latitude_2 = Double.parseDouble(estates.get(i).getLatitude());
@@ -569,7 +569,9 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
                 tempEstate.add(estates.get(i));
         }
         Pageable pageable = new PageRequest(page,10);
-        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page*10,page*10+10),pageable,tempEstate.size());
+        if(tempEstate.size() > 0) {
+            estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + 10), pageable, tempEstate.size());
+        }
         return estateWithZoom;
     }
 }
