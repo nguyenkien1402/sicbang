@@ -565,12 +565,27 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
             double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(latitude_1) * Math.cos(latitude_2) * Math.sin(dLong/2) * Math.sin(dLong/2);
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             double d = r * c;
-            if(d > 0 && d < zoomLevel)
+            System.out.println(d);
+            if(d >= 0 && d < zoomLevel)
                 tempEstate.add(estates.get(i));
         }
         Pageable pageable = new PageRequest(page,10);
         if(tempEstate.size() > 0) {
-            estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + 10), pageable, tempEstate.size());
+            if(tempEstate.size() <= 10){
+                estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + tempEstate.size()), pageable, tempEstate.size());
+            }
+            else {
+                if(tempEstate.size() % 10 == 0) {
+                    estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + 10), pageable, tempEstate.size());
+                }else{
+                    int compare = tempEstate.size() - page * 10;
+                    if(compare > 0 && compare < 10) {
+                        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + compare), pageable, tempEstate.size());
+                    }else{
+                        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + 10), pageable, tempEstate.size());
+                    }
+                }
+            }
         }
         return estateWithZoom;
     }
