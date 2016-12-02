@@ -53,7 +53,7 @@ $(document).ready(function(){
         var policy = $("#c1").prop("checked");
         var privacy = $("#c2").prop("checked");
         var place = $("#c3").prop("checked");
-        $("#passwordMessage").html("");
+        $("#passwordModalMessage").html("");
         $("#passwordCfmMessage").html("");
         $("#helpBlockMessage").html("");
         if(email == ""){
@@ -85,7 +85,7 @@ $(document).ready(function(){
             return false;
         }
         if(password.length < 4){
-            $("#passwordMessage").html("비밀번호 4자 이상 입력");
+            $("#passwordModalMessage").html("비밀번호 4자 이상 입력");
             $("input[name=joinPassword]").focus();
             return false;
         }
@@ -131,7 +131,7 @@ $(document).ready(function(){
                     $("#helpBlockMessage").html(data);
                     $("input[name=joinPassword]").val("");
                     $("input[name=joinPassConf]").val("");
-                    $("#passwordMessage").html("");
+                    $("#passwordModalMessage").html("");
                     $("#passwordCfmMessage").html("");
                     $("input[name=joinEmail]").focus();
                 }

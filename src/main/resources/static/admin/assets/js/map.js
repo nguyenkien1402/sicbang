@@ -27,7 +27,7 @@ $(document).ready(function() {
 
     //init and add zoomControl to map
     {
-        var currentZoom = 0;
+        var currentZoom = 7;
         var zoomControl = new daum.maps.ZoomControl();
         map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
     }
@@ -67,6 +67,7 @@ $(document).ready(function() {
         var premiumCostTo = 'all';
         var businessChecked = '';
     }
+
 
     // add event handler (zoom_change,dragend)
     {
@@ -200,15 +201,15 @@ $(document).ready(function() {
                     $option.data("index", key);
                     $option.text(val.name);
                     $option.appendTo($(".citySelect"));
-                    var district = [];
+                    var districtArr = [];
                     $.each(val.districts, function (key1, vale) {
                         var districtObject = {name: "John", id: 1};
                         districtObject.name = vale.name;
                         districtObject.id = vale.id;
-                        district.push(districtObject);
+                        districtArr.push(districtObject);
 
                     });
-                    districts.push(district);
+                    districts.push(districtArr);
                 });
                 initPage();
             }
@@ -455,9 +456,10 @@ $(document).ready(function() {
         var district = $(".districtSelect").val();
         var city = $(".citySelect").val();
         var town = $(".townSelect").val();
-        getAllParameter();
+        console.log(getAllData());
+
         removeAllMaker();
-        searchByStore(city,district,town,estateType,businessChecked,currentZoom);
+        searchByStore(city,district,town,currentZoom);
 
         remember = 'businessZone';
         stationMarker.setMap(null);
@@ -467,23 +469,26 @@ $(document).ready(function() {
      //Search by subway click event
      $("#searchBySubway").click(function() {
          var subway = $('.subwayInput').val();
-         getAllParameter();
          removeAllMaker();
-         searchBySubway(subway,currentZoom,estateType,businessChecked);
+         searchBySubway(subway,currentZoom);
          remember = 'subway';
      });
 
         // Button Search by Business Click event
      $('.littleWide').click(function () {
-         getAllParameter();
+
          if(remember == 'subway'){
              var subway = $('.subwayInput').val();
-             searchByBusinessType(null,null,null,subway,businessChecked,estateType,null,currentZoom);
+             removeAllMaker();
+             console.log(subway);
+             searchBySubway(subway,currentZoom);
          }else{
              var district = $(".districtSelect").val();
              var city = $(".citySelect").val();
              var town = $(".townSelect").val();
-             searchByBusinessType(city,district,town,null,businessChecked,estateType,null,currentZoom);
+
+             removeAllMaker();
+             searchByStore(city,district,town,currentZoom);
          }
      });
 
@@ -511,13 +516,30 @@ $(document).ready(function() {
 
     });
 
+    function getAllData(){
+        getAllParameter();
+        var data = {
+            depositeCostFrom: depositeCostFrom,
+            depositeCostTo: depositeCostTo,
+            rentFrom: rentCostFrom,
+            rentTo: rentCostTo,
+            premiumCostFrom: premiumCostFrom,
+            premiumCostTo: premiumCostTo,
+            longitude:longitude,
+            latitude:latitude,
+            zoomLevel:currentZoom,
+            estateType: estateType,
+            businessType: businessChecked,
+        }
+        return data;
+    }
 
-    function searchByStore(city,district,town,estateType,businessType,zoomLevel){
+    function searchByStore(city,district,town,zoomLevel){
 
         var cityName = "서울";
         var districtName = "";
         var townName = "";
-
+        console.log(city+" "+district);
         for(var i = 0 ; i< cities.length;i++){
             if(city == cities[i].id){
                 cityName = cities[i].name;
@@ -536,7 +558,7 @@ $(document).ready(function() {
             }
         }
 
-        var fullAddress = (city == null ? "" : cityName) + " " + (district == null ? "" : districtName) + (town == null ? "" : townName);
+        var fullAddress = cityName + " " + districtName +" "+ townName;
 
         var geocoder = new daum.maps.services.Geocoder();
         // 주소로 좌표를 검색합니다
@@ -553,35 +575,12 @@ $(document).ready(function() {
                 map.setCenter(coords);
                 map.setLevel(zoomLevel);
                 clusterer.addMarker(storeMarker);
-                $.ajax({
-                    url: "/estate/search/searchByStore",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        city: city,
-                        district: district,
-                        town: town,
-                        depositeCostFrom: depositeCostFrom,
-                        depositeCostTo: depositeCostTo,
-                        rentFrom: rentCostFrom,
-                        rentTo: rentCostTo,
-                        premiumCostFrom: premiumCostFrom,
-                        premiumCostTo: premiumCostTo,
-                        longitude:longitude,
-                        latitude:latitude,
-                        zoomLevel:zoomLevel,
-                        estateType: estateType,
-                        businessType: businessType
-                    },
-                    beforeSend: function () {
-                        $('img.loading').show();
-                    },
-                    success: function (data) {
-                        drawingMarker(data,null);
-                    },complete:function(){
-                        $('img.loading').hide();
-                    }
-                });
+                var url = "/estate/search/searchByStore";
+                var data= getAllData();
+                data["city"] = city;
+                data["district"] = district;
+                data["town"] = town;
+                submitFormAjax(url,data,null);
             }else{
                 if(city != null || district != null)
                 alert("검색에 실패하였습니다. 주소를 다시 확인하여주세요.\n검색 주소 : "+fullAddress);
@@ -591,9 +590,8 @@ $(document).ready(function() {
 
     }
 
-    function searchBySubway(subway,zoomLevel,estateType,businessType){
+    function searchBySubway(subway,zoomLevel){
         var subwayAddress = subway + "역";
-        console.log(subway);
         places.keywordSearch(subwayAddress,function(status,result){
             if (status === daum.maps.services.Status.OK) {
                 latitude = result.places[0].latitude
@@ -607,51 +605,29 @@ $(document).ready(function() {
                 stationMarker.setMap(map);
                 stationCircle.setMap(map);
 
-                $.ajax({
-                    url: "/estate/search/searchBySubway",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        subwayStation:subway,
-                        depositeCostFrom: depositeCostFrom,
-                        depositeCostTo: depositeCostTo,
-                        rentFrom: rentCostFrom,
-                        rentTo: rentCostTo,
-                        premiumCostFrom: premiumCostFrom,
-                        premiumCostTo: premiumCostTo,
-                        longitude:longitude,
-                        latitude:latitude,
-                        zoomLevel:zoomLevel,
-                        estateType: estateType,
-                        businessType: businessType
-                    },
-                    beforeSend: function () {
-                        $('img.loading').show();
-                    },
-                    success: function (data) {
-                        drawingMarker(data,null);
-                    },complete:function(){
-                        $('img.loading').hide();
-                    }
-                });
+                var url = "/estate/search/searchBySubway";
+                var data= getAllData();
+                data["subwayStation"] = subway;
+                submitFormAjax(url,data,null);
             }
         });
     }
 
     function searchByRegistryNo(registryNo){
+        var url = "/estate/search/searchByRegistryNo";
+        var data = getAllData();
+        data["estateCode"] = registryNo;
+        delete data["businessType"];
+        delete data["estateType"];
+        submitFormAjax(url,data,registryNo);
+    }
+
+    function submitFormAjax(url,data,registryNo){
         $.ajax({
-            url: "/estate/search/searchByRegistryNo",
+            url: url,
             type: "POST",
             dataType: "json",
-            data: {
-                estateCode:registryNo,
-                depositeCostFrom: depositeCostFrom,
-                depositeCostTo: depositeCostTo,
-                rentFrom: rentCostFrom,
-                rentTo: rentCostTo,
-                premiumCostFrom: premiumCostFrom,
-                premiumCostTo: premiumCostTo,
-            },
+            data: data,
             beforeSend: function () {
                 $('img.loading').show();
             },
@@ -668,20 +644,23 @@ $(document).ready(function() {
         //init map
         if (redirect != 'true') {
             currentZoom = 7;
-            searchByStore(9,null,null,estateType,null,currentZoom);
+            $(".citySelect").val(9);
+            searchByStore(9,null,null,currentZoom);
         }else{
-            var cityValue = $("#cityValue").val();
-            var districtValue = $("#districtValue").val();
-            var townValue = $("#townValue").val();
+            var cityVal  = $("#cityValue").val();
+            var districtVal = $("#districtValue").val();
+            var townVal = $("#townValue").val();
             var subwayValue = $("#subwayStationValue").val();
             var registryNo = $("#registryNoValue").val();
-            getAllParameter();
+
             if (subwayValue == '' && registryNo == '') {
+                remember = "businessZone";
                 currentZoom = 7;
-                searchByStore(cityValue,districtValue,townValue,estateType,businessChecked,currentZoom);
+                searchByStore(cityVal,districtVal,townVal,currentZoom);
             }else if(registryNo != ''){
                 searchByRegistryNo(registryNo);
             }else{
+                remember = "subway";
                 $(".searchBox .searchMethodArea").removeClass("active");
                 $(".searchBox .buttonArea button").removeClass("active");
                 $(".searchBox .storeSearch").removeClass("active");
@@ -689,7 +668,7 @@ $(document).ready(function() {
                 $("#subwaySearchButton").addClass("active");
                 $(".subwayInput").val(subwayValue);
                 currentZoom = 5;
-                searchBySubway(subwayValue,currentZoom,estateType,businessChecked);
+                searchBySubway(subwayValue,currentZoom);
             }
         }
     }
