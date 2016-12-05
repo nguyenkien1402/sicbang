@@ -505,51 +505,8 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         double latitude = Double.parseDouble(formEstate.getLatitude());
         double longitude = Double.parseDouble(formEstate.getLongitude());
 
-        switch (zoomLevel){
-            case "14":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("384"),latitude, longitude);
-                break;
-            case "13":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("192"),latitude, longitude);
-                break;
-            case "12":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("96"),latitude, longitude);
-                break;
-            case "11":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("48"),latitude, longitude);
-                break;
-            case "10":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("24"),latitude, longitude);
-                break;
-            case "9":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("12"),latitude, longitude);
-                break;
-            case "8":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("6"),latitude, longitude);
-                break;
-            case "7":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("3"),latitude, longitude);
-                break;
-            case "6":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("1.5"),latitude, longitude);
-                break;
-            case "5":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("0.75"),latitude, longitude);
-                break;
-            case "4":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("0.3"),latitude, longitude);
-                break;
-            case "3":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("0.17"),latitude, longitude);
-                break;
-            case "2":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("0.09"),latitude, longitude);
-                break;
-            case "1":
-                estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,Double.parseDouble("0.06"),latitude, longitude);
-                break;
-
-        }
+        double radius = ConvertUtils.getDistanceByZoomLevelAPI(Integer.parseInt(zoomLevel));
+        estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,radius,latitude, longitude);
         return estateWithZoom;
     }
 

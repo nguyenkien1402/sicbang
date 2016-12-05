@@ -93,4 +93,25 @@ public class ConvertUtils {
             default:return 0;
         }
     }
+
+    public static double getDistanceByZoomLevelAPI(int zoomLevel){
+        switch (zoomLevel){
+            case -1: return 0.06;
+            case -0: return 0.09;
+            case 1:  return 0.17;
+            case 2: return 0.3;
+            case 3: return 0.75;
+            case 4:  return 1.5;
+            case 5: return 3;
+            case 6: return 6;
+            case 7:  return 12;
+            case 8: return 24;
+            case 9: return 48;
+            case 10:  return 96;
+            case 11: return 192;
+            default: return 0;
+        }
+    }
+
+
 }
