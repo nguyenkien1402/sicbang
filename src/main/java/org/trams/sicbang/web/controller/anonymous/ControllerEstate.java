@@ -349,7 +349,8 @@ public class ControllerEstate extends AbstractController {
 
     @RequestMapping(value = "/search/getDataDragEndOrZoomChange", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity getDataWhenDragEnd(@ModelAttribute FormEstate formEstate,int zoomLevel){
+    public ResponseEntity getDataWhenDragEnd(@ModelAttribute FormEstate formEstate){
+        System.out.println(formEstate.getLongitude());
         return new ResponseEntity(filterEstateByType(formEstate),HttpStatus.OK);
     }
 

@@ -225,7 +225,7 @@ function Admin() {
 
         $form.find("input[required='required']").each(function(idx, elem) {
             if ($(this).val() == '') {
-                _this.showErrorForm($form, $(this).attr('name'), 'Field is required');
+                _this.showErrorForm($form, $(this).attr('name'), '모든 항목을 입력해 주세요.');
                 result = false;
             }
         });

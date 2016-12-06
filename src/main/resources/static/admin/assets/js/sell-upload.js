@@ -327,13 +327,15 @@ $(document).ready(function(){
             alert("당신은 검색 주소 버튼을 클릭하여 주소를 확인해야");
             return false;
         }
-        var inputLongitude = $("<input>").attr("type", "hidden").attr("name", "longitude").val(longitude);
-        var inputLatitude = $("<input>").attr("type", "hidden").attr("name", "latitude").val(latitude);
+      //  var inputLongitude = $("<input>").attr("type", "hidden").attr("name", "longitude").val(longitude);
+      //  var inputLatitude = $("<input>").attr("type", "hidden").attr("name", "latitude").val(latitude);
 
+        $('input[name="longitude"]').val(longitude);
+         $('input[name="latitude"]').val(latitude);
         //     _this.convertForm($(self));
 
-        $('#formStartup').append($(inputLongitude));
-        $('#formStartup').append($(inputLatitude));
+      //  $('#formStartup').append($(inputLongitude));
+      //  $('#formStartup').append($(inputLatitude));
         //     self.submit();
         var text = $("#detailStartup").val();
         text = text.replace(/\r?\n/g, '<br />');
@@ -353,11 +355,9 @@ $(document).ready(function(){
             alert("당신은 검색 주소 버튼을 클릭하여 주소를 확인해야");
             return false;
         }
-        var inputLongitude = $("<input>").attr("type", "hidden").attr("name", "longitude").val(longitude);
-        var inputLatitude = $("<input>").attr("type", "hidden").attr("name", "latitude").val(latitude);
-        //   _this.convertForm($(self));
-        $('#formVacant').append($(inputLongitude));
-        $('#formVacant').append($(inputLatitude));
+        $('input[name="longitude"]').val(longitude);
+        $('input[name="latitude"]').val(latitude);
+
         var text = $("#detailVacant").val();
         text = text.replace(/\r?\n/g, '<br/>');
         $("#detailVacant").val(text);

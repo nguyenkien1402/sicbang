@@ -158,7 +158,13 @@ $(document).ready(function(){
             $("div.centerBox").empty();
             $.each(data.content,function(key,val){
                 imageLength+=1;
-               $("div.centerBox").append("<a href='http://"+val.link+"'  class='mySlides' id='image"+key+"' target='_blank' ><img  src='"+val.imgUrl+"' /></a>")
+               var url = val.link;
+               if(url.startsWith("http")) {
+                   $("div.centerBox").append("<a href='" + url + "'  class='mySlides' id='image" + key + "' target='_blank' ><img  src='" + val.imgUrl + "' /></a>")
+               }else{
+                   $("div.centerBox").append("<a href='http://" + url + "'  class='mySlides' id='image" + key + "' target='_blank' ><img  src='" + val.imgUrl + "' /></a>")
+
+               }
             });
             $('.centerBox a:gt(0)').hide();
             myTimer = setInterval(sliderNext, 5000);

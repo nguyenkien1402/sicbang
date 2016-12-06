@@ -218,6 +218,7 @@ $(document).ready(function() {
     }
 
     function getDataDragEndOrZoomChange(lat,lng){
+        console.log(lat,lng);
         $.ajax({
             url:"/estate/search/getDataDragEndOrZoomChange",
             type:"POST",
@@ -360,7 +361,8 @@ $(document).ready(function() {
             latitude = val.latitude;
 
             if(registryNo != null){
-                var coords = new daum.maps.LatLng(latitude, longitude);
+                console.log(coords);
+                var coords = new daum.maps.LatLng(val.latitude, val.longitude);
                 map.setCenter(coords);
             }
 
@@ -453,6 +455,8 @@ $(document).ready(function() {
     });
 
     $("#searchByStore").click(function(){
+        currentZoom = 5;
+        firstLoad = true;
         var district = $(".districtSelect").val();
         var city = $(".citySelect").val();
         var town = $(".townSelect").val();
@@ -468,6 +472,8 @@ $(document).ready(function() {
 
      //Search by subway click event
      $("#searchBySubway").click(function() {
+         currentZoom = 5;
+         firstLoad = true;
          var subway = $('.subwayInput').val();
          removeAllMaker();
          searchBySubway(subway,currentZoom);
@@ -591,6 +597,7 @@ $(document).ready(function() {
     }
 
     function searchBySubway(subway,zoomLevel){
+
         var subwayAddress = subway + "역";
         places.keywordSearch(subwayAddress,function(status,result){
             if (status === daum.maps.services.Status.OK) {
@@ -607,13 +614,13 @@ $(document).ready(function() {
 
                 var url = "/estate/search/searchBySubway";
                 var data= getAllData();
-                data["subwayStation"] = subway;
                 submitFormAjax(url,data,null);
             }
         });
     }
 
     function searchByRegistryNo(registryNo){
+
         var url = "/estate/search/searchByRegistryNo";
         var data = getAllData();
         data["estateCode"] = registryNo;
@@ -655,7 +662,7 @@ $(document).ready(function() {
 
             if (subwayValue == '' && registryNo == '') {
                 remember = "businessZone";
-                currentZoom = 7;
+                currentZoom = 5;
                 searchByStore(cityVal,districtVal,townVal,currentZoom);
             }else if(registryNo != ''){
                 searchByRegistryNo(registryNo);

@@ -99,7 +99,7 @@
                         <tr>
                             <th class="paddingLeft" style="text-align:left;">권리금</th>
                             <td>
-                                <input type="text" name="premiumCost" required='required' id="premiumCostStartup" class="formControl wide data-currency" style="height:30px;" />
+                                <input type="text" name="premiumCost" required='required' id="premiumCostStartup" class="formControl wide data-currency"  style="height:30px;" />
                                 <label class="helpBlock">(만원)</label>
                             </td>
                         </tr>
@@ -135,6 +135,8 @@
                             <th class="paddingLeft" style="text-align:left;">매물유형</th>
                             <td>
                                 <input type="hidden" name="estateType" value="STARTUP"/>
+                                <input type="hidden" name="longitude" value=""/>
+                                <input type="hidden" name="latitude" value=""/>
                                 <label class="helpBlock primary">창업인수</label>
                             </td>
                         </tr>
@@ -227,6 +229,8 @@
                             <th class="paddingLeft" style="text-align:left;">인근 전철역</th>
                             <td>
                                 <input type="hidden" name="estateType" value="VACANT"/>
+                                <input type="hidden" name="longitude" value=""/>
+                                <input type="hidden" name="latitude" value=""/>
                                 <input type="text" name="subwayStation" required='required'  class="subwayInput formControl wide" style="height:30px;" placeholder="보문역" />
                             </td>
                         </tr>
