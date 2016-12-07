@@ -514,12 +514,12 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         Page<Estate> estateWithZoom = null; ;
         List<Estate> tempEstate = new ArrayList<Estate>();
         for(int i = 0 ; i < estates.size() ; i ++){
-            double latitude_2 = Double.parseDouble(estates.get(i).getLatitude());
-            double longitude_2 = Double.parseDouble(estates.get(i).getLongitude());
-            double dLat = Math.abs(latitude_2 - latitude_1);
-            double dLong = Math.abs(longitude_2 - longitude_1);
+            double dLat = ConvertUtils.deg2rad(Double.parseDouble(estates.get(i).getLatitude())-latitude_1);
+            double dLong = ConvertUtils.deg2rad(Double.parseDouble(estates.get(i).getLongitude()) - longitude_1);
             int r = 6371;
-            double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(latitude_1) * Math.cos(latitude_2) * Math.sin(dLong/2) * Math.sin(dLong/2);
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(ConvertUtils.deg2rad(latitude_1)) * Math.cos(ConvertUtils.deg2rad(Double.parseDouble(estates.get(i).getLatitude()))) *
+                            Math.sin(dLong/2) * Math.sin(dLong/2);
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             double d = r * c;
             System.out.println(d);
