@@ -14,7 +14,8 @@ $(document).ready(function(){
             maxNumberOfElements: 10,
             match:{
                 enabled: true
-            }
+            },
+
         }
     };
     $(".subwayInput").easyAutocomplete(subway);
