@@ -1321,6 +1321,7 @@ var EasyAutocomplete = (function(scope) {
 
 					function loadData(inputPhrase) {
 
+						selectedElement = -1;
 
 						if (inputPhrase.length < config.get("minCharNumber")) {
 							return;
