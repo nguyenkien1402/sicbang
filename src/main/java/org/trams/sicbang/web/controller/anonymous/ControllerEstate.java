@@ -402,6 +402,7 @@ public class ControllerEstate extends AbstractController {
     */
 
     private List<Estate> filterEstateByType(FormEstate formEstate){
+
         List<Estate> estates = null;
         if(formEstate.getEstateType().equals("%%")){
             formEstate.setEstateType(null);

@@ -494,6 +494,7 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
 
     @Override
     public Page<Estate> filterWithZoom(FormEstate formEstate,String zoomLevel) {
+        System.out.println("page size: "+formEstate.getPageSize());
         List<Estate> estates = repositoryEstate.findAll(formEstate.getSpecification());
         Page<Estate> estateWithZoom = null; ;
         Iterator<Estate> iterator = estates.iterator();
@@ -506,11 +507,11 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         double longitude = Double.parseDouble(formEstate.getLongitude());
 
         double radius = ConvertUtils.getDistanceByZoomLevelAPI(Integer.parseInt(zoomLevel));
-        estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,radius,latitude, longitude);
+        estateWithZoom = getEstateWithZoomLevel(formEstate.getPageIndex(),estates,radius,latitude, longitude, formEstate.getPageSize());
         return estateWithZoom;
     }
 
-    public Page<Estate> getEstateWithZoomLevel(int page,List<Estate> estates, Double zoomLevel, double latitude_1, double longitude_1){
+    public Page<Estate> getEstateWithZoomLevel(int page,List<Estate> estates, Double zoomLevel, double latitude_1, double longitude_1, int pageSize){
         Page<Estate> estateWithZoom = null; ;
         List<Estate> tempEstate = new ArrayList<Estate>();
         for(int i = 0 ; i < estates.size() ; i ++){
@@ -526,20 +527,21 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
             if(d >= 0 && d < zoomLevel)
                 tempEstate.add(estates.get(i));
         }
-        Pageable pageable = new PageRequest(page,10);
+        Pageable pageable = new PageRequest(page,pageSize);
         if(tempEstate.size() > 0) {
-            if(tempEstate.size() <= 10){
-                estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + tempEstate.size()), pageable, tempEstate.size());
+            if(tempEstate.size() <= pageSize){
+                estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * pageSize, page * 10 + tempEstate.size()), pageable, tempEstate.size());
             }
             else {
-                if(tempEstate.size() % 10 == 0) {
-                    estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + 10), pageable, tempEstate.size());
-                }else{
-                    int compare = tempEstate.size() - page * 10;
-                    if(compare > 0 && compare < 10) {
-                        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + compare), pageable, tempEstate.size());
+                if((tempEstate.size() % pageSize == 0) && (pageSize * page) <= tempEstate.size() ) {
+                    estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * pageSize, page * pageSize + pageSize), pageable, tempEstate.size());
+                }
+                if((tempEstate.size() % pageSize != 0) && (pageSize * page) <= tempEstate.size() ) {
+                    int compare = tempEstate.size() - page * pageSize;
+                    if(compare > 0 && compare < pageSize) {
+                        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * pageSize, page * pageSize+ compare), pageable, tempEstate.size());
                     }else{
-                        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * 10, page * 10 + 10), pageable, tempEstate.size());
+                        estateWithZoom = new PageImpl<Estate>(tempEstate.subList(page * pageSize, page * pageSize + pageSize), pageable, tempEstate.size());
                     }
                 }
             }
