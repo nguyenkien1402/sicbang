@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" th:href="@{../../static/admin/assets/images/icon/favicon.ico}" type="image/x-icon" />
+    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Sicbang User</title>
+    <style>
+        .error-message{
+            color:red;
+        }
+        .success-message{
+            color:green;
+        }
+        .help-block{
+            color:red;
+        }
+    </style>
+    <!-- Latest compiled and minified CSS -->
+    <!-- Optional theme -->
+
+    <script th:src="@{../../static/web/assets/js/init.js}"></script>
+    <script th:src="@{../../static/admin/include/js/jquery-1.12.2.min.js}"></script>
+    <script th:src="@{../../static/admin/include/js/jquery-ui.min.js}"></script>
+    <script th:src="@{../../static/admin/include/js/jquery.easy-autocomplete.js}"></script>
+
+    <script type="text/javascript" th:src="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/map.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/style-map.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/easy-autocomplete.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/modal.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/popup.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/join.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/list.css}"/>
+    <link rel="stylesheet" th:href="@{../../static/admin/include/css/content.css}"/>
+    <script th:src="@{../../static/admin/assets/js/web.js}"></script>
+    <script type="text/javascript" th:src="@{http://momentjs.com/downloads/moment.js}"></script>
+    <!-- need to change apikey when deploy to server -->
+    <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=c9c7856aa9e7dc5360302561c643e940&libraries=services,clusterer"></script>
+
+    <script type="text/javascript" th:src="@{../../static/admin/include/js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/admin/include/js//bootstrap-datepicker.kr.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{../../static/admin/libs/metronic-admin/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css}" />
+    <script th:src="@{../../static/admin/assets/js/init.js}"></script>
+</head>
+<body>
+<div th:replace="web/fragment/common-login :: header"></div>
+<div layout:fragment="content" id="contents">
+
+</div>
+<div class="overlay"></div>
+<div class="modal loginModal">
+    <div class="title clearFix">
+        <p>로그인</p>
+        <span class="exitIcon"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="contents">
+        <div class="modalAlignArea">
+            <div class="formControlGroup horizontal">
+                <label class="narrow">아이디</label>
+                <input type="text" id = "username" name= "username" class="formControl wide warning" />
+            </div>
+
+            <div class="formControlGroup horizontal">
+                <label class="narrow">비밀번호</label>
+                <input type="password" id="password" name="password" class="formControl wide warning" />
+            </div>
+            <div class="formControlGroup">
+                <label class="narrow"></label>
+                <input id="autoLogin" id="rememberme" name="rememberme" type="checkbox"/>
+                <span>자동로그인</span>
+            </div>
+            <div class="btnGroup">
+                <button id="loginConfirmButton" class="btn warning littleWide">로그인</button>
+            </div>
+            <br/>
+            <div class="form-group clearfix"><span class="error-message"></span></div>
+        </div>
+    </div>
+</div>
+<div class="modal joinModal" style="width:720px;">
+    <div class="title clearFix">
+        <p>회원가입</p>
+        <span class="exitIcon"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="contents">
+        <div class="formControlGroup horizontal">
+            <label class="">이메일</label>
+            <input name="joinEmail" type="text" class="formControl wide warning" />
+            <span id="helpBlockMessage" class="helpBlock primary">* 사용하실 아이디를 이메일로 입력해주세요.</span>
+        </div>
+
+        <div class="formControlGroup horizontal">
+            <label class="">비밀번호</label>
+            <input name="joinPassword" type="password" class="formControl wide warning" />
+            <span id="passwordModalMessage" class="helpBlock primary"></span>
+        </div>
+        <div class="formControlGroup horizontal">
+            <label class="">비밀번호확인</label>
+            <input name="joinPassConf" type="password" class="formControl wide warning" />
+            <span id="passwordCfmMessage" class="helpBlock primary"></span>
+
+        </div>
+        <div class="formControlGroup">
+            <label class="strong">이용약관(필수)</label>
+            <textarea class="formControl full warning" readonly>제1장 총칙
+제1조 (목적)
+
+본 약관은 교보문고㈜(이하 “회사”라 한다)와 교보문고 계열사가 제공하는 오프라인 영업장 및 온라인 상의 인터넷 서비스(이하 “서비스”라 하며, 접속 가능한 유.무선 단말기의 종류와는 상관없이 이용 가능한 “회사”가 제공하는 모든 “서비스”를 의미합니다)를 이용함에 있어서 “회사”와 이용자의 권리 의무 및 책임 사항을 규정함을 목적으로 합니다.
+※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다」
+TOP
+제2조 (정의)
+</textarea>
+            <input id="c1" type="checkbox"/>
+            <span class="helpBlock">위 약관에 동의합니다.</span>
+        </div>
+        <div class="formControlGroup">
+            <label class="strong">개인정보 취급방침(필수)</label>
+            <textarea class="formControl full warning" readonly>제1장 총칙
+제1조 (목적)
+
+본 약관은 교보문고㈜(이하 “회사”라 한다)와 교보문고 계열사가 제공하는 오프라인 영업장 및 온라인 상의 인터넷 서비스(이하 “서비스”라 하며, 접속 가능한 유.무선 단말기의 종류와는 상관없이 이용 가능한 “회사”가 제공하는 모든 “서비스”를 의미합니다)를 이용함에 있어서 “회사”와 이용자의 권리 의무 및 책임 사항을 규정함을 목적으로 합니다.
+※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다」
+TOP
+제2조 (정의)
+</textarea>
+            <input id="c2" type="checkbox"/>
+            <span class="helpBlock">위 약관에 동의합니다.</span>
+        </div>
+        <div class="formControlGroup">
+            <label class="strong">위치기반서비스 이용약관(필수)</label>
+            <textarea class="formControl full warning" readonly>제1장 총칙
+제1조 (목적)
+
+본 약관은 교보문고㈜(이하 “회사”라 한다)와 교보문고 계열사가 제공하는 오프라인 영업장 및 온라인 상의 인터넷 서비스(이하 “서비스”라 하며, 접속 가능한 유.무선 단말기의 종류와는 상관없이 이용 가능한 “회사”가 제공하는 모든 “서비스”를 의미합니다)를 이용함에 있어서 “회사”와 이용자의 권리 의무 및 책임 사항을 규정함을 목적으로 합니다.
+※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다」
+TOP
+제2조 (정의)
+</textarea>
+            <input id="c3" type="checkbox"/>
+            <span class="helpBlock">위 약관에 동의합니다.</span>
+        </div>
+        <div class="btnGroup">
+            <button id="joinConfirmButton" class="btn warning littleWide">회원가입</button>
+            <button class="btn cancel littleWide exitIcon">취소</button>
+        </div>
+
+        <div class="linkArea clearFix">
+            <ul class="right">
+                <li class="loginButton">기존 회원 로그인</li>
+                <a th:href="@{/broker-join}"><li>중개사무소 가입신청</li></a>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="popup">
+    <div class="exit exitButton">
+        <img th:src="@{/static/admin/include/images/popup/close.png}"/>
+
+    </div>
+    <div class="backImg">
+        <img th:src="@{/static/admin/include/images/popup/pop.png}"/>
+    </div>
+    <div class="footer">
+        <input id="c5" type="checkbox" class="formControl">
+        <label for="c5" style="margin-right:5px;"></label>
+        <label>오늘 하루 이 창을 열지 않음</label>
+        <div class="right">
+            <button class="exit">닫기</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- END FOOTER FRAGMENT -->
+</body>
+</html>

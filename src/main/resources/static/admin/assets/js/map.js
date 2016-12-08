@@ -651,8 +651,7 @@ $(document).ready(function() {
         //init map
         if (redirect != 'true') {
             currentZoom = 7;
-            $(".citySelect").val(9);
-            searchByStore(9,null,null,currentZoom);
+            searchByStore(null,null,null,currentZoom);
         }else{
             var cityVal  = $("#cityValue").val();
             var districtVal = $("#districtValue").val();
