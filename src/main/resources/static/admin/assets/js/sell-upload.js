@@ -324,7 +324,7 @@ $(document).ready(function(){
         //          return false;
         //     }
         if(!isAddressChecked){
-            alert("당신은 검색 주소 버튼을 클릭하여 주소를 확인해야");
+            alert("주소 검색 버튼을 클릭해 해당 위치를 정확히 확인해 주세요.");
             return false;
         }
       //  var inputLongitude = $("<input>").attr("type", "hidden").attr("name", "longitude").val(longitude);
@@ -352,7 +352,7 @@ $(document).ready(function(){
         //        return false;
         //    }
         if(!isAddressChecked){
-            alert("당신은 검색 주소 버튼을 클릭하여 주소를 확인해야");
+            alert("주소 검색 버튼을 클릭해 해당 위치를 정확히 확인해 주세요.");
             return false;
         }
         $('input[name="longitude"]').val(longitude);
