@@ -9,6 +9,7 @@
         <div class="containerTitle">
                     <h2>중개사로 회원가입</h2>
                 </div>
+                <form action="/create-broker" enctype="multipart/form-data"  id="brokerJoinForm">
                 <table id="joinTable" class="table full">
                     <tr>
                         <th class="paddingLeft" style="width:200px; text-align:left;">이메일</th>
@@ -20,14 +21,14 @@
                     <tr>
                         <th class="paddingLeft" style="text-align:left;">비밀번호</th>
                         <td>
-                            <input type="password" name="password" class="formControl wide" style="height:30px;"  required="required"/>
+                            <input type="password" name="password" class="formControl wide" required="required" style="height:30px;"  required="required"/>
                             <label id="passwordMessage" class="helpBlock primary"></label>
                         </td>
                     </tr>
                     <tr>
                         <th class="paddingLeft" style="text-align:left;">비밀번호 확인</th>
                         <td>
-                            <input type="password" name="passwordConfirm" class="formControl wide" style="height:30px;" />
+                            <input type="password" name="passwordConfirm" class="formControl wide" required="required" style="height:30px;" />
                             <label id="passwordConfirmMessage" class="helpBlock primary"></label>
                         </td>
                     </tr>
@@ -36,6 +37,17 @@
                         <td>
                             <input type="text" name = "corporationRegistration" class="formControl wide" style="height:30px;" />
                             <label class="helpBlock">* 하이푼(-)없이 입력해주세요.</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="paddingLeft" style="text-align:left;">프로필 사진</th>
+                        <td>
+                            <input type="button" class="imageUploadButton btn littleWide" style="height:30px; " value="사진첨부"/>
+                            <label class="helpBlock"> *매물 담당자로 소개될 프로필 사진을 선택해주세요.</label>
+                            <br/><br/>
+                            <input type="file" name="attachmentFile" style="display:none;"/>
+                            <img src="" data-id="0" class="uploadImg basicImg" style="width:100px;height:70px;cursor:pointer;"/>
+
                         </td>
                     </tr>
                     <tr>
@@ -58,12 +70,12 @@
                         <td>
                             <div class="formControlGroup horizontal">
                                 <label class="narrow">기본 주소</label>
-                                <input type="text" name="townAddress" class="formControl wide" style="height:30px;" placeholder="서울시 관악구 신대방동" />
+                                <input type="text" name="townAddress" required="required" class="formControl wide" style="height:30px;" placeholder="서울시 관악구 신대방동" />
                             </div>
                             
                             <div class="formControlGroup horizontal" style="margin-bottom:0;">
                                 <label class="narrow">상세 주소</label>
-                                <input type="text" name="addressDetail" class="formControl wide" style="height:30px;" placeholder="상세주소를 입력해 주세요." />
+                                <input type="text" name="addressDetail" required="required" class="formControl wide" style="height:30px;" placeholder="상세주소를 입력해 주세요." />
                             </div>
                         </td>
                     </tr>
@@ -89,7 +101,7 @@
                 <div class="btnGroup">
                     <button id="approvalButton" type="submit" class="btn primary wide">승인요청</button>
                 </div>
-                
+                </form>
                 <div class="waitHelp">
                     <p>승인요청 시 회원가입 정보를 확인하여 회원가입을 결정합니다.</p>
                     <p>최대 대기 시간은 24시간 입니다.</p>
@@ -107,7 +119,13 @@
 
             }
 
-            $("#approvalButton").click(function(){
+            var _this = new Admin();
+
+            $("#brokerJoinForm").submit(function(e){
+
+                var self = this;
+                e.preventDefault();
+
                 var email = $("input[name=email]").val();
                 var password =  $("input[name=password]").val();
                 var passwordConf = $("input[name=passwordConfirm]").val();
@@ -144,9 +162,6 @@
                     $("#passwordConfirmMessage").html("일치하지 않습니다.")
                     $("input[name=passwordConfirm]").focus();
                     return false;
-                }else{
-                    $("#passwordConfirmMessage").html("비밀번호와 일치합니다.");
-                    $("#passwordConfirmMessage").removeClass("primary").addClass("success-message");
                 }
                 if(townAddress == ""){
                     $("input[name=townAddress]").focus();
@@ -162,6 +177,14 @@
                     alert("개인정보 취급방침에 동의해주세요.");
                     return;
                 }
+                if($("#joinTable").find("input[type=file]").val() == ""){
+                    alert("프로필 사진을 등록해 주세요.")
+                    return;
+                }
+                _this.submitFormEstateWeb($(self),function(){
+                   location.href='/broker-join-waiting';
+                });
+                /*
                 $.ajax({
                     url: "/create-broker",
                     type: "POST",
@@ -190,7 +213,60 @@
                         top.location.href="/broker-join-waiting";
                     }
 
-                });
+                });*/
+            });
+            //사진 첨부 버튼
+            $(".imageUploadButton").click(function(e){
+                var files = $(this).parent().find("input[type=file]");
+                var imgs = $(this).parent().find("img");
+
+                files.click();
+            });
+            var fileString = ["","","","",""];
+            //파일이 업로드 되면
+            $("input[type=file]").change(function(e){
+                var img = $(this).parent().find("img").eq(
+                    $(this).parents(".tabContents").find("input[type=file]").index($(this))
+                );
+
+                var ext = $(this).val().split('.').pop().toLowerCase();
+                if(ext == ""){
+                    img.attr('src', "");
+                    $(this).val("");
+                    return false;
+                }
+
+                if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+                    alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
+                    $(this).val("");
+                    img.attr('src', "");
+                    return;
+                }
+
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        img.attr('src', e.target.result);
+                        for(var i = 0 ; i < 5 ; i++){
+                            if(fileString[i] == ''){
+                                fileString[i] = e.target.result;
+                                break;
+                            }
+                        }
+                    }
+                    reader.readAsDataURL(this.files[0]);
+
+                }
+            });
+
+            //이미지 제거를 위해 사진을 클릭했을 때
+            $(".uploadImg").click(function(e){
+                var file = $(this).parent().find("input[type=file]").eq(
+                    $(this).parents(".tabContents").find("img").index($(this))
+                );
+                $(this).attr("src","");
+                file.val("");
+
             });
         });
 

@@ -80,13 +80,15 @@ public class ServiceEstate extends BaseService implements IServiceEstate {
         if(!Strings.isNullOrEmpty(form.getDistrict())){
             FormDistrict formDistrict = new FormDistrict();
             formDistrict.setName(form.getDistrict());
+            formDistrict.setCityId(estate.getCity().getId().toString());
             District district = repositoryDistrict.findOne(formDistrict.getSpecification());
-            System.out.println("city id: "+district.getId() + "-"+"city name: "+district.getName());
+            System.out.println("district id: "+district.getId() + "-"+"district name: "+district.getName());
             estate.setDistrict(district);
         }
         if(!Strings.isNullOrEmpty(form.getTown())){
             FormTown formTown = new FormTown();
             formTown.setName(form.getTown());
+            formTown.setDistrictId(estate.getDistrict().getId().toString());
             Town town = repositoryTown.findOne(formTown.getSpecification());
             System.out.println("city id: "+town.getId() + "-"+"city name: "+town.getName());
             estate.setTown(town);

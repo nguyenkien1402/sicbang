@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.ToString;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.multipart.MultipartFile;
 import org.trams.sicbang.common.utils.ConvertUtils;
 import org.trams.sicbang.model.dto.BaseFormSearch;
 import org.trams.sicbang.model.entity.User;
@@ -48,6 +49,8 @@ public class FormUser extends BaseFormSearch<User> {
     private String addressDetail;
     private String phoneNumber;
     private String cellphoneNumber;
+
+    private MultipartFile attachmentFile;
     // END BROKER INFO
 
     private String base64image;
@@ -120,6 +123,14 @@ public class FormUser extends BaseFormSearch<User> {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public MultipartFile getAttachmentFile() {
+        return attachmentFile;
+    }
+
+    public void setAttachmentFile(MultipartFile attachmentFile) {
+        this.attachmentFile = attachmentFile;
     }
 
     public String getRole() {

@@ -248,7 +248,7 @@ function Admin() {
     this.showErrorForm = function($form, input, msg) {
         var $inp = $form.find("input[name='" + input + "']");
         var $inpDiv = $inp.closest('div.form-group');
-
+        $inp.focus();
         $inp.parent().append('<span class="help-block">' + msg + '</span>');
         $inpDiv.addClass('has-error');
     };
