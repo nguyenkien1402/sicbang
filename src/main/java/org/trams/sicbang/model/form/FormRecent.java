@@ -36,7 +36,9 @@ public class FormRecent extends BaseFormSearch<Recent> {
             Optional<Long> _recentId = ConvertUtils.toLongNumber(recentId);
             Optional<Long> _userId = ConvertUtils.toLongNumber(userId);
             Optional<Long> _estateId = ConvertUtils.toLongNumber(estateId);
-
+            System.out.println("recentId : "+recentId);
+            System.out.println("userId : "+userId);
+            System.out.println("estateId : "+estateId);
             if (_recentId.isPresent()) {
                 predicates.add(
                         criteriaBuilder.equal(root.get(Recent_.id), _recentId.get())
