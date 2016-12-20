@@ -19,6 +19,7 @@ public class FormTown extends BaseFormSearch<Town> {
 
     private String id;
     private String name;
+    private String districtId;
 
     public String getId() {
         return id;
@@ -36,6 +37,14 @@ public class FormTown extends BaseFormSearch<Town> {
         this.name = name;
     }
 
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
     @Override
     public Specification<Town> getSpecification() {
         return (Root<Town> root, javax.persistence.criteria.CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
@@ -45,7 +54,11 @@ public class FormTown extends BaseFormSearch<Town> {
                         criteriaBuilder.equal(root.get(Town_.name), name)
                 );
             }
-
+            if (!Strings.isNullOrEmpty(districtId)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(Town_.district).get(District_.id), districtId)
+                );
+            }
             predicates.add(
                     criteriaBuilder.equal(root.get(Town_.isDelete), isDelete)
             );

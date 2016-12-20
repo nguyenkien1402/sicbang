@@ -76,11 +76,20 @@ public class ControllerRegistration extends AbstractController{
         form.setStatus("ACTIVE");
         form.setType("BROKER");
         form.setRole("MEMBER");
+        if(!form.getAttachmentFile().getOriginalFilename().equals("")) {
+            String file = "";
+            try {
+                file = javax.xml.bind.DatatypeConverter.printBase64Binary(form.getAttachmentFile().getBytes());
+                form.setBase64image(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         FormError error = validationUser.validateJoin(form);
         if (error != null) {
-            return new ResponseEntity(error, HttpStatus.OK);
+            return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
         }
         serviceUser.create(form);
-        return new ResponseEntity("{\"errors\":{}}",HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

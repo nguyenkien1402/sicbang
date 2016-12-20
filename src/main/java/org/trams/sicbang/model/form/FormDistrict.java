@@ -20,6 +20,7 @@ public class FormDistrict extends BaseFormSearch<District> {
 
     private String id;
     private String name;
+    private String cityId;
 
     public String getId() {
         return id;
@@ -37,6 +38,14 @@ public class FormDistrict extends BaseFormSearch<District> {
         this.name = name;
     }
 
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
+
     @Override
     public Specification<District> getSpecification() {
         return (Root<District> root, javax.persistence.criteria.CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
@@ -46,7 +55,11 @@ public class FormDistrict extends BaseFormSearch<District> {
                         criteriaBuilder.equal(root.get(District_.name), name)
                 );
             }
-
+            if (!Strings.isNullOrEmpty(cityId)) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get(District_.city).get(City_.id), cityId)
+                );
+            }
             predicates.add(
                     criteriaBuilder.equal(root.get(District_.isDelete), isDelete)
             );

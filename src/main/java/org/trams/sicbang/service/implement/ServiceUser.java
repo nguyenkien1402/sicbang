@@ -96,6 +96,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
         user.setRole(userRole);
 //        user.setType(userType);
         user.setStatus(userStatus);
+        System.out.println("Broker Join: Brokerjjjjjjjjjjjjjjj");
 
         if(type.equals("NON_BROKER")){
             UserPermission permission = repositoryUserPermission.findByName("MEMBERSHIP");
@@ -117,6 +118,7 @@ public class ServiceUser extends BaseService implements IServiceUser {
                 // insert avatar
                 if (!Strings.isNullOrEmpty(avatar)) {
                     try {
+
                         byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(avatar);
                         String fileRelativePath[], fileUrl, thumbUrl;
                         fileRelativePath = FileUtils.uploadImage(new ByteArrayInputStream(imageBytes), configParams.UPLOAD_DIRECTORY, "/user/");
@@ -132,7 +134,8 @@ public class ServiceUser extends BaseService implements IServiceUser {
                         attachment = repositoryAttachment.save(attachment);
                         user.setAvatar(attachment);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.out.println("Lỗi: Lỗi");
+                        //e.printStackTrace();
                         throw new ApplicationException(MessageResponse.EXCEPTION_FILEUPLOAD_FAILED);
                     }
                 }
