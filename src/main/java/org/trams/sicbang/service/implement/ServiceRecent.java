@@ -1,6 +1,8 @@
 package org.trams.sicbang.service.implement;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trams.sicbang.model.entity.Attachment;
@@ -11,7 +13,10 @@ import org.trams.sicbang.model.form.FormRecent;
 import org.trams.sicbang.service.BaseService;
 import org.trams.sicbang.service.IServiceRecent;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by voncount on 22/04/2016.
@@ -36,12 +41,18 @@ public class ServiceRecent extends BaseService implements IServiceRecent {
 
     @Override
     public Recent update(FormRecent form) {
-        return null;
+        System.out.println("update recent");
+        Recent recent = repositoryRecent.findOne(form.getSpecification());
+        DateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.0");
+        Date date = new Date();
+        recent.setModifiedDate(date);
+        return repositoryRecent.save(recent);
     }
 
     @Override
     public Page<Recent> filter(FormRecent form) {
-        Page<Recent> recents = repositoryRecent.findAll(form.getSpecification(), form.getPaging());
+        PageRequest pageRequest = new PageRequest(0,10, Sort.Direction.DESC,"modifiedDate");
+        Page<Recent> recents = repositoryRecent.findAll(form.getSpecification(), pageRequest);
         System.err.println(recents.getTotalElements());
         for (Recent recent : recents) {
             Collection<Attachment> attachments = repositoryAttachment.findByReference("estate", recent.getEstate().getId());

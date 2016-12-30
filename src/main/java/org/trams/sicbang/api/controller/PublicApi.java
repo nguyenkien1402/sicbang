@@ -253,6 +253,9 @@ public class PublicApi extends AbstractController {
 
                 if (!serviceRecent.filter(formRecent).iterator().hasNext()) {
                     serviceRecent.create(formRecent);
+                }else{
+                    System.out.println("Update recent");
+                    serviceRecent.update(formRecent);
                 }
 
                 FormWishlist formWishlist = new FormWishlist();

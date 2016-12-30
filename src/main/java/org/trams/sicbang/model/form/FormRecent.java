@@ -26,6 +26,8 @@ public class FormRecent extends BaseFormSearch<Recent> {
     @ApiModelProperty(hidden = true)
     private String estateId;
 
+    private String modifiedDate;
+
     @Override
     public Specification<Recent> getSpecification() {
         return (Root<Recent> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
@@ -89,5 +91,13 @@ public class FormRecent extends BaseFormSearch<Recent> {
 
     public void setEstateId(String estateId) {
         this.estateId = estateId;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }
