@@ -51,7 +51,9 @@ public class ServiceRecent extends BaseService implements IServiceRecent {
 
     @Override
     public Page<Recent> filter(FormRecent form) {
-        PageRequest pageRequest = new PageRequest(0,10, Sort.Direction.DESC,"modifiedDate");
+        int pageIndex = form.getPageIndex();
+        int pageSize = form.getPageSize();
+        PageRequest pageRequest = new PageRequest(pageIndex,pageSize, Sort.Direction.DESC,"modifiedDate");
         Page<Recent> recents = repositoryRecent.findAll(form.getSpecification(), pageRequest);
         System.err.println(recents.getTotalElements());
         for (Recent recent : recents) {
